@@ -1,0 +1,48 @@
+{
+  "properties": [
+    {
+      "name": "spring.modulith.events.jdbc.schema-initialization.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.modulith.events.jdbc.schema-initialization.enabled."
+    },
+    {
+      "name": "app.superadmin.id",
+      "type": "java.lang.String",
+      "description": "Description for app.superadmin.id."
+    },
+    {
+      "name": "app.superadmin.mail",
+      "type": "java.lang.String",
+      "description": "Description for app.superadmin.mail."
+    },
+    {
+      "name": "app.superadmin.password",
+      "type": "java.lang.String",
+      "description": "Description for app.superadmin.password."
+    },
+    {
+      "name": "spring.modulith.events.jpa.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Description for spring.modulith.events.jpa.enabled."
+    },
+    {
+      "name": "spring.aot.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Description for spring.aot.enabled."
+    },
+    {
+      "name": "paystack.base.url",
+      "type": "java.lang.String",
+      "description": "Description for paystack.base.url."
+    },
+    {
+      "name": "paystack.public.key",
+      "type": "java.lang.String",
+      "description": "Description for paystack.public.key."
+    },
+    {
+      "name": "app.url",
+      "type": "java.lang.String",
+      "description": "Description for app.url."
+    }
+  ] }
