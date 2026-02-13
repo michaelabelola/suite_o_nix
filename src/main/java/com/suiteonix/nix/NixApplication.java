@@ -11,7 +11,7 @@ import org.springframework.modulith.Modulithic;
 
 
 @Modulithic(useFullyQualifiedModuleNames = true, sharedModules = {
-        "com.suiteonix.nix.shared"
+    "com.suiteonix.nix.shared"
 })
 @EnableCaching
 @EnableJpaAuditing
