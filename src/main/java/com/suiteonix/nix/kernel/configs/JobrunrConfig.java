@@ -18,7 +18,6 @@ public class JobrunrConfig {
     public StorageProvider storageProvider(DataSource dataSource) {
         return new PostgresStorageProvider(dataSource, StorageProviderUtils.DatabaseOptions.CREATE);
     }
-
 //    @Bean
 //    public StorageProvider storageProvider(DataSource dataSource, JobMapper jobMapper) {
 //        StorageProvider sqlStorageProviderFactory = SqlStorageProviderFactory.using(dataSource);
