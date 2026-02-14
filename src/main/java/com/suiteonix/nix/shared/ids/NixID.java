@@ -9,6 +9,10 @@ public record NixID(
 ) implements ID<String> {
     public static final NixID SYSTEM = NixID.of("SYSTEM");
 
+    public static NixID NEW() {
+        return NixID.of(Snowflake.nextId().asString());
+    }
+
     @Transient
     @Override
     public String get() {
