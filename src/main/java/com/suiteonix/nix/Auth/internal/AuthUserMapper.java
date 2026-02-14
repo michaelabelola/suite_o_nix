@@ -1,6 +1,6 @@
 package com.suiteonix.nix.Auth.internal;
 
-import com.suiteonix.nix.Auth.AuthUser;
+import com.suiteonix.nix.spi.Auth.AuthUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

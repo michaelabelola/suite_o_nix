@@ -1,19 +1,21 @@
 package com.suiteonix.nix.Auth;
 
-import com.suiteonix.nix.Auth.internal.AuthUserRepository;
+import com.suiteonix.nix.Auth.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.TestApplicationConfiguration;
 import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
 import com.suiteonix.nix.shared.principal.Actor;
 import com.suiteonix.nix.shared.principal.Principal;
+import com.suiteonix.nix.spi.Auth.AuthUser;
+import com.suiteonix.nix.spi.Auth.AuthUserRegisterDto;
+import com.suiteonix.nix.spi.Auth.AuthenticationModule;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -23,15 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = TestApplicationConfiguration.class)
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
-        "spring.jpa.hibernate.ddl-auto=create-drop",
-        "spring.liquibase.enabled=false",
-        "spring.modulith.events.jpa.enabled=false",
-        "spring.batch.job.enabled=false",
-        "spring.batch.jdbc.initialize-schema=never",
-        "jobrunr.enabled=false"
-})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("AuthenticationModule Integration Tests")
 class AuthenticationModuleIntegrationTest {
@@ -47,13 +40,16 @@ class AuthenticationModuleIntegrationTest {
 
     private AuthUserRegisterDto validRegisterDto;
     private NixID userId;
-    private CustomAuthentication customAuthenticationHolder;
+    private static CustomAuthentication customAuthenticationHolder;
+
+    @BeforeAll
+    static void init() {
+        customAuthenticationHolder = CustomAuthentication.ofSystem();
+        SecurityContextHolder.getContext().setAuthentication(CustomAuthentication.ofSystem());
+    }
 
     @BeforeEach
     void setUp() {
-        customAuthenticationHolder = CustomAuthentication.ofSystem();
-        SecurityContextHolder.getContext().setAuthentication(CustomAuthentication.ofSystem());
-
         userId = NixID.of(UUID.randomUUID().toString());
 
         validRegisterDto = new AuthUserRegisterDto(

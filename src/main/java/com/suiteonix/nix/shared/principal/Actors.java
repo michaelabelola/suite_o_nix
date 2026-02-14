@@ -6,26 +6,31 @@ import org.jspecify.annotations.NonNull;
 
 public class Actors {
 
-    public static final Actor SYSTEM = new Actor() {
-        @Override
-        public @NonNull NixID id() {
-            return NixID.SYSTEM;
-        }
+    public static Actor SYSTEM() {
+        return new Actor() {
+            @Override
+            public @NonNull NixID id() {
+                return NixID.SYSTEM;
+            }
 
-        @Override
-        public @NonNull NixRole role() {
-            return NixRole.SYSTEM;
-        }
-    };
-    public static final Actor ANONYMOUS = new Actor() {
-        @Override
-        public @NonNull NixID id() {
-            return NixID.EMPTY();
-        }
+            @Override
+            public @NonNull NixRole role() {
+                return NixRole.SYSTEM;
+            }
+        };
+    }
 
-        @Override
-        public @NonNull NixRole role() {
-            return NixRole.ANONYMOUS;
-        }
-    };
+    public static Actor ANONYMOUS() {
+        return new Actor() {
+            @Override
+            public @NonNull NixID id() {
+                return NixID.EMPTY();
+            }
+
+            @Override
+            public @NonNull NixRole role() {
+                return NixRole.ANONYMOUS;
+            }
+        };
+    }
 }

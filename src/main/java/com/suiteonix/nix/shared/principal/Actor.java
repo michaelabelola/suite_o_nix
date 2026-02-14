@@ -15,7 +15,7 @@ public interface Actor extends ActiveEntity {
         try {
             return ((CustomAuthentication) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication())).getActor();
         } catch (Exception e) {
-            return Actors.ANONYMOUS;
+            return Actors.ANONYMOUS();
         }
     }
 

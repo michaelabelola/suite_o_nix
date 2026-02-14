@@ -3,6 +3,7 @@ package com.suiteonix.nix.shared.audit;
 import com.suiteonix.nix.shared.ids.NixID;
 import jakarta.persistence.*;
 import lombok.*;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 
@@ -16,10 +17,16 @@ public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "owner_id", updatable = false))
-    @Setter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PACKAGE)
     NixID ownerId;
 
     @Embedded
-    @Setter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PACKAGE)
     JpaAuditSection audit;
+
+    @Override
+    public @NonNull NixID getOwnerId() {
+        if (ownerId == null) return NixID.EMPTY();
+        return ownerId;
+    }
 }

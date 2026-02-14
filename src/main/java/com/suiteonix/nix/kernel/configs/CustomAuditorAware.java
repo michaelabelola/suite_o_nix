@@ -17,11 +17,11 @@ class CustomAuditorAware implements AuditorAware<NixID> {
     @Override
     public Optional<NixID> getCurrentAuditor() {
         if (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null)
-            return Optional.of(Actors.SYSTEM.id());
+            return Optional.of(Actors.SYSTEM().id());
         try {
             return Optional.of(Actor.CURRENT().id());
         } catch (Exception e) {
-            return Optional.of(Actors.SYSTEM.id());
+            return Optional.of(Actors.SYSTEM().id());
         }
     }
 }

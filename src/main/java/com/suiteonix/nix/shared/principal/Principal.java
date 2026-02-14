@@ -14,7 +14,7 @@ public interface Principal extends ActiveEntity {
         try {
             return Objects.requireNonNull(((CustomAuthentication) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication())).getPrincipal());
         } catch (Exception e) {
-            return Principals.ANONYMOUS;
+            return Principals.ANONYMOUS();
         }
     }
 

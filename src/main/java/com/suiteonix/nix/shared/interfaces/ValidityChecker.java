@@ -2,8 +2,8 @@ package com.suiteonix.nix.shared.interfaces;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface EmptyChecker {
+public interface ValidityChecker {
 
     @JsonIgnore
-    boolean isEmpty();
+    boolean isValid();
 }

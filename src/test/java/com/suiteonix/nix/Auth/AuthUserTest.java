@@ -5,6 +5,7 @@ import com.suiteonix.nix.shared.ValueObjects.Password;
 import com.suiteonix.nix.shared.ValueObjects.Phone;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.spi.Auth.AuthUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

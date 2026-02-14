@@ -1,4 +1,4 @@
-package com.suiteonix.nix.Auth;
+package com.suiteonix.nix.spi.Auth;
 
 import com.suiteonix.nix.shared.ids.NixID;
 

@@ -27,7 +27,7 @@ public class JpaAuditSection implements AuditSection, Serializable {
     @Embedded
     @JsonUnwrapped(prefix = "createdBy_")
     @AttributeOverride(name = "id", column = @Column(name = "created_by", updatable = false))
-    NixID createdBy;
+    NixID createdBy = NixID.EMPTY();
 
     @CreatedDate
     @CreationTimestamp
@@ -38,7 +38,7 @@ public class JpaAuditSection implements AuditSection, Serializable {
     @LastModifiedBy
     @JsonUnwrapped(prefix = "modifiedBy_")
     @AttributeOverride(name = "id", column = @Column(name = "modified_by"))
-    NixID modifiedBy;
+    NixID modifiedBy = NixID.EMPTY();
 
     @LastModifiedDate
     @Column(name = "modified_date")
@@ -47,6 +47,7 @@ public class JpaAuditSection implements AuditSection, Serializable {
 
     protected JpaAuditSection() {
     }
+
 
     public static AuditSection EMPTY() {
         return new JpaAuditSection();

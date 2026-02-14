@@ -42,13 +42,12 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
             Phone phone,
             Password password
     ) {
-        AuthUserModel model = new AuthUserModel(
+        return new AuthUserModel(
                 nixID,
                 role,
                 email,
                 phone,
                 password
         );
-        return model;
     }
 }

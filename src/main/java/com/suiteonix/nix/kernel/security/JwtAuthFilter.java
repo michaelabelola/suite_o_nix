@@ -37,7 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        SecurityContextHolder.getContext().setAuthentication(CustomAuthentication.ofAnonymous());
+        SecurityContextHolder.getContext().setAuthentication(CustomAuthentication.ofSystem());
         filterChain.doFilter(request, response);
     }
     public String getBusinessIdFromSubDomain(HttpServletRequest request) {

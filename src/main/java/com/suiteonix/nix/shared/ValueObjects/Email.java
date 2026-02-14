@@ -3,6 +3,7 @@ package com.suiteonix.nix.shared.ValueObjects;
 import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import com.suiteonix.nix.shared.ddd.ValueObject;
 import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.interfaces.ValidityChecker;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.jspecify.annotations.Nullable;
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
 public record Email(
         @Column(name = "email")
         String value
-) implements Supplier<String>, EmptyChecker {
+) implements Supplier<String>, EmptyChecker, ValidityChecker {
 
     public Email {
         value = value.toLowerCase();
@@ -31,6 +32,7 @@ public record Email(
         return new Email(email);
     }
 
+    @Override
     public boolean isValid() {
         return checkValidity(value());
     }

@@ -6,26 +6,31 @@ import org.jspecify.annotations.NonNull;
 
 public class Principals {
 
-    public static final Principal SYSTEM = new Principal() {
-        @Override
-        public @NonNull NixID id() {
-            return NixID.SYSTEM;
-        }
+    public static Principal SYSTEM() {
+        return new Principal() {
+            @Override
+            public @NonNull NixID id() {
+                return NixID.SYSTEM;
+            }
 
-        @Override
-        public @NonNull NixRole role() {
-            return NixRole.SYSTEM;
-        }
-    };
-    public static final Principal ANONYMOUS = new Principal() {
-        @Override
-        public @NonNull NixID id() {
-            return NixID.EMPTY();
-        }
+            @Override
+            public @NonNull NixRole role() {
+                return NixRole.SYSTEM;
+            }
+        };
+    }
 
-        @Override
-        public @NonNull NixRole role() {
-            return NixRole.ANONYMOUS;
-        }
-    };
+    public static Principal ANONYMOUS() {
+        return new Principal() {
+            @Override
+            public @NonNull NixID id() {
+                return NixID.EMPTY();
+            }
+
+            @Override
+            public @NonNull NixRole role() {
+                return NixRole.ANONYMOUS;
+            }
+        };
+    }
 }

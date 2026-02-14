@@ -7,7 +7,6 @@ import jakarta.persistence.PrePersist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -17,45 +16,16 @@ public class OwnerEntityListener {
 
     @PrePersist
     public void touchForCreate(@Nullable Object target) {
+        var dd = Principal.CURRENT();
         if (target == null) return;
         if (target instanceof Ownable ownable) {
-            NixID currentOwnerId = ownable.getOwnerId();
-            if (currentOwnerId != null && !currentOwnerId.isEmpty()) return;
-
-            NixID principalId = Principal.ID();
-            if (principalId.isEmpty()) {
-                if (ownable instanceof IAuditableOwnableEntity entity) {
-                    try {
-                        var idField = findFieldInHierarchy(entity.getClass(), "id");
-                        idField.setAccessible(true);
-                        var entityId = (NixID) idField.get(entity);
-                        if (entityId != null && !entityId.isEmpty()) {
-                            principalId = entityId;
-                        }
-                    } catch (Exception e) {
-                        log.warn("Could not get entity ID for owner fallback", e);
-                    }
-                }
-            }
-
-            principalId.ifPresent(nixID -> setOwnerId(ownable, nixID));
+            var pri = Principal.CURRENT();
+            if (!ownable.getOwnerId().isEmpty()) return;
+            Principal.ID().ifPresent(nixID -> setOwnerId(ownable, nixID));
         }
-    }
-
-    private Field findFieldInHierarchy(Class<?> clazz, String fieldName) throws NoSuchFieldException {
-        Class<?> currentClass = clazz;
-        while (currentClass != null) {
-            try {
-                return currentClass.getDeclaredField(fieldName);
-            } catch (NoSuchFieldException e) {
-                currentClass = currentClass.getSuperclass();
-            }
-        }
-        throw new NoSuchFieldException("Field '" + fieldName + "' not found in class hierarchy of " + clazz.getName());
     }
 
     private void setOwnerId(Ownable target, NixID id) {
-        if (id.isEmpty()) return;
         try {
             Method setOwnerMethod = findMethodInHierarchy(target.getClass(), "setOwnerId", NixID.class);
             setOwnerMethod.setAccessible(true);

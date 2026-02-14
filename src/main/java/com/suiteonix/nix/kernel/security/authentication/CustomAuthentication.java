@@ -18,11 +18,11 @@ public interface CustomAuthentication extends Authentication {
     }
 
     static CustomAuthentication ofAnonymous() {
-        return new CustomAuthenticationImpl(Principals.ANONYMOUS, Actors.ANONYMOUS, new HashSet<>());
+        return new CustomAuthenticationImpl(Principals.ANONYMOUS(), Actors.ANONYMOUS(), new HashSet<>());
     }
 
     static CustomAuthentication ofSystem() {
-        return new CustomAuthenticationImpl(Principals.SYSTEM, Actors.SYSTEM, new HashSet<>());
+        return new CustomAuthenticationImpl(Principals.SYSTEM(), Actors.SYSTEM(), new HashSet<>());
     }
 
     @Override

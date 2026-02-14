@@ -14,16 +14,16 @@ class CustomAuthenticationImpl implements CustomAuthentication {
 
     @NonNull
     private final Principal principal;
-
     @NonNull
     private final Actor actor;
+    private boolean authenticated = false;
+    @NonNull
     Set<? extends GrantedAuthority> authorities = new HashSet<>();
 
-    CustomAuthenticationImpl(@NonNull Principal principal, @NonNull Actor actor, Set<? extends GrantedAuthority> authorities) {
+    CustomAuthenticationImpl(@NonNull Principal principal, @NonNull Actor actor, @Nullable Set<? extends GrantedAuthority> authorities) {
         this.principal = principal;
         this.actor = actor;
-        if (!actor.isEmpty()
-                || principal.id() == Principals.ANONYMOUS.id())
+        if (!actor.isEmpty() && !Principals.ANONYMOUS().equalsTo(actor))
             setAuthenticated(true);
         if (authorities != null)
             this.authorities = authorities;
@@ -51,12 +51,12 @@ class CustomAuthenticationImpl implements CustomAuthentication {
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return authenticated;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
+        this.authenticated = isAuthenticated;
     }
 
     @Override

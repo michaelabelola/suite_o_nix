@@ -2,6 +2,7 @@ package com.suiteonix.nix.Auth;
 
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.spi.Auth.AuthUserRegisterDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.boot.test.context.SpringBootTest;

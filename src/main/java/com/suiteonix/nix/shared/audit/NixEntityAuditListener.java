@@ -32,7 +32,7 @@ public class NixEntityAuditListener {
     }
 
     private void setCreatedBy(IAuditable auditable) {
-        if (auditable.getAudit() != null && auditable.getAudit().getCreatedBy() != null) return;
+        if (auditable.getAudit() != null && auditable.getAudit().getCreatedBy() != null && !auditable.getAudit().getCreatedBy().isEmpty()) return;
         Actor.CURRENT().ifPresent(actor -> {
             try {
                 createdByMethod.invoke(auditable.getAudit(), actor.id());
@@ -45,7 +45,7 @@ public class NixEntityAuditListener {
     private static void setAuditSectionIfNonNull(IAuditable o) {
         if (o.getAudit() != null) return;
         try {
-            Field field = findFieldInHierarchy(o.getClass(), "audit");
+            Field field = findFieldInHierarchy(o.getClass());
             field.setAccessible(true);
             field.set(o, JpaAuditSection.NEW());
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -53,52 +53,18 @@ public class NixEntityAuditListener {
         }
     }
 
-    private static Field findFieldInHierarchy(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+    private static Field findFieldInHierarchy(Class<?> clazz) throws NoSuchFieldException {
         Class<?> currentClass = clazz;
         while (currentClass != null) {
             try {
-                return currentClass.getDeclaredField(fieldName);
+                return currentClass.getDeclaredField("audit");
             } catch (NoSuchFieldException e) {
                 currentClass = currentClass.getSuperclass();
             }
         }
-        throw new NoSuchFieldException("Field '" + fieldName + "' not found in class hierarchy of " + clazz.getName());
+        assert clazz != null;
+        throw new NoSuchFieldException("Field '" + "audit" + "' not found in class hierarchy of " + clazz.getName());
     }
-
-//    @PrePersist
-//    public void onSave(Object o) {
-//        if (o instanceof IAuditable auditable) {
-//
-//            if (auditable.getAudit() == null) {
-//                audit = new JpaAuditSection();
-//            }
-//            else {
-//                audit = (JpaAuditSection) auditable.getAudit();
-//            }
-//
-//            JpaAuditSection audit = getJpaAuditSection(auditable);
-//
-//            if (audit.getCreatedBy() == null)
-//                try {
-//                    var p = Actor.CURRENT();
-//                    if (p != null && p.id() != null) {
-//                        method.invoke(audit, p.id());
-//                    } else {
-//                        method.invoke(audit, Actor.SYSTEM);
-//                    }
-//                } catch (InvocationTargetException | IllegalAccessException e) {
-//                    throw EX.internalServerError("AUDIT_ERROR", "Failed to set the createdBy").serverError("message", e.getMessage());
-//                }
-//
-//            try {
-//                Field field = Class.forName(o.getClass().getName()).getDeclaredField("audit");
-//                field.setAccessible(true);
-//                field.set(o, audit);
-//            } catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
 
     @PreUpdate
     public void onUpdate(Object o) {

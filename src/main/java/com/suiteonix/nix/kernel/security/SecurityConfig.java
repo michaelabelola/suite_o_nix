@@ -53,7 +53,10 @@ class SecurityConfig {
                         response.getWriter().write(objectMapper.writeValueAsString(detail));
                     });
                 })
-                .authorizeHttpRequests(registry -> registry.anyRequest().permitAll());
+                .authorizeHttpRequests(registry -> {
+                    registry.requestMatchers("/auth/**").authenticated();
+                    registry.anyRequest().permitAll();
+                });
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

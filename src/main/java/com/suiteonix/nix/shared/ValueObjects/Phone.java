@@ -3,6 +3,7 @@ package com.suiteonix.nix.shared.ValueObjects;
 import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import com.suiteonix.nix.shared.ddd.ValueObject;
 import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.interfaces.ValidityChecker;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.jspecify.annotations.Nullable;
@@ -14,7 +15,7 @@ import java.util.function.Supplier;
 public record Phone(
         @Column(name = "phone")
         String value
-) implements Supplier<String>, EmptyChecker {
+) implements Supplier<String>, EmptyChecker, ValidityChecker {
 
     public Phone {
         if (value != null && !checkValidity(value))
@@ -30,6 +31,7 @@ public record Phone(
         return new Phone(phone);
     }
 
+    @Override
     public boolean isValid() {
         return checkValidity(value());
     }

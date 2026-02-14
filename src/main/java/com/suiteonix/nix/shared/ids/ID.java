@@ -1,5 +1,7 @@
 package com.suiteonix.nix.shared.ids;
 
+import jakarta.persistence.Transient;
+
 import java.util.function.Consumer;
 
 /**
@@ -12,6 +14,8 @@ public interface ID<SELF extends ID<SELF, T>, T> extends IID<T> {
     /**
      * @return true if the identifier value is null
      */
+    @Transient
+    @Override
     default boolean isEmpty() {
         return get() == null;
     }

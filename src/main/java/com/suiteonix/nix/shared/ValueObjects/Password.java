@@ -3,6 +3,7 @@ package com.suiteonix.nix.shared.ValueObjects;
 import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import com.suiteonix.nix.shared.ddd.ValueObject;
 import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.interfaces.ValidityChecker;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.jspecify.annotations.NonNull;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public record Password(
         @Column(name = "password")
         String value
-) implements EmptyChecker {
+) implements EmptyChecker, ValidityChecker {
 
     public static Password NewEncodedPassword(String rawPassword, @NonNull PasswordEncoder encoder) {
         if (rawPassword == null)
@@ -25,6 +26,7 @@ public record Password(
         return new Password(encoder.encode(rawPassword));
     }
 
+    @Override
     public boolean isValid() {
         return checkValidity(value());
     }
