@@ -1,5 +1,6 @@
 package com.suiteonix.nix.shared.principal;
 
+import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
 import org.jspecify.annotations.NonNull;
@@ -26,10 +27,15 @@ public interface Actor extends ActiveEntity {
         return CURRENT().role();
     }
 
+    static Actor from(NixID actorId, NixRole actorRole) {
+        return new ActorImpl(actorId, actorRole);
+    }
+
     default void ifPresent(Consumer<Actor> supplier) {
         if (!id().isEmpty())
             supplier.accept(this);
-
     }
 
+    record ActorImpl(NixID id, NixRole role) implements Actor {
+    }
 }

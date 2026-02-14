@@ -39,10 +39,5 @@
       "name": "paystack.public.key",
       "type": "java.lang.String",
       "description": "Description for paystack.public.key."
-    },
-    {
-      "name": "app.url",
-      "type": "java.lang.String",
-      "description": "Description for app.url."
     }
   ] }

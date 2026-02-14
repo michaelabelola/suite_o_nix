@@ -1,5 +1,6 @@
 package com.suiteonix.nix.shared.principal;
 
+import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
 import org.jspecify.annotations.NonNull;
@@ -23,5 +24,12 @@ public interface Principal extends ActiveEntity {
 
     static @NonNull NixRole ROLE() {
         return CURRENT().role();
+    }
+
+    static Principal from(NixID actorId, NixRole actorRole) {
+        return new PrincipalImpl(actorId, actorRole);
+    }
+
+    record PrincipalImpl(NixID id, NixRole role) implements Principal {
     }
 }
