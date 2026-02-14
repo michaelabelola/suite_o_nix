@@ -8,15 +8,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 
-@Service
+@Configuration
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final AuthJwtUtil authJwtUtil;

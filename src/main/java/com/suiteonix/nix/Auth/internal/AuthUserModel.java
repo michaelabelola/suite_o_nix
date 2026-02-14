@@ -12,14 +12,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table
+@Table(name = "auth_user")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @AggregateRoot
-class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel, AuthUser> {
+public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel, AuthUser> {
 
     @EmbeddedId
     NixID id;

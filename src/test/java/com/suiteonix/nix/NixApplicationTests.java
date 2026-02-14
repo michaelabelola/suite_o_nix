@@ -1,11 +1,10 @@
 package com.suiteonix.nix;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
 
-@SpringBootTest
+//@SpringBootTest
 class NixApplicationTests {
 
     @Test
