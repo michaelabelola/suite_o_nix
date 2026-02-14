@@ -21,6 +21,10 @@ public interface CustomAuthentication extends Authentication {
         return new CustomAuthenticationImpl(Principals.ANONYMOUS, Actors.ANONYMOUS, new HashSet<>());
     }
 
+    static CustomAuthentication ofSystem() {
+        return new CustomAuthenticationImpl(Principals.SYSTEM, Actors.SYSTEM, new HashSet<>());
+    }
+
     @Override
     @Nullable Principal getPrincipal();
 

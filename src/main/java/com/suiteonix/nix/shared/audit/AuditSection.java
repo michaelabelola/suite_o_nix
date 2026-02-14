@@ -25,12 +25,12 @@ import java.time.Instant;
 public interface AuditSection {
 
     @Schema(hidden = true)
-    ID<?> getCreatedBy();
+    ID<?, ?> getCreatedBy();
 
     Instant getCreatedDate();
 
     @Schema(hidden = true)
-    ID<?> getModifiedBy();
+    ID<?, ?> getModifiedBy();
 
     Instant getModifiedDate();
 

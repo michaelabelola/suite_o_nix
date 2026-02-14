@@ -1,6 +1,5 @@
 package com.suiteonix.nix.Auth.internal;
 
-import com.suiteonix.nix.Auth.AuthUser;
 import com.suiteonix.nix.shared.ValueObjects.Email;
 import com.suiteonix.nix.shared.ValueObjects.Password;
 import com.suiteonix.nix.shared.ValueObjects.Phone;
@@ -17,9 +16,9 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @AggregateRoot
-public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel, AuthUser> {
+public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
 
     @EmbeddedId
     NixID id;
@@ -43,12 +42,13 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel, AuthUs
             Phone phone,
             Password password
     ) {
-        return new AuthUserModel(
+        AuthUserModel model = new AuthUserModel(
                 nixID,
                 role,
                 email,
                 phone,
                 password
         );
+        return model;
     }
 }

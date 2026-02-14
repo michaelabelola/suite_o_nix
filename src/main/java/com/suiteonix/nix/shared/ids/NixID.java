@@ -6,7 +6,7 @@ import jakarta.persistence.Transient;
 @Embeddable
 public record NixID(
         String id
-) implements ID<String> {
+) implements ID<NixID, String> {
     public static final NixID SYSTEM = NixID.of("SYSTEM");
 
     public static NixID NEW() {

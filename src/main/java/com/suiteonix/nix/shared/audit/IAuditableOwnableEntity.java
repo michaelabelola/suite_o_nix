@@ -12,7 +12,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 @MappedSuperclass
 @RequiredArgsConstructor
 @EntityListeners({NixEntityAuditListener.class, OwnerEntityListener.class})
-public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>,R> extends AbstractAggregateRoot<T> implements IAuditable {
+public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>> extends AbstractAggregateRoot<T> implements IAuditable, Ownable {
 
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "owner_id", updatable = false))

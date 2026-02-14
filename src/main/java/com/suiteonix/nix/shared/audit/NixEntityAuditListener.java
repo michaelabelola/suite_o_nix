@@ -45,12 +45,24 @@ public class NixEntityAuditListener {
     private static void setAuditSectionIfNonNull(IAuditable o) {
         if (o.getAudit() != null) return;
         try {
-            Field field = o.getClass().getDeclaredField("audit");
+            Field field = findFieldInHierarchy(o.getClass(), "audit");
             field.setAccessible(true);
             field.set(o, JpaAuditSection.NEW());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Field findFieldInHierarchy(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+        Class<?> currentClass = clazz;
+        while (currentClass != null) {
+            try {
+                return currentClass.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                currentClass = currentClass.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException("Field '" + fieldName + "' not found in class hierarchy of " + clazz.getName());
     }
 
 //    @PrePersist
