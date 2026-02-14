@@ -8,6 +8,7 @@ import com.suiteonix.nix.shared.ValueObjects.Email;
 import com.suiteonix.nix.shared.ValueObjects.Password;
 import com.suiteonix.nix.shared.ValueObjects.Phone;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class AuthUserService {
     private final AuthUserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    @Cacheable(value = "authUser")
     @Transactional
     public AuthUserModel register(AuthUserRegisterDto create) {
         repository.findById(create.id()).ifPresent(authUser -> {
