@@ -1,0 +1,59 @@
+package com.suiteonix.db.nix.shared.ids;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
+import org.jspecify.annotations.NonNull;
+
+@Embeddable
+@Schema(example = "677890782656598016", type = "string")
+public record NixID(
+        String id
+) implements ID<NixID, String> {
+
+
+    public static final NixID SYSTEM = NixRole.SYSTEM.generateID();
+
+    public static NixID NEW() {
+        return NixID.of(Snowflake.nextId().asString());
+    }
+
+    public static NixID NewForRole(NixRole role) {
+        return role.generateID();
+    }
+
+    @Transient
+    @Override
+    public String get() {
+        return id;
+    }
+
+    public static NixID of(String id) {
+        return new NixID(id);
+    }
+
+    @Transient
+    public static NixID EMPTY() {
+        return NixID.of(null);
+    }
+
+    @Schema(hidden = true)
+    @Transient
+    public boolean equalsTo(NixID id) {
+        if (id == null) return false;
+        return this.id.equals(id.id);
+
+    }
+
+    @Override
+    public @NonNull String toString() {
+        return id();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NixID(String id1))
+            return id.equals(id1);
+        return false;
+    }
+}
