@@ -5,7 +5,6 @@ import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 class AuthModule {
     private final AuthUserRepository repository;
-    private final PasswordEncoder passwordEncoder;
     private final RegisterUseCase registerUseCase;
 
     @Transactional

@@ -10,9 +10,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.modulith.Modulithic;
 
 
-@Modulithic(useFullyQualifiedModuleNames = true, sharedModules = {
-        "com.suiteonix.nix.shared"
-})
+@Modulithic
 @EnableCaching
 @EnableJpaAuditing
 @ConfigurationPropertiesScan
