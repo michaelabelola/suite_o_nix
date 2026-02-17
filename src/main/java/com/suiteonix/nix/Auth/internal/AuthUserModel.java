@@ -35,7 +35,7 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
     @Embedded
     Password password;
 
-    ConfigFlags
+//    ConfigFlags
 
     public static AuthUserModel NEW(
             NixID nixID,
@@ -104,7 +104,7 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
         boolean sendPhoneVerification;
     }
 
-    public static class ConfigFlags
+//    public static class ConfigFlags
 
     @Embeddable
     @Data
