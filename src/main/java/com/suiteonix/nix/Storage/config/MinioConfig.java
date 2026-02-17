@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Storage.config;
+package com.suiteonix.nix.Storage.config;
 
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;

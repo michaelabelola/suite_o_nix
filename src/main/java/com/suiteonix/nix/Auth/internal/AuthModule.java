@@ -1,11 +1,8 @@
-package com.suiteonix.db.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal;
 
-import com.suiteonix.db.nix.shared.exceptions.EX;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.Auth.service.AuthProfile;
-import com.suiteonix.db.nix.shared.ValueObjects.Email;
-import com.suiteonix.db.nix.shared.ValueObjects.Password;
-import com.suiteonix.db.nix.shared.ValueObjects.Phone;
+import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,21 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 class AuthModule {
     private final AuthUserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final RegisterUseCase registerUseCase;
 
-    @Cacheable(value = "authUser")
     @Transactional
     public AuthUserModel register(AuthProfile.Register create) {
-        repository.findById(create.id()).ifPresent(authUser -> {
-            throw EX.conflict("AUTH_USER_ALREADY_EXISTS", "Auth user already exists");
-        });
-        AuthUserModel authUser = AuthUserModel.NEW(
-                create.id(),
-                create.role(),
-                Email.NEW(create.email()),
-                Phone.NEW(create.phone()),
-                Password.NewEncodedPassword(create.password(), passwordEncoder)
-        );
-        return repository.save(authUser);
+        return registerUseCase.execute(create);
     }
 
     @Transactional
@@ -44,7 +31,9 @@ class AuthModule {
         repository.delete(authUser);
     }
 
-    AuthUserModel getAuthUserById(String id) {
+    @Cacheable(value = "authUser", key = "#id")
+    @Transactional(readOnly = true)
+    public AuthUserModel getAuthUserById(String id) {
         return repository
                 .findById(NixID.of(id))
                 .orElseThrow(

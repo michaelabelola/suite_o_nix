@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.kernel.configs;
+package com.suiteonix.nix.kernel.configs;
 
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;

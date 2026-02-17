@@ -1,8 +1,8 @@
-package com.suiteonix.db.nix.Storage.internal;
+package com.suiteonix.nix.Storage.internal;
 
-import com.suiteonix.db.nix.Storage.StorageService;
-import com.suiteonix.db.nix.shared.exceptions.EX;
-import com.suiteonix.db.nix.shared.utils.TransactionUtils;
+import com.suiteonix.nix.Storage.StorageService;
+import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.utils.TransactionUtils;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;

@@ -1,9 +1,9 @@
-package com.suiteonix.db.nix.kernel.security.authentication;
+package com.suiteonix.nix.kernel.security.authentication;
 
-import com.suiteonix.db.nix.shared.principal.Actor;
-import com.suiteonix.db.nix.shared.principal.Actors;
-import com.suiteonix.db.nix.shared.principal.Principal;
-import com.suiteonix.db.nix.shared.principal.Principals;
+import com.suiteonix.nix.shared.principal.Actor;
+import com.suiteonix.nix.shared.principal.Actors;
+import com.suiteonix.nix.shared.principal.Principal;
+import com.suiteonix.nix.shared.principal.Principals;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.Authentication;

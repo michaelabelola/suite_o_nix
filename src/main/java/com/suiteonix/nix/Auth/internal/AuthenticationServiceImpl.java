@@ -1,7 +1,7 @@
-package com.suiteonix.db.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal;
 
-import com.suiteonix.db.nix.Auth.service.AuthProfile;
-import com.suiteonix.db.nix.Auth.service.AuthenticationService;
+import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;

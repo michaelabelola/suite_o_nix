@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix;
+package com.suiteonix.nix;
 
-import com.suiteonix.db.nix.kernel.configs.JobrunrConfig;
+import com.suiteonix.nix.kernel.configs.JobrunrConfig;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;

@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.kernel.configs;
+package com.suiteonix.nix.kernel.configs;
 
 import lombok.RequiredArgsConstructor;
 import org.jobrunr.storage.StorageProvider;

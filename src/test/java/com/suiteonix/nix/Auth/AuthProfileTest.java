@@ -1,11 +1,11 @@
-package com.suiteonix.db.nix.Auth;
+package com.suiteonix.nix.Auth;
 
-import com.suiteonix.db.nix.shared.ValueObjects.Email;
-import com.suiteonix.db.nix.shared.ValueObjects.Password;
-import com.suiteonix.db.nix.shared.ValueObjects.Phone;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
-import com.suiteonix.db.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.shared.ValueObjects.Email;
+import com.suiteonix.nix.shared.ValueObjects.Password;
+import com.suiteonix.nix.shared.ValueObjects.Phone;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.Auth.service.AuthProfile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +57,8 @@ class AuthProfileTest {
                 NixRole.ADMIN,
                 email,
                 phone,
-                password,
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build(),
                 adminId,
                 null
         );
@@ -78,7 +79,8 @@ class AuthProfileTest {
                 NixRole.CUSTOMER,
                 email,
                 phone,
-                password,
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build(),
                 testId,
                 null
         );
@@ -88,7 +90,6 @@ class AuthProfileTest {
         assertThat(authProfile.role()).isEqualTo(NixRole.CUSTOMER);
         assertThat(authProfile.email()).isEqualTo(email);
         assertThat(authProfile.phone()).isEqualTo(phone);
-        assertThat(authProfile.password()).isEqualTo(password);
         assertThat(authProfile.ownerId()).isEqualTo(testId);
     }
 }

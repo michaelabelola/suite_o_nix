@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.Mail.domain;
+package com.suiteonix.nix.Mail.domain;
 
-import com.suiteonix.db.nix.Mail.NixMailSender;
+import com.suiteonix.nix.Mail.NixMailSender;
 import jakarta.mail.MessagingException;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;

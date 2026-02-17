@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.audit;
+package com.suiteonix.nix.shared.audit;
 
 public interface IAuditable {
     AuditSection getAudit();

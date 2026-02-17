@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.Auth.service;
+package com.suiteonix.nix.Auth.service;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixID;
 
 public interface AuthUserEvents {
 

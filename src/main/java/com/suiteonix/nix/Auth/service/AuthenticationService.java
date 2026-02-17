@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Auth.service;
+package com.suiteonix.nix.Auth.service;
 
 import org.jspecify.annotations.NonNull;
 

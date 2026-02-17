@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.Storage;
+package com.suiteonix.nix.Storage;
 
-import com.suiteonix.db.nix.shared.CustomContextHolder;
+import com.suiteonix.nix.shared.CustomContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;

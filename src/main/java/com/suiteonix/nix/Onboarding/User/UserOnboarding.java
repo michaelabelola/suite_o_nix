@@ -1,10 +1,11 @@
-package com.suiteonix.db.nix.Onboarding.User;
+package com.suiteonix.nix.Onboarding.User;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
-import com.suiteonix.db.nix.Auth.service.AuthProfile;
-import com.suiteonix.db.nix.User.service.User;
-import com.suiteonix.db.nix.spi.location.HomeAddress;
+import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.ConfigFlag;
+import com.suiteonix.nix.User.service.User;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.spi.location.HomeAddress;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
@@ -29,8 +30,7 @@ class UserOnboarding {
             HomeAddress.Create address
     ) {
         public Request {
-            if (email != null)
-                email = email.toLowerCase();
+            if (email != null) email = email.toLowerCase();
         }
 
         public User.Create toUserCreate() {
@@ -42,7 +42,20 @@ class UserOnboarding {
 
         public AuthProfile.Register toAuthUserCreate(NixID id) {
             return AuthProfile.Register.builder()
-                    .id(id).role(NixRole.CUSTOMER).email(email()).phone(phone()).password(password()).build();
+                    .role(NixRole.USER)
+                    .email(email())
+                    .phone(phone())
+                    .password(password())
+                    .signInOptions(AuthProfile.SignInOptions.builder()
+                            .emailAndPassword(ConfigFlag.ACTIVE)
+                            .emailAndEmailToken(ConfigFlag.ACTIVE)
+                            .phoneAndPassword(ConfigFlag.ACTIVE)
+                            .build())
+                    .configFlags(AuthProfile.ConfigFlags.builder()
+                            .jwtAuthEnabled(ConfigFlag.ACTIVE)
+                            .linkedAccountLogin(ConfigFlag.ACTIVE)
+                            .build())
+                    .build();
         }
     }
 

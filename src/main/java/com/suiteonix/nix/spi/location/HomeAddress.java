@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.spi.location;
+package com.suiteonix.nix.spi.location;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix;
+package com.suiteonix.nix;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;

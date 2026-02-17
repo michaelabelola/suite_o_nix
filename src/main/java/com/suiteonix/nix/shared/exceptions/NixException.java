@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.exceptions;
+package com.suiteonix.nix.shared.exceptions;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

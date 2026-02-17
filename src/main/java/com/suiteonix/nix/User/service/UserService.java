@@ -1,8 +1,8 @@
-package com.suiteonix.db.nix.User.service;
+package com.suiteonix.nix.User.service;
 
 
-import com.suiteonix.db.nix.shared.exceptions.EX;
-import com.suiteonix.db.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.ids.NixID;
 
 import java.util.Optional;
 import java.util.function.Supplier;

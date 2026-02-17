@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal;
 
 /**
  * Defines the management strategies for authentication and authorization.

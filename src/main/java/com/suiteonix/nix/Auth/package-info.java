@@ -1,4 +1,4 @@
 @ApplicationModule
-package com.suiteonix.db.nix.Auth;
+package com.suiteonix.nix.Auth;
 
 import org.springframework.modulith.ApplicationModule;

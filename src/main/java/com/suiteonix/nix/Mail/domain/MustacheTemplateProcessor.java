@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Mail.domain;
+package com.suiteonix.nix.Mail.domain;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;

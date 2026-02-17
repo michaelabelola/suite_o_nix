@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.kernel;
+package com.suiteonix.nix.kernel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;

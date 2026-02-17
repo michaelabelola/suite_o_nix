@@ -1,13 +1,13 @@
-package com.suiteonix.db.nix.User.internal;
+package com.suiteonix.nix.User.internal;
 
-import com.suiteonix.db.nix.Storage.NixImage;
-import com.suiteonix.db.nix.shared.audit.IAuditableOwnableEntity;
-import com.suiteonix.db.nix.shared.audit.JpaAuditSection;
-import com.suiteonix.db.nix.shared.ddd.AggregateRoot;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
-import com.suiteonix.db.nix.User.service.User;
-import com.suiteonix.db.nix.spi.location.HomeAddressModel;
+import com.suiteonix.nix.Storage.NixImage;
+import com.suiteonix.nix.shared.audit.IAuditableOwnableEntity;
+import com.suiteonix.nix.shared.audit.JpaAuditSection;
+import com.suiteonix.nix.shared.ddd.AggregateRoot;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.User.service.User;
+import com.suiteonix.nix.spi.location.HomeAddressModel;
 import jakarta.persistence.*;
 import lombok.*;
 

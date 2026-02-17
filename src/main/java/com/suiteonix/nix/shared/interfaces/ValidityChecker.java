@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.interfaces;
+package com.suiteonix.nix.shared.interfaces;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

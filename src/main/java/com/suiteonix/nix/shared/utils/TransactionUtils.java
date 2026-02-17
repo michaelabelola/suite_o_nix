@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.utils;
+package com.suiteonix.nix.shared.utils;
 
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;

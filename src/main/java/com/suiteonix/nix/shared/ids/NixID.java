@@ -1,9 +1,11 @@
-package com.suiteonix.db.nix.shared.ids;
+package com.suiteonix.nix.shared.ids;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import org.jspecify.annotations.NonNull;
+
+import java.util.Objects;
 
 @Embeddable
 @Schema(example = "677890782656598016", type = "string")
@@ -55,5 +57,10 @@ public record NixID(
         if (obj instanceof NixID(String id1))
             return id.equals(id1);
         return false;
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(id);
     }
 }

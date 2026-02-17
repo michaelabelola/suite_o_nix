@@ -1,14 +1,20 @@
-package com.suiteonix.db.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal;
 
-import com.suiteonix.db.nix.shared.ValueObjects.Email;
-import com.suiteonix.db.nix.shared.ValueObjects.Password;
-import com.suiteonix.db.nix.shared.ValueObjects.Phone;
-import com.suiteonix.db.nix.shared.audit.IAuditableOwnableEntity;
-import com.suiteonix.db.nix.shared.ddd.AggregateRoot;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
+import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.ConfigFlag;
+import com.suiteonix.nix.shared.ValueObjects.Email;
+import com.suiteonix.nix.shared.ValueObjects.Password;
+import com.suiteonix.nix.shared.ValueObjects.Phone;
+import com.suiteonix.nix.shared.audit.IAuditableOwnableEntity;
+import com.suiteonix.nix.shared.ddd.AggregateRoot;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Type;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name = "auth_user")
@@ -18,6 +24,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @AggregateRoot
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
 
     @EmbeddedId
@@ -35,124 +42,122 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
     @Embedded
     Password password;
 
-//    ConfigFlags
+    @Type(JsonType.class)
+    @Column(name = "sign_in_options", columnDefinition = "jsonb")
+    SignInOptions signInOptions;
+
+    @Type(JsonType.class)
+    @Column(name = "config_flags", columnDefinition = "jsonb")
+    ConfigFlags configFlags;
+
+    public static AuthUserModel NEW(AuthProfile.Register register, PasswordEncoder encoder) {
+        return new AuthUserModel(
+                NixID.NEW(),
+                register.role(),
+                Email.NEW(register.email()),
+                Phone.NEW(register.phone()),
+                Password.NewEncodedPassword(register.password(), encoder),
+                SignInOptions.NEW(register.signInOptions()),
+                ConfigFlags.NEW(register.configFlags())
+        );
+    }
 
     public static AuthUserModel NEW(
-            NixID nixID,
+            NixID id,
             NixRole role,
             Email email,
             Phone phone,
-            Password password
+            Password password,
+            AuthProfile.SignInOptions signInOptions,
+            AuthProfile.ConfigFlags newFlags,
+            PasswordEncoder encoder
     ) {
         return new AuthUserModel(
-                nixID,
+                id,
                 role,
                 email,
                 phone,
-                password
+                password,
+                SignInOptions.NEW(signInOptions),
+                ConfigFlags.NEW(newFlags)
         );
     }
 
 
-    @Embeddable
     @Data
-    public static class OwnerConfigFlags {
-        boolean emailAndPassword;
+    public static class SignInOptions {
+        private ConfigFlag emailAndPasswordAuthentication;
         /**
          * Enables authentication with email and a one-time token.
          */
-        boolean emailAndEmailToken;
+        private ConfigFlag emailAndEmailToken;
         /**
          * Enables authentication with phone number and password.
          */
-        boolean phoneAndPassword;
+        private ConfigFlag phoneAndPassword;
         /**
          * Enables authentication with phone number and a one-time token.
          */
-        boolean phoneAndPhoneToken;
-        /**
-         * Enables JWT authentication.
-         */
-        boolean jwtAuthEnabled;
-        /**
-         * Allows login via linked social or external accounts.
-         */
-        boolean linkedAccountLogin;
-        /**
-         * Automatically generates a random password for new users.
-         */
-        boolean generateRandomPassword;
-        /**
-         * Forwards the generated password to the user's email.
-         */
-        boolean forwardPasswordToMail;
-        /**
-         * Requires the user to change their password on first login.
-         */
-        boolean requirePasswordChange;
-        /**
-         * Sends an email verification link upon registration.
-         */
-        boolean sendMailVerification;
-        /**
-         * Allows the account owner to log in.
-         */
-        boolean enableOwnerLogin;
-        /**
-         * Sends a phone number verification code upon registration.
-         */
-        boolean sendPhoneVerification;
+        private ConfigFlag phoneAndPhoneToken;
+
+        public static SignInOptions NEW(AuthProfile.SignInOptions options) {
+            if (options == null) return null;
+            SignInOptions flags = new SignInOptions();
+            flags.emailAndPasswordAuthentication = options.emailAndPassword();
+            flags.emailAndEmailToken = options.emailAndEmailToken();
+            flags.phoneAndPassword = options.phoneAndPassword();
+            flags.phoneAndPhoneToken = options.phoneAndPhoneToken();
+            return flags;
+        }
     }
 
-//    public static class ConfigFlags
-
-    @Embeddable
     @Data
     public static class ConfigFlags {
-        boolean emailAndPassword;
-        /**
-         * Enables authentication with email and a one-time token.
-         */
-        boolean emailAndEmailToken;
-        /**
-         * Enables authentication with phone number and password.
-         */
-        boolean phoneAndPassword;
-        /**
-         * Enables authentication with phone number and a one-time token.
-         */
-        boolean phoneAndPhoneToken;
         /**
          * Enables JWT authentication.
          */
-        boolean jwtAuthEnabled;
+        private ConfigFlag jwtAuthEnabled;
         /**
          * Allows login via linked social or external accounts.
          */
-        boolean linkedAccountLogin;
+        private ConfigFlag linkedAccountLogin;
         /**
          * Automatically generates a random password for new users.
          */
-        boolean generateRandomPassword;
+        private ConfigFlag generateRandomPassword;
         /**
          * Forwards the generated password to the user's email.
          */
-        boolean forwardPasswordToMail;
+        private ConfigFlag forwardPasswordToMail;
         /**
          * Requires the user to change their password on first login.
          */
-        boolean requirePasswordChange;
+        private ConfigFlag requirePasswordChange;
         /**
          * Sends an email verification link upon registration.
          */
-        boolean sendMailVerification;
+        private ConfigFlag sendMailVerification;
         /**
          * Allows the account owner to log in.
          */
-        boolean enableOwnerLogin;
-        /**
-         * Sends a phone number verification code upon registration.
-         */
-        boolean sendPhoneVerification;
+        private ConfigFlag enableOwnerLogin;
+
+        public static ConfigFlags NEW(AuthProfile.ConfigFlags create) {
+            ConfigFlags flags = new ConfigFlags();
+            if (create == null) return flags;
+            flags.jwtAuthEnabled = create.jwtAuthEnabled();
+            flags.linkedAccountLogin = create.linkedAccountLogin();
+            flags.generateRandomPassword = create.generateRandomPassword();
+            flags.forwardPasswordToMail = create.forwardPasswordToMail();
+            flags.requirePasswordChange = create.requirePasswordChange();
+            flags.sendMailVerification = create.sendMailVerification();
+            flags.enableOwnerLogin = create.enableOwnerLogin();
+//            flags.sendPhoneVerification = create.sendPhoneVerification();
+            return flags;
+        }
+
+        public static ConfigFlags EMPTY() {
+            return new ConfigFlags();
+        }
     }
 }

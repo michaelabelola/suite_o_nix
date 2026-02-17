@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.User.internal;
+package com.suiteonix.nix.User.internal;
 
-import com.suiteonix.db.nix.User.service.User;
+import com.suiteonix.nix.User.service.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

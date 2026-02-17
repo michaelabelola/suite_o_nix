@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.ValueObjects;
+package com.suiteonix.nix.shared.ValueObjects;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

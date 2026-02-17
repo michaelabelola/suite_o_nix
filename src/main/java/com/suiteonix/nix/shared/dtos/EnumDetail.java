@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.dtos;
+package com.suiteonix.nix.shared.dtos;
 
 
 public record EnumDetail(

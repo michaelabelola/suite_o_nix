@@ -1,7 +1,7 @@
-package com.suiteonix.db.nix.Storage;
+package com.suiteonix.nix.Storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.suiteonix.db.nix.shared.interfaces.EmptyChecker;
+import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;

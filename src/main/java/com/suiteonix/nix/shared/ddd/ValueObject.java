@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.ddd;
+package com.suiteonix.nix.shared.ddd;
 
 
 import java.lang.annotation.ElementType;

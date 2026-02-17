@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.shared.ids;
+package com.suiteonix.nix.shared.ids;
 
-import com.suiteonix.db.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.exceptions.EX;
 
 public enum NixRole {
     USER("U"),

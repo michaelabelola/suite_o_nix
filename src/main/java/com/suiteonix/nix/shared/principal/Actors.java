@@ -1,7 +1,7 @@
-package com.suiteonix.db.nix.shared.principal;
+package com.suiteonix.nix.shared.principal;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
 import org.jspecify.annotations.NonNull;
 
 public class Actors {

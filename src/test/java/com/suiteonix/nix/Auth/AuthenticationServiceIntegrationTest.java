@@ -1,14 +1,14 @@
-package com.suiteonix.db.nix.Auth;
+package com.suiteonix.nix.Auth;
 
-import com.suiteonix.db.nix.Auth.internal.AuthUserRepository;
-import com.suiteonix.db.nix.TestApplicationConfiguration;
-import com.suiteonix.db.nix.kernel.security.authentication.CustomAuthentication;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
-import com.suiteonix.db.nix.shared.principal.Actor;
-import com.suiteonix.db.nix.shared.principal.Principal;
-import com.suiteonix.db.nix.Auth.service.AuthProfile;
-import com.suiteonix.db.nix.Auth.service.AuthenticationService;
+import com.suiteonix.nix.Auth.internal.AuthUserRepository;
+import com.suiteonix.nix.TestApplicationConfiguration;
+import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.shared.principal.Actor;
+import com.suiteonix.nix.shared.principal.Principal;
+import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.AuthenticationService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,12 +38,11 @@ class AuthenticationServiceIntegrationTest {
     private PasswordEncoder passwordEncoder;
 
     private AuthProfile.Register validRegisterDto;
+
     private NixID userId;
-    private static CustomAuthentication customAuthenticationHolder;
 
     @BeforeAll
     static void init() {
-        customAuthenticationHolder = CustomAuthentication.ofSystem();
         SecurityContextHolder.getContext().setAuthentication(CustomAuthentication.ofSystem());
     }
 
@@ -52,11 +51,12 @@ class AuthenticationServiceIntegrationTest {
         userId = NixID.of(UUID.randomUUID().toString());
 
         validRegisterDto = new AuthProfile.Register(
-                userId,
                 NixRole.CUSTOMER,
                 "test@example.com",
                 "+1234567890",
-                "SecurePass123!"
+                "SecurePass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
     }
 
@@ -77,9 +77,6 @@ class AuthenticationServiceIntegrationTest {
         assertThat(result.role()).isEqualTo(NixRole.CUSTOMER);
         assertThat(result.email().value()).isEqualTo("test@example.com");
         assertThat(result.phone().value()).isEqualTo("+1234567890");
-        assertNotNull(result.password());
-        assertNotNull(result.password().value());
-        assertNotEquals("SecurePass123!", result.password().value());
         assertNotNull(result.ownerId());
         assertNotNull(result.audit());
     }
@@ -96,19 +93,6 @@ class AuthenticationServiceIntegrationTest {
         assertThat(savedUser.get().getId()).isEqualTo(userId);
         assertThat(savedUser.get().getEmail().value()).isEqualTo("test@example.com");
         assertThat(savedUser.get().getRole()).isEqualTo(NixRole.CUSTOMER);
-    }
-
-    @Test
-    @Order(3)
-    @Transactional
-    @DisplayName("register() should encode password")
-    void register_ShouldEncodePassword() {
-        AuthProfile result = authenticationService.register(validRegisterDto);
-
-        assertNotNull(result.password());
-        assertNotNull(result.password().value());
-        assertNotEquals(validRegisterDto.password(), result.password().value());
-        assertTrue(result.password().value().length() > 20);
     }
 
     @Test
@@ -153,11 +137,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldHandleAdminRole_Registration() {
         NixID adminId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register adminDto = new AuthProfile.Register(
-                adminId,
                 NixRole.ADMIN,
                 "admin@example.com",
                 "+1234567891",
-                "AdminPass123!"
+                "AdminPass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         AuthProfile result = authenticationService.register(adminDto);
@@ -179,11 +164,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldHandleBusinessRole_Registration() {
         NixID businessId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register businessDto = new AuthProfile.Register(
-                businessId,
                 NixRole.BUSINESS,
                 "business@example.com",
                 "+9876543210",
-                "BusinessPass123!"
+                "BusinessPass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         AuthProfile result = authenticationService.register(businessDto);
@@ -206,11 +192,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldNormalizeEmail_ToLowercase() {
         NixID testId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register dtoWithUppercaseEmail = new AuthProfile.Register(
-                testId,
                 NixRole.CUSTOMER,
                 "Test.User@EXAMPLE.COM",
                 "+1234567892",
-                "TestPass123!"
+                "TestPass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         AuthProfile result = authenticationService.register(dtoWithUppercaseEmail);
@@ -229,11 +216,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldThrowException_ForInvalidEmailFormat() {
         NixID testId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register invalidEmailDto = new AuthProfile.Register(
-                testId,
                 NixRole.CUSTOMER,
                 "invalid-email",
                 "+1234567893",
-                "ValidPass123!"
+                "ValidPass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         Exception exception = assertThrows(Exception.class, () ->
@@ -252,11 +240,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldThrowException_ForWeakPassword() {
         NixID testId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register weakPasswordDto = new AuthProfile.Register(
-                testId,
                 NixRole.CUSTOMER,
                 "test2@example.com",
                 "+1234567894",
-                "weak"
+                "weak",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         Exception exception = assertThrows(Exception.class, () ->
@@ -275,11 +264,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldThrowException_ForNullPassword() {
         NixID testId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register nullPasswordDto = new AuthProfile.Register(
-                testId,
                 NixRole.CUSTOMER,
                 "test3@example.com",
                 "+1234567895",
-                null
+                null,
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         Exception exception = assertThrows(Exception.class, () ->
@@ -298,11 +288,12 @@ class AuthenticationServiceIntegrationTest {
     void register_ShouldThrowException_ForInvalidPhoneFormat() {
         NixID testId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register invalidPhoneDto = new AuthProfile.Register(
-                testId,
                 NixRole.CUSTOMER,
                 "test4@example.com",
                 "invalid-phone",
-                "ValidPass123!"
+                "ValidPass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         Exception exception = assertThrows(Exception.class, () ->
@@ -324,13 +315,19 @@ class AuthenticationServiceIntegrationTest {
         NixID user3Id = NixID.of(UUID.randomUUID().toString());
 
         AuthProfile.Register user1Dto = new AuthProfile.Register(
-                user1Id, NixRole.CUSTOMER, "user1@example.com", "+1111111111", "User1Pass123!"
+                NixRole.CUSTOMER, "user1@example.com", "+1111111111", "User1Pass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
         AuthProfile.Register user2Dto = new AuthProfile.Register(
-                user2Id, NixRole.ADMIN, "user2@example.com", "+2222222222", "User2Pass123!"
+                NixRole.ADMIN, "user2@example.com", "+2222222222", "User2Pass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
         AuthProfile.Register user3Dto = new AuthProfile.Register(
-                user3Id, NixRole.BUSINESS, "user3@example.com", "+3333333333", "User3Pass123!"
+                NixRole.BUSINESS, "user3@example.com", "+3333333333", "User3Pass123!",
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         AuthProfile result1 = authenticationService.register(user1Dto);
@@ -363,7 +360,6 @@ class AuthenticationServiceIntegrationTest {
         assertThat(user.getRole()).isEqualTo(result.role());
         assertThat(user.getEmail()).isEqualTo(result.email());
         assertThat(user.getPhone()).isEqualTo(result.phone());
-        assertThat(user.getPassword()).isEqualTo(result.password());
         assertThat(user.getOwnerId()).isEqualTo(result.ownerId());
     }
 }

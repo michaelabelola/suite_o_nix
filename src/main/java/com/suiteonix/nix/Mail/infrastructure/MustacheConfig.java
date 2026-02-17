@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Mail.infrastructure;
+package com.suiteonix.nix.Mail.infrastructure;
 
 import com.samskivert.mustache.Mustache;
 import org.springframework.context.annotation.Bean;

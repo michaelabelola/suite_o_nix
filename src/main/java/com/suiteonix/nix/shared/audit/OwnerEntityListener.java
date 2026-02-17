@@ -1,7 +1,7 @@
-package com.suiteonix.db.nix.shared.audit;
+package com.suiteonix.nix.shared.audit;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.principal.Principal;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.principal.Principal;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.PrePersist;
 import lombok.RequiredArgsConstructor;

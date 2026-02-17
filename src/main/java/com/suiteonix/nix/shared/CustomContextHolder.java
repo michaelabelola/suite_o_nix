@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared;
+package com.suiteonix.nix.shared;
 
 import lombok.NonNull;
 import org.springframework.context.ApplicationContext;

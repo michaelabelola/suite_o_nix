@@ -1,8 +1,8 @@
-package com.suiteonix.db.nix.shared.principal;
+package com.suiteonix.nix.shared.principal;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
-import com.suiteonix.db.nix.shared.interfaces.EmptyChecker;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Transient;
 import org.jspecify.annotations.NonNull;

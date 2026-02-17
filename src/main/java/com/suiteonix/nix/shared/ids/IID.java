@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.shared.ids;
+package com.suiteonix.nix.shared.ids;
 
-import com.suiteonix.db.nix.shared.interfaces.EmptyChecker;
+import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.function.Supplier;

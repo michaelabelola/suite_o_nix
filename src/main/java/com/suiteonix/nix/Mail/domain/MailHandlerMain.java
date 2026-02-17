@@ -1,7 +1,7 @@
-package com.suiteonix.db.nix.Mail.domain;
+package com.suiteonix.nix.Mail.domain;
 
-import com.suiteonix.db.nix.Mail.NixMailSender;
-import com.suiteonix.db.nix.shared.exceptions.EX;
+import com.suiteonix.nix.Mail.NixMailSender;
+import com.suiteonix.nix.shared.exceptions.EX;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

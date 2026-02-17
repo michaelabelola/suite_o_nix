@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Storage;
+package com.suiteonix.nix.Storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Lob;

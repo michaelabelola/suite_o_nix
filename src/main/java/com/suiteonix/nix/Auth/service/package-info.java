@@ -1,5 +1,5 @@
 
 @NamedInterface
-package com.suiteonix.db.nix.Auth.service;
+package com.suiteonix.nix.Auth.service;
 
 import org.springframework.modulith.NamedInterface;

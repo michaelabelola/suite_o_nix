@@ -1,9 +1,9 @@
-package com.suiteonix.db.nix.shared.ValueObjects;
+package com.suiteonix.nix.shared.ValueObjects;
 
-import com.suiteonix.db.nix.shared.interfaces.EmptyChecker;
-import com.suiteonix.db.nix.shared.ddd.ValueObject;
-import com.suiteonix.db.nix.shared.exceptions.EX;
-import com.suiteonix.db.nix.shared.interfaces.ValidityChecker;
+import com.suiteonix.nix.shared.interfaces.EmptyChecker;
+import com.suiteonix.nix.shared.ddd.ValueObject;
+import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.interfaces.ValidityChecker;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.jspecify.annotations.Nullable;

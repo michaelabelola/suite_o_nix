@@ -1,8 +1,9 @@
-package com.suiteonix.db.nix.Onboarding.User;
+package com.suiteonix.nix.Onboarding.User;
 
-import com.suiteonix.db.nix.Auth.service.AuthenticationService;
-import com.suiteonix.db.nix.Mail.MailService;
-import com.suiteonix.db.nix.User.service.UserService;
+import com.suiteonix.nix.Auth.service.AuthenticationService;
+import com.suiteonix.nix.Mail.NixMailSender;
+import com.suiteonix.nix.Mail.TemplateType;
+import com.suiteonix.nix.User.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 class UserRegistrationService {
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
-    private final MailService mailService;
 
     @Transactional
     public UserOnboarding.Response execute(UserOnboarding.Request onboarding) {
@@ -26,7 +28,15 @@ class UserRegistrationService {
         var authProfileCreate = onboarding.toAuthUserCreate(user.id());
         var authProfile = authenticationService.register(authProfileCreate);
 
-        mailService.scheduleMail();
+        NixMailSender.newInstance()
+                .to(user.email())
+                .templateName("onboarding/user/user-onboarding-email")
+                .variables(Map.of(
+                        "user", user,
+                        "authProfile", authProfile
+                ))
+                .templateType(TemplateType.THYMELEAF)
+                .queueMail();
 
         return UserOnboarding.Response.OF(user, authProfile);
     }

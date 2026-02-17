@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Mail.domain;
+package com.suiteonix.nix.Mail.domain;
 
 import java.util.Map;
 

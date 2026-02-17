@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Auth.config;
+package com.suiteonix.nix.Auth.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.models.GroupedOpenApi;

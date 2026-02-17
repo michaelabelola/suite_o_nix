@@ -1,10 +1,10 @@
-package com.suiteonix.db.nix.kernel.security;
+package com.suiteonix.nix.kernel.security;
 
-import com.suiteonix.db.nix.kernel.security.jwt.JwtProperties;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.ids.NixRole;
-import com.suiteonix.db.nix.shared.principal.Actor;
-import com.suiteonix.db.nix.shared.principal.Principal;
+import com.suiteonix.nix.kernel.security.jwt.JwtProperties;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.shared.principal.Actor;
+import com.suiteonix.nix.shared.principal.Principal;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

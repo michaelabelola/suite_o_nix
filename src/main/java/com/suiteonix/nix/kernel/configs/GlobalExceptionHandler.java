@@ -1,8 +1,8 @@
-package com.suiteonix.db.nix.kernel.configs;
+package com.suiteonix.nix.kernel.configs;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.suiteonix.db.nix.shared.exceptions.EX;
-import com.suiteonix.db.nix.shared.exceptions.NixException;
+import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.exceptions.NixException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

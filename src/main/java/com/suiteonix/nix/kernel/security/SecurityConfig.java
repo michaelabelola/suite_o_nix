@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.kernel.security;
+package com.suiteonix.nix.kernel.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

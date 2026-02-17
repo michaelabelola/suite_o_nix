@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.Mail;
+package com.suiteonix.nix.Mail;
 
-import com.suiteonix.db.nix.shared.CustomContextHolder;
+import com.suiteonix.nix.shared.CustomContextHolder;
 import jakarta.mail.MessagingException;
 
 import java.io.File;

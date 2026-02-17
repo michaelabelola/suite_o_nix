@@ -1,7 +1,7 @@
-package com.suiteonix.db.nix.shared.audit;
+package com.suiteonix.nix.shared.audit;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.suiteonix.db.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixID;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

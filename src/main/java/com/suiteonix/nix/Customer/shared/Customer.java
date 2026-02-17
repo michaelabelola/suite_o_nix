@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Customer.shared;
+package com.suiteonix.nix.Customer.shared;
 
 public record Customer(
 

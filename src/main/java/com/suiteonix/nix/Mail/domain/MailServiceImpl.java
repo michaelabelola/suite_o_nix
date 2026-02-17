@@ -1,11 +1,11 @@
-package com.suiteonix.db.nix.Mail.domain;
+package com.suiteonix.nix.Mail.domain;
 
-import com.suiteonix.db.nix.Mail.MailService;
-import com.suiteonix.db.nix.Mail.NixMailSender;
-import com.suiteonix.db.nix.shared.CustomContextHolder;
-import com.suiteonix.db.nix.shared.exceptions.EX;
-import com.suiteonix.db.nix.shared.exceptions.NixException;
-import com.suiteonix.db.nix.shared.utils.TransactionUtils;
+import com.suiteonix.nix.Mail.MailService;
+import com.suiteonix.nix.Mail.NixMailSender;
+import com.suiteonix.nix.shared.CustomContextHolder;
+import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.exceptions.NixException;
+import com.suiteonix.nix.shared.utils.TransactionUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;

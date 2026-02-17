@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.shared.audit;
+package com.suiteonix.nix.shared.audit;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixID;
 import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 

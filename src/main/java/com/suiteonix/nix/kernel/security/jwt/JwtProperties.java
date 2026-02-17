@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.kernel.security.jwt;
+package com.suiteonix.nix.kernel.security.jwt;
 
 import java.security.Key;
 

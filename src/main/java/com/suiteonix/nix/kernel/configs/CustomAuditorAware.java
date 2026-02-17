@@ -1,8 +1,8 @@
-package com.suiteonix.db.nix.kernel.configs;
+package com.suiteonix.nix.kernel.configs;
 
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.shared.principal.Actor;
-import com.suiteonix.db.nix.shared.principal.Actors;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.principal.Actor;
+import com.suiteonix.nix.shared.principal.Actors;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Mail;
+package com.suiteonix.nix.Mail;
 
 public enum TemplateType {
     THYMELEAF,

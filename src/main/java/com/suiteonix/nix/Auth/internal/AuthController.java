@@ -1,6 +1,6 @@
-package com.suiteonix.db.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal;
 
-import com.suiteonix.db.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.AuthProfile;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

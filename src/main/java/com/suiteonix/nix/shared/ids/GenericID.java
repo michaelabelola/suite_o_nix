@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.ids;
+package com.suiteonix.nix.shared.ids;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.Mail;
+package com.suiteonix.nix.Mail;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -149,17 +149,17 @@ public class NixMailSender {
     }
 
     @Async
-    public void sendMail() {
+    public void queueMail() {
         MailService.GET().queueMail(this);
     }
 
     @Async
-    public void sendMail(Temporal sendAt) {
+    public void scheduleMail(Temporal sendAt) {
         MailService.GET().scheduleMail(this, sendAt);
     }
 
     @Async
-    public void sendMailAsync() {
+    public void sendAsyncMail() {
         MailService.GET().sendInstantMailAsync(this);
     }
 

@@ -1,8 +1,8 @@
-package com.suiteonix.db.nix.User.internal;
+package com.suiteonix.nix.User.internal;
 
-import com.suiteonix.db.nix.User.service.UserService;
-import com.suiteonix.db.nix.shared.ids.NixID;
-import com.suiteonix.db.nix.User.service.User;
+import com.suiteonix.nix.User.service.UserService;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.User.service.User;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.cache.annotation.Cacheable;

@@ -1,4 +1,4 @@
-package com.suiteonix.db.nix.shared.ids;
+package com.suiteonix.nix.shared.ids;
 
 class SnowflakeIdGenerator {
 
