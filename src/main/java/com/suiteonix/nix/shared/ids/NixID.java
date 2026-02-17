@@ -55,7 +55,7 @@ public record NixID(
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NixID(String id1))
-            return id.equals(id1);
+            return Objects.equals(id1, id);
         return false;
     }
 
