@@ -13,23 +13,23 @@ public record HomeAddress(
         Double latitude,
         Double longitude
 ) {
-
+    @Schema(name = "HomeAddress.Create", description = "HomeAddress.Create")
     public record Create(
-            @Schema(description = "RM-123")
+            @Schema(example = "RM-123")
             String apt_number,
-            @Schema(description = "123 main street")
+            @Schema(example = "123 main street")
             String street,
-            @Schema(description = "IKJ")
+            @Schema(example = "IKJ")
             String city,
-            @Schema(description = "LA")
+            @Schema(example = "LA")
             String state,
-            @Schema(description = "NG")
+            @Schema(example = "NG")
             String country,
-            @Schema(description = "12345")
+            @Schema(example = "12345")
             String zipcode,
-            @Schema(description = "6.6137")
+            @Schema(example = "6.6137")
             Double latitude,
-            @Schema(description = "3.3553")
+            @Schema(example = "3.3553")
             Double longitude) {
     }
 }

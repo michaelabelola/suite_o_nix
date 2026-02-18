@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,7 +53,7 @@ class Controller {
 
     @PostMapping("/onboard/user")
     @Operation(description = "Onboard New User", summary = "Register new User")
-    public UserOnboarding.Response register(UserOnboarding.Request onboarding) {
+    public UserOnboarding.Response register(@RequestBody UserOnboarding.Request onboarding) {
         return registrationService.execute(onboarding);
     }
 }

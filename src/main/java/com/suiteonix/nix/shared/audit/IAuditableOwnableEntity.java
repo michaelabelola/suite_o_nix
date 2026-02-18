@@ -18,7 +18,7 @@ public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "owner_id", updatable = false))
     @Setter(AccessLevel.PACKAGE)
-    NixID ownerId;
+    NixID ownerId = NixID.EMPTY();
 
     @Embedded
     @Setter(AccessLevel.PACKAGE)

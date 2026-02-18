@@ -1,8 +1,6 @@
 package com.suiteonix.nix.Auth.service;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.suiteonix.nix.shared.ValueObjects.Email;
-import com.suiteonix.nix.shared.ValueObjects.Phone;
 import com.suiteonix.nix.shared.audit.AuditSection;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
@@ -13,16 +11,13 @@ import lombok.Builder;
 public record AuthProfile(
         @JsonUnwrapped
         NixID id,
-        @JsonUnwrapped
         NixRole role,
-        @JsonUnwrapped(prefix = "email_")
-        Email email,
-        @JsonUnwrapped(prefix = "phone_")
-        Phone phone,
+        String email,
+        String phone,
+        NixID ownerId,
         SignInOptions signInOptions,
         ConfigFlags configFlags,
         @JsonUnwrapped(prefix = "owner_")
-        NixID ownerId,
         AuditSection audit
 ) {
     @Builder
