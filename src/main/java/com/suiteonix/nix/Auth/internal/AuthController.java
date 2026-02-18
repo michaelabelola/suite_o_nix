@@ -17,7 +17,7 @@ class AuthController {
         return AuthUserMapper.INSTANCE.toDto(authModule.getAuthUserById(id));
     }
 
-    @PostMapping(name = "/login")
+    @PostMapping("/login")
     void login() {
         // TODO: Implement login logic
     }

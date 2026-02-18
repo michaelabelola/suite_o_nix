@@ -5,6 +5,7 @@ import com.suiteonix.nix.Mail.NixMailSender;
 import com.suiteonix.nix.Mail.TemplateType;
 import com.suiteonix.nix.User.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,7 @@ class UserRegistrationService {
 @RequestMapping
 @RequiredArgsConstructor
 @RestController("userRegistrationController")
-//@Tag(name = "User Registration", description = "User Registration API")
+@Tag(name = "UserController", description = "User Registration API")
 class Controller {
     private final UserRegistrationService registrationService;
 

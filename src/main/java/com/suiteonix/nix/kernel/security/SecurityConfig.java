@@ -54,7 +54,7 @@ class SecurityConfig {
                     });
                 })
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/auth/**").authenticated();
+//                    registry.requestMatchers("/auth/**").authenticated();
                     registry.anyRequest().permitAll();
                 });
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
