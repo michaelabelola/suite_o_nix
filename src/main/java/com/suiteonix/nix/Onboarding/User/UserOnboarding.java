@@ -42,14 +42,16 @@ class UserOnboarding {
 
         public AuthProfile.Register toAuthUserCreate(NixID id) {
             return AuthProfile.Register.builder()
+                    .id(id)
                     .role(NixRole.USER)
                     .email(email())
                     .phone(phone())
                     .password(password())
                     .signInOptions(AuthProfile.SignInOptions.builder()
                             .emailAndPassword(ConfigFlag.ACTIVE)
-                            .emailAndEmailToken(ConfigFlag.ACTIVE)
-                            .phoneAndPassword(ConfigFlag.ACTIVE)
+                            .emailAndEmailToken(ConfigFlag.INACTIVE)
+                            .phoneAndPassword(ConfigFlag.INACTIVE)
+                            .phoneAndPhoneToken(ConfigFlag.INACTIVE)
                             .build())
                     .configFlags(AuthProfile.ConfigFlags.builder()
                             .jwtAuthEnabled(ConfigFlag.ACTIVE)

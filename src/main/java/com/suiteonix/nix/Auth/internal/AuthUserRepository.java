@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface AuthUserRepository extends JpaRepository<AuthUserModel, NixID> {
-    Optional<AuthUserModel> findByEmailAndOwnerId(Email email, NixID ownerId);
+public interface AuthUserRepository extends JpaRepository<AuthProfileModel, NixID> {
+    Optional<AuthProfileModel> findByEmailAndOwnerId(Email email, NixID ownerId);
 
-    Optional<AuthUserModel> findByPhoneAndOwnerId(Phone phone, NixID ownerId);
+    Optional<AuthProfileModel> findByPhoneAndOwnerId(Phone phone, NixID ownerId);
 }

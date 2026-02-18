@@ -22,7 +22,7 @@ public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>
 
     @Embedded
     @Setter(AccessLevel.PACKAGE)
-    JpaAuditSection audit;
+    JpaAuditSection audit = new JpaAuditSection();
 
     @Override
     public @NonNull NixID getOwnerId() {

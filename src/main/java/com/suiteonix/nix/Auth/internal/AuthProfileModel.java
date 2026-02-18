@@ -17,7 +17,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
-@Table(name = "auth_user")
+@Table(name = "auth_profile")
 @Getter
 @Setter
 @ToString
@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @AggregateRoot
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
+public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> {
 
     @EmbeddedId
     NixID id;
@@ -50,9 +50,9 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
     @Column(name = "config_flags", columnDefinition = "jsonb")
     ConfigFlags configFlags;
 
-    public static AuthUserModel NEW(AuthProfile.Register register, PasswordEncoder encoder) {
-        return new AuthUserModel(
-                NixID.NEW(),
+    public static AuthProfileModel NEW(AuthProfile.Register register, PasswordEncoder encoder) {
+        return new AuthProfileModel(
+                NixID.NEW(register.role()),
                 register.role(),
                 Email.NEW(register.email()),
                 Phone.NEW(register.phone()),
@@ -62,7 +62,7 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
         );
     }
 
-    public static AuthUserModel NEW(
+    public static AuthProfileModel NEW(
             NixID id,
             NixRole role,
             Email email,
@@ -72,7 +72,7 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
             AuthProfile.ConfigFlags newFlags,
             PasswordEncoder encoder
     ) {
-        return new AuthUserModel(
+        return new AuthProfileModel(
                 id,
                 role,
                 email,
@@ -86,7 +86,7 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
 
     @Data
     public static class SignInOptions {
-        private ConfigFlag emailAndPasswordAuthentication;
+        private ConfigFlag emailAndPassword;
         /**
          * Enables authentication with email and a one-time token.
          */
@@ -103,7 +103,7 @@ public class AuthUserModel extends IAuditableOwnableEntity<AuthUserModel> {
         public static SignInOptions NEW(AuthProfile.SignInOptions options) {
             if (options == null) return null;
             SignInOptions flags = new SignInOptions();
-            flags.emailAndPasswordAuthentication = options.emailAndPassword();
+            flags.emailAndPassword = options.emailAndPassword();
             flags.emailAndEmailToken = options.emailAndEmailToken();
             flags.phoneAndPassword = options.phoneAndPassword();
             flags.phoneAndPhoneToken = options.phoneAndPhoneToken();

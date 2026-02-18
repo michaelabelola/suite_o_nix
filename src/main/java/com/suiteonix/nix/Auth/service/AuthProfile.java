@@ -42,10 +42,6 @@ public record AuthProfile(
      * These settings allow for fine-grained control over authentication methods, password policies,
      * and verification procedures.
      *
-     * @param emailAndPassword       Enable authentication using email and password.
-     * @param emailAndEmailToken     Enable authentication using a one-time token sent to the user's email.
-     * @param phoneAndPassword       Enable authentication using a phone number and password.
-     * @param phoneAndPhoneToken     Enable authentication using a one-time token sent to the user's phone.
      * @param jwtAuthEnabled         Enable JSON Web Token (JWT) based authentication for the session.
      * @param linkedAccountLogin     Allow users to sign in using linked third-party accounts (e.g., Google, Facebook).
      * @param generateRandomPassword Automatically generate a secure, random password for the new user.
@@ -59,10 +55,6 @@ public record AuthProfile(
             $comment = "Defines various configuration flags to control the behavior of the user registration process. These settings allow for fine-grained control over authentication methods, password policies, and verification procedures.")
     @Builder
     public record ConfigFlags(
-            ConfigFlag emailAndPassword,
-            ConfigFlag emailAndEmailToken,
-            ConfigFlag phoneAndPassword,
-            ConfigFlag phoneAndPhoneToken,
             ConfigFlag jwtAuthEnabled,
             ConfigFlag linkedAccountLogin,
             ConfigFlag generateRandomPassword,

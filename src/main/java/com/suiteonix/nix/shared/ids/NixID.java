@@ -16,12 +16,16 @@ public record NixID(
 
     public static final NixID SYSTEM = NixRole.SYSTEM.generateID();
 
-    public static NixID NEW() {
-        return NixID.of(Snowflake.nextId().asString());
+    public static NixID NEW(NixRole role) {
+        return role.generateID();
     }
 
     public static NixID NewForRole(NixRole role) {
         return role.generateID();
+    }
+
+    public NixRole role() {
+       return NixRole.of(this);
     }
 
     @Transient

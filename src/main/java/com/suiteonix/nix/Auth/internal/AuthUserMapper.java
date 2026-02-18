@@ -8,12 +8,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AuthUserMapper {
     AuthUserMapper INSTANCE = Mappers.getMapper(AuthUserMapper.class);
-    @Mapping(target = ".", source = "authUserModel")
-    @Mapping( target = "email", source = "email.value")
-    @Mapping( target = "phone", source = "phone.value")
-    AuthProfile toDto(AuthUserModel authUserModel);
 
-    AuthProfile.SignInOptions toSignInOptionDto(AuthUserModel authUserModel);
+    @Mapping(target = "email", source = "email.value")
+    @Mapping(target = "phone", source = "phone.value")
+    AuthProfile toDto(AuthProfileModel authProfileModel);
 
-    AuthProfile.ConfigFlags toConfigFlagDto(AuthUserModel authUserModel);
+    AuthProfile.SignInOptions toSignInOptionDto(AuthProfileModel.SignInOptions signInOptions);
+
+    AuthProfile.ConfigFlags toConfigFlagDto(AuthProfileModel.ConfigFlags configFlags);
 }

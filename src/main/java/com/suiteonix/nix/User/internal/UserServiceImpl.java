@@ -1,13 +1,12 @@
 package com.suiteonix.nix.User.internal;
 
+import com.suiteonix.nix.User.service.User;
 import com.suiteonix.nix.User.service.UserService;
 import com.suiteonix.nix.shared.ids.NixID;
-import com.suiteonix.nix.User.service.User;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -25,7 +24,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public User registerUser(User.@NonNull Create create) {
         return UserMapper.INSTANCE.toUser(userModule.registerUser(create));
     }

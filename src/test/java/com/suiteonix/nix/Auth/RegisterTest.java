@@ -57,7 +57,7 @@ class RegisterTest {
     void authUserRegisterDto_ShouldHandleBusinessRole() {
         NixID businessId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register businessDto = new AuthProfile.Register(
-                NixRole.BUSINESS,
+                NixRole.ORGANIZATION,
                 "business@example.com",
                 "+9876543210",
                 "BusinessPass123!",
@@ -66,7 +66,7 @@ class RegisterTest {
         );
 
         assertNotNull(businessDto);
-        assertThat(businessDto.role()).isEqualTo(NixRole.BUSINESS);
+        assertThat(businessDto.role()).isEqualTo(NixRole.ORGANIZATION);
         assertThat(businessDto.email()).isEqualTo("business@example.com");
         assertThat(businessDto.phone()).isEqualTo("+9876543210");
     }

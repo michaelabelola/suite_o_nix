@@ -1,6 +1,7 @@
 package com.suiteonix.nix.shared.ids;
 
 import com.suiteonix.nix.shared.exceptions.EX;
+import org.jspecify.annotations.NonNull;
 
 public enum NixRole {
     USER("U"),
@@ -8,7 +9,7 @@ public enum NixRole {
     PATIENT("P"),
     ADMIN("A"),
     SUPER_ADMIN("SA"),
-    BUSINESS("B"),
+    ORGANIZATION("O"),
     ANONYMOUS("AN"),
     SYSTEM("S");
 
@@ -21,8 +22,21 @@ public enum NixRole {
         this.idValue = idValue;
     }
 
+    public static @NonNull NixRole of(@NonNull NixID id) {
+        return switch (id.get()) {
+            case "U" -> NixRole.USER;
+            case "C" -> NixRole.CUSTOMER;
+            case "P" -> NixRole.PATIENT;
+            case "A" -> NixRole.ADMIN;
+            case "SA" -> NixRole.SUPER_ADMIN;
+            case "O" -> NixRole.ORGANIZATION;
+            case "S" -> NixRole.SYSTEM;
+            case null, default -> NixRole.ANONYMOUS;
+        };
+    }
 
-    public NixID generateID() {
+
+    public @NonNull NixID generateID() {
         return switch (this) {
             case SYSTEM -> NixID.of(idValue + "-" + "SYSTEM");
             case ANONYMOUS -> throw EX.badRequest("ANONYMOUS_ID_CANT_BE_GENERATED", "Anonymous ID cannot be generated");

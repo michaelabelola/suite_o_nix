@@ -43,7 +43,6 @@ public class JacksonConfig {
                 new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
         );
         mapper.setTimeZone(TimeZone.getTimeZone("Africa/Lagos"));
-
         return mapper;
     }
 }

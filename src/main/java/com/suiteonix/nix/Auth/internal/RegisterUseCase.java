@@ -20,8 +20,8 @@ class RegisterUseCase {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public AuthUserModel execute(AuthProfile.Register create) {
-        AuthUserModel authUser = AuthUserModel.NEW(
+    public AuthProfileModel execute(AuthProfile.Register create) {
+        AuthProfileModel authUser = AuthProfileModel.NEW(
                 create.id(),
                 create.role(),
                 Email.NEW(create.email()),
@@ -36,15 +36,14 @@ class RegisterUseCase {
             verifyDuplicateEmail(authUser.getEmail());
         if (!authUser.getPhone().isEmpty())
             verifyDuplicatePhone(authUser.getPhone());
-
         return repository.save(authUser);
     }
 
     private void verifyDuplicatePhone(@Nullable Phone string) {
         repository.findByPhoneAndOwnerId(string, Principal.ID())
                 .ifPresent(authUserModel -> {
+                    throw EX.conflict("PHONE_ALREADY_REGISTERED", "The provided phone number is already registered for another account authentication");
                 });
-        throw EX.conflict("PHONE_ALREADY_REGISTERED", "The provided phone number is already registered for another account authentication");
     }
 
     private void verifyDuplicateEmail(@Nullable Email s) {
