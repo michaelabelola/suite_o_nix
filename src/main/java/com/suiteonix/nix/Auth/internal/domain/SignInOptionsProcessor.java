@@ -1,4 +1,4 @@
-package com.suiteonix.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal.domain;
 
 import com.suiteonix.nix.Auth.service.ConfigFlag;
 import com.suiteonix.nix.shared.exceptions.EX;

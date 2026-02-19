@@ -1,6 +1,6 @@
 package com.suiteonix.nix.Auth;
 
-import com.suiteonix.nix.Auth.internal.AuthUserRepository;
+import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.TestApplicationConfiguration;
 import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
 import com.suiteonix.nix.shared.ids.NixID;

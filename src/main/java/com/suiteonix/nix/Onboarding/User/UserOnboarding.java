@@ -56,6 +56,7 @@ class UserOnboarding {
                     .configFlags(AuthProfile.ConfigFlags.builder()
                             .jwtAuthEnabled(ConfigFlag.ACTIVE)
                             .linkedAccountLogin(ConfigFlag.ACTIVE)
+                            .sendMailVerification(ConfigFlag.ACTIVE)
                             .build())
                     .build();
         }

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!--
+/*@thymesVar id="user" type="com.suiteonix.nix.User.service.User"*/
+/*@thymesVar id="authProfile" type="com.suiteonix.nix.Auth.service.AuthProfile"*/
+-->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Welcome to Suiteonix</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f7;
+            font-family: Arial, sans-serif;
+            color: #333333;
+        }
+
+        .wrapper {
+            width: 100%;
+            background-color: #f4f4f7;
+            padding: 40px 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            background-color: #1a1a2e;
+            padding: 32px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+
+        .header span {
+            color: #7c6af7;
+        }
+
+        .body {
+            padding: 40px;
+        }
+
+        .body h2 {
+            font-size: 20px;
+            margin-top: 0;
+            color: #1a1a2e;
+        }
+
+        .body p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555555;
+            margin: 0 0 16px;
+        }
+
+        .detail-box {
+            background-color: #f4f4f7;
+            border-left: 4px solid #7c6af7;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin: 24px 0;
+        }
+
+        .detail-box p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #444444;
+        }
+
+        .detail-box strong {
+            color: #1a1a2e;
+        }
+
+        .cta {
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .cta a {
+            background-color: #7c6af7;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .footer {
+            background-color: #f4f4f7;
+            text-align: center;
+            padding: 24px 40px;
+            font-size: 12px;
+            color: #999999;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .footer a {
+            color: #7c6af7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>SUITE<span>-O-</span>NIX</h1>
+        </div>
+
+        <!-- Body -->
+        <div class="body">
+            <h2 th:text="'Welcome, ' + ${user.firstname} + '!'">Welcome!</h2>
+            <p>
+                Your account has been successfully created. We're excited to have you on board.
+                Here are your account details:
+            </p>
+
+            <div class="detail-box">
+                <p><strong>Name:</strong> <span th:text="${user.firstname} + ' ' + ${user.lastname}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                <p th:if="${user.phone != null and !user.phone.isEmpty()}">
+                    <strong>Phone:</strong> <span th:text="${user.phone}"></span>
+                </p>
+                <p><strong>Account Role:</strong> <span th:text="${authProfile.role}"></span></p>
+            </div>
+
+            <p>
+                You can now sign in using your email and the password you set during registration.
+                If you have any questions or need help getting started, our support team is here for you.
+            </p>
+
+            <div class="cta">
+                <a href="https://suiteonix.com">Get Started</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 Suiteonix. All rights reserved.</p>
+            <p><a href="https://suiteonix.com">suiteonix.com</a></p>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
-package com.suiteonix.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal.domain;
 
 import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.AuthToken;
 import com.suiteonix.nix.Auth.service.ConfigFlag;
 import com.suiteonix.nix.shared.ValueObjects.Email;
 import com.suiteonix.nix.shared.ValueObjects.Password;
@@ -15,6 +16,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Type;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "auth_profile")
@@ -50,7 +54,11 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
     @Column(name = "config_flags", columnDefinition = "jsonb")
     ConfigFlags configFlags;
 
-    public static AuthProfileModel NEW(AuthProfile.Register register, PasswordEncoder encoder) {
+    @Type(JsonType.class)
+    @Column(name = "tokens", columnDefinition = "jsonb")
+    Set<AuthToken> tokens = new HashSet<>();
+
+    public static AuthProfileModel NEW(AuthProfile.Register register, Set<AuthToken> authTokens, PasswordEncoder encoder) {
         return new AuthProfileModel(
                 NixID.NEW(register.role()),
                 register.role(),
@@ -58,7 +66,9 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
                 Phone.NEW(register.phone()),
                 Password.NewEncodedPassword(register.password(), encoder),
                 SignInOptions.NEW(register.signInOptions()),
-                ConfigFlags.NEW(register.configFlags())
+                ConfigFlags.NEW(register.configFlags()),
+                authTokens == null ? new HashSet<>() : authTokens
+
         );
     }
 
@@ -79,7 +89,8 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
                 phone,
                 password,
                 SignInOptions.NEW(signInOptions),
-                ConfigFlags.NEW(newFlags)
+                ConfigFlags.NEW(newFlags),
+                new HashSet<>()
         );
     }
 

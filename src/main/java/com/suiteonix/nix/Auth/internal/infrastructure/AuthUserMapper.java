@@ -1,5 +1,6 @@
-package com.suiteonix.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal.infrastructure;
 
+import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,6 +13,10 @@ public interface AuthUserMapper {
     @Mapping(target = "email", source = "email.value")
     @Mapping(target = "phone", source = "phone.value")
     AuthProfile toDto(AuthProfileModel authProfileModel);
+
+    @Mapping(target = "email", source = "email.value")
+    @Mapping(target = "phone", source = "phone.value")
+    AuthProfile.Detailed detailed(AuthProfileModel authProfileModel);
 
     AuthProfile.SignInOptions toSignInOptionDto(AuthProfileModel.SignInOptions signInOptions);
 

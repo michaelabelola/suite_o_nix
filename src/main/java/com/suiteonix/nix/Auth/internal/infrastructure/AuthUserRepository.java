@@ -1,5 +1,6 @@
-package com.suiteonix.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal.infrastructure;
 
+import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.shared.ValueObjects.Email;
 import com.suiteonix.nix.shared.ValueObjects.Phone;
 import com.suiteonix.nix.shared.ids.NixID;

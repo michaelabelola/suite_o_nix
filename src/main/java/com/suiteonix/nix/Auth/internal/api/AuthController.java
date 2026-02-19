@@ -1,5 +1,7 @@
-package com.suiteonix.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal.api;
 
+import com.suiteonix.nix.Auth.internal.domain.AuthModule;
+import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserMapper;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.Permission.systemPermissions.annotations.Allow;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +20,12 @@ class AuthController {
         return AuthUserMapper.INSTANCE.toDto(authModule.getAuthUserById(id));
     }
 
-//    @PermissionDefinition()
+    @PostMapping("/verify-email")
+    void verifyEmail() {
+        // TODO: Implement login logic
+    }
+
+    //    @PermissionDefinition()
     @Allow("/login")
     @PostMapping("/login")
     void login() {

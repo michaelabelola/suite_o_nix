@@ -1,5 +1,6 @@
-package com.suiteonix.nix.Auth.internal;
+package com.suiteonix.nix.Auth.internal.domain;
 
+import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-class AuthModule {
+public class AuthModule {
     private final AuthUserRepository repository;
     private final RegisterUseCase registerUseCase;
 

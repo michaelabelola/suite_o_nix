@@ -16,10 +16,23 @@ public record AuthProfile(
         String phone,
         NixID ownerId,
         SignInOptions signInOptions,
-        ConfigFlags configFlags,
-        @JsonUnwrapped(prefix = "owner_")
-        AuditSection audit
+        ConfigFlags configFlags
 ) {
+    @Schema(name = "AuthProfile.Detailed")
+    public record Detailed(
+            @JsonUnwrapped
+            NixID id,
+            NixRole role,
+            String email,
+            String phone,
+            NixID ownerId,
+            SignInOptions signInOptions,
+            ConfigFlags configFlags,
+            @JsonUnwrapped(prefix = "owner_")
+            AuditSection audit
+    ) {
+
+    }
     @Builder
     @Schema(name = "AuthProfile.Register")
     public record Register(
