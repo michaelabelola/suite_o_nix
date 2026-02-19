@@ -1,12 +1,12 @@
 package com.suiteonix.nix.Auth.internal.domain.services;
 
 import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
+import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserMapper;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.Auth.service.AuthToken;
 import com.suiteonix.nix.Auth.service.AuthTokenType;
 import com.suiteonix.nix.Auth.service.ConfigFlag;
-import com.suiteonix.nix.Mail.MailService;
 import com.suiteonix.nix.Mail.NixMailSender;
 import com.suiteonix.nix.Mail.TemplateType;
 import com.suiteonix.nix.kernel.security.AuthJwtUtil;
@@ -46,8 +46,7 @@ class RegisterUseCase {
                 Phone.NEW(create.phone()),
                 Password.NewEncodedPassword(create.password(), passwordEncoder),
                 create.signInOptions(),
-                create.configFlags(),
-                passwordEncoder
+                create.configFlags()
         );
         if (!authUser.getEmail().isEmpty()) verifyDuplicateEmail(authUser.getEmail());
         if (!authUser.getPhone().isEmpty()) verifyDuplicatePhone(authUser.getPhone());
@@ -68,16 +67,13 @@ class RegisterUseCase {
 
         String verificationLink = "http://" + appUrl + "/auth/verify-email?token=" + jwtToken
                 + "&orgID=" + authUser.getOrgID().get();
-
-        MailService.GET().queueMail(
-                NixMailSender.newInstance()
-                        .to(authUser.getEmail().get())
-                        .templateName("auth/user-mail-verification")
-                        .variable("authUser", authUser)
-                        .variable("verificationToken", otpCode)
-                        .variable("verificationLink", verificationLink)
-                        .templateType(TemplateType.THYMELEAF));
-
+        NixMailSender.newInstance()
+                .to(authUser.getEmail().get())
+                .templateName("auth/user-mail-verification")
+                .variable("authUser", AuthUserMapper.INSTANCE.toDto(authUser))
+                .variable("verificationToken", otpCode)
+                .variable("verificationLink", verificationLink)
+                .templateType(TemplateType.THYMELEAF).queueMail();
     }
 
     private void verifyDuplicatePhone(@Nullable Phone string) {

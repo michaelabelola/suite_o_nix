@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.scheduling.annotation.Async;
 
 import java.io.File;
+import java.time.temporal.Temporal;
 import java.util.*;
 
 @Getter
@@ -14,16 +16,16 @@ import java.util.*;
 public class NixMailSender {
     boolean isHtml = false;
     String from;
-    Set<String> to = new HashSet<>();
+    HashSet<String> to = new HashSet<>();
     String subject = "";
     String templateName;
     String content;
-    Set<String> cc;
-    Set<String> bcc;
-    Set<File> attachments;
-    Set<String> attachmentLinks;
+    HashSet<String> cc;
+    HashSet<String> bcc;
+    HashSet<File> attachments;
+    HashSet<String> attachmentLinks;
     TemplateType templateType;
-    final Map<String, Object> variables = new HashMap<>();
+    final HashMap<String, Object> variables = new HashMap<>();
 
     public static NixMailSender newInstance() {
         return new NixMailSender();
@@ -146,23 +148,23 @@ public class NixMailSender {
         return this;
     }
 
-//    @Async
-//    public void queueMail() {
-//        MailService.GET().queueMail(this);
-//    }
-//
-//    @Async
-//    public void scheduleMail(Temporal sendAt) {
-//        MailService.GET().scheduleMail(this, sendAt);
-//    }
-//
-//    @Async
-//    public void sendAsyncMail() {
-//        MailService.GET().sendInstantMailAsync(this);
-//    }
-//
-//    public void sendInstantMail() {
-//        MailService.GET().sendInstantMail(this);
-//    }
+    @Async
+    public void queueMail() {
+        MailService.GET().queueMail(this);
+    }
+
+    @Async
+    public void scheduleMail(Temporal sendAt) {
+        MailService.GET().scheduleMail(this, sendAt);
+    }
+
+    @Async
+    public void sendAsyncMail() {
+        MailService.GET().sendInstantMailAsync(this);
+    }
+
+    public void sendInstantMail() {
+        MailService.GET().sendInstantMail(this);
+    }
 
 }

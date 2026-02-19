@@ -82,8 +82,7 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
             Phone phone,
             Password password,
             AuthProfile.SignInOptions signInOptions,
-            AuthProfile.ConfigFlags newFlags,
-            PasswordEncoder encoder
+            AuthProfile.ConfigFlags newFlags
     ) {
         return new AuthProfileModel(
                 id,
