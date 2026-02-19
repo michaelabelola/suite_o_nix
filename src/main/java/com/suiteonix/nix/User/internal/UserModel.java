@@ -45,11 +45,6 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
 
     @Embedded
     @Setter
-    @AttributeOverride(name = "id", column = @Column(name = "owner_id", updatable = false))
-    NixID ownerId;
-
-    @Embedded
-    @Setter
     JpaAuditSection audit;
 
     public static UserModel NEW(User.Create create) {

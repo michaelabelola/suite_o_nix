@@ -25,7 +25,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User registerUser(User.@NonNull Create create) {
-        return UserMapper.INSTANCE.toUser(userModule.registerUser(create));
+    public User.Detailed registerUser(User.@NonNull Create create) {
+        return UserMapper.INSTANCE.detailed(userModule.registerUser(create));
     }
 }

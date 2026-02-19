@@ -65,12 +65,12 @@ class UserOnboarding {
     @Schema(name = "UserRegistration.Response", description = "UserRegistration.Response")
     record Response(
             AuthProfile auth,
-            User user
+            User.Detailed user
 //            String token,
 //            String refreshToken
     ) {
 
-        public static Response OF(User user, AuthProfile authProfile) {
+        public static Response OF(User.Detailed user, AuthProfile authProfile) {
             return new Response(authProfile, user);
         }
     }

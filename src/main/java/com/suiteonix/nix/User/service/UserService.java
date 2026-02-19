@@ -18,6 +18,6 @@ public interface UserService {
         return findByIdElseThrow(id, () -> EX.notFound("USER_NOT_FOUND", "User not found"));
     }
 
-    User registerUser(User.Create user);
+    User.Detailed registerUser(User.Create user);
 
 }

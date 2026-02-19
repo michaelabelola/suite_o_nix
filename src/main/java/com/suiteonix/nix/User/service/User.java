@@ -16,17 +16,30 @@ public record User(
         NixID id,
         String firstname,
         String lastname,
-        String email,
-        String phone,
-        LocalDate dateOfBirth,
         @JsonUnwrapped(prefix = "avatar_")
         NixImage avatar,
-        String bio,
-        HomeAddress address,
-        @JsonUnwrapped(prefix = "owner_")
-        NixID ownerId,
-        AuditSection audit
+        @JsonUnwrapped(prefix = "org_")
+        NixID orgID
 ) {
+    @Schema(name = "User.Detailed")
+    public record Detailed(
+            @JsonUnwrapped
+            NixID id,
+            String firstname,
+            String lastname,
+            String email,
+            String phone,
+            LocalDate dateOfBirth,
+            @JsonUnwrapped(prefix = "avatar_")
+            NixImage avatar,
+            String bio,
+            HomeAddress address,
+            @JsonUnwrapped(prefix = "org_")
+            NixID orgID,
+            AuditSection audit
+    ) {
+
+    }
     @Builder
     @Schema(name = "User.Create")
     public record Create(

@@ -10,4 +10,6 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     User toUser(UserModel userModel);
+
+    User.Detailed detailed(UserModel userModel);
 }

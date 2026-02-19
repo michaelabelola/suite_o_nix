@@ -25,7 +25,7 @@ public record AuthProfile(
             NixRole role,
             String email,
             String phone,
-            NixID ownerId,
+            NixID orgID,
             SignInOptions signInOptions,
             ConfigFlags configFlags,
             @JsonUnwrapped(prefix = "owner_")
