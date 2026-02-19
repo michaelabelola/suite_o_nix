@@ -6,6 +6,7 @@ import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.Auth.service.AuthToken;
 import com.suiteonix.nix.Auth.service.AuthTokenType;
 import com.suiteonix.nix.Auth.service.ConfigFlag;
+import com.suiteonix.nix.Mail.MailService;
 import com.suiteonix.nix.Mail.NixMailSender;
 import com.suiteonix.nix.Mail.TemplateType;
 import com.suiteonix.nix.kernel.security.AuthJwtUtil;
@@ -68,14 +69,15 @@ class RegisterUseCase {
         String verificationLink = "http://" + appUrl + "/auth/verify-email?token=" + jwtToken
                 + "&orgID=" + authUser.getOrgID().get();
 
-        NixMailSender.newInstance()
-                .to(authUser.getEmail().get())
-                .templateName("auth/user-mail-verification")
-                .variable("authUser", authUser)
-                .variable("verificationToken", otpCode)
-                .variable("verificationLink", verificationLink)
-                .templateType(TemplateType.THYMELEAF)
-                .queueMail();
+        MailService.GET().queueMail(
+                NixMailSender.newInstance()
+                        .to(authUser.getEmail().get())
+                        .templateName("auth/user-mail-verification")
+                        .variable("authUser", authUser)
+                        .variable("verificationToken", otpCode)
+                        .variable("verificationLink", verificationLink)
+                        .templateType(TemplateType.THYMELEAF));
+
     }
 
     private void verifyDuplicatePhone(@Nullable Phone string) {

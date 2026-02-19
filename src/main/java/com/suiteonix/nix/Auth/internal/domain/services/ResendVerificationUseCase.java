@@ -4,6 +4,7 @@ import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.service.AuthToken;
 import com.suiteonix.nix.Auth.service.AuthTokenType;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
+import com.suiteonix.nix.Mail.MailService;
 import com.suiteonix.nix.kernel.security.AuthJwtUtil;
 import com.suiteonix.nix.kernel.security.jwt.JwtProperties;
 import com.suiteonix.nix.Mail.NixMailSender;
@@ -25,6 +26,7 @@ class ResendVerificationUseCase {
     private final AuthUserLookupHelper lookupHelper;
     private final AuthJwtUtil authJwtUtil;
     private final JwtProperties jwtProperties;
+    private final MailService mailService;
     @Value("${app.url}")
     private String appUrl;
 
@@ -55,6 +57,8 @@ class ResendVerificationUseCase {
 
         repository.save(authUser);
 
+        mailService.queueMail(
+
         NixMailSender.newInstance()
                 .to(authUser.getEmail().get())
                 .templateName("auth/user-mail-verification")
@@ -62,6 +66,6 @@ class ResendVerificationUseCase {
                 .variable("verificationToken", otpCode)
                 .variable("verificationLink", verificationLink)
                 .templateType(TemplateType.THYMELEAF)
-                .queueMail();
+        );
     }
 }

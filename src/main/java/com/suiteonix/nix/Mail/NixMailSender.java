@@ -4,10 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.scheduling.annotation.Async;
 
 import java.io.File;
-import java.time.temporal.Temporal;
 import java.util.*;
 
 @Getter
@@ -148,23 +146,23 @@ public class NixMailSender {
         return this;
     }
 
-    @Async
-    public void queueMail() {
-        MailService.GET().queueMail(this);
-    }
-
-    @Async
-    public void scheduleMail(Temporal sendAt) {
-        MailService.GET().scheduleMail(this, sendAt);
-    }
-
-    @Async
-    public void sendAsyncMail() {
-        MailService.GET().sendInstantMailAsync(this);
-    }
-
-    public void sendInstantMail() {
-        MailService.GET().sendInstantMail(this);
-    }
+//    @Async
+//    public void queueMail() {
+//        MailService.GET().queueMail(this);
+//    }
+//
+//    @Async
+//    public void scheduleMail(Temporal sendAt) {
+//        MailService.GET().scheduleMail(this, sendAt);
+//    }
+//
+//    @Async
+//    public void sendAsyncMail() {
+//        MailService.GET().sendInstantMailAsync(this);
+//    }
+//
+//    public void sendInstantMail() {
+//        MailService.GET().sendInstantMail(this);
+//    }
 
 }

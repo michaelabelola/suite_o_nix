@@ -1,6 +1,7 @@
 package com.suiteonix.nix.kernel.security;
 
 import com.suiteonix.nix.kernel.security.jwt.JwtProperties;
+import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
 import com.suiteonix.nix.shared.principal.Actor;
@@ -60,13 +61,13 @@ public class AuthJwtUtil {
         } catch (SecurityException ex) {
             log.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
-            log.error("Invalid JWT token");
+            throw EX.forbidden("INVALID_AUTHENTICATION_TOKEN", "Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            log.error("Expired JWT token");
+            throw EX.forbidden("EXPIRED_AUTHENTICATION_TOKEN", "Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            log.error("Unsupported JWT token");
+            throw EX.forbidden("UNSUPPORTED_AUTHENTICATION_TOKEN", "Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            log.error("JWT claims string is empty");
+            throw EX.forbidden("AUTHENTICATION_EMPTY_TOKEN", "No claims found in authentication token");
         }
         return null;
     }

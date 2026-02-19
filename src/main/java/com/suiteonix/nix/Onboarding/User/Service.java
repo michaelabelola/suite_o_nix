@@ -1,6 +1,7 @@
 package com.suiteonix.nix.Onboarding.User;
 
 import com.suiteonix.nix.Auth.service.AuthenticationService;
+import com.suiteonix.nix.Mail.MailService;
 import com.suiteonix.nix.Mail.NixMailSender;
 import com.suiteonix.nix.Mail.TemplateType;
 import com.suiteonix.nix.User.service.UserService;
@@ -22,6 +23,7 @@ class UserRegistrationService {
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
+    private final MailService mailService;
 
     @Transactional
     public UserOnboarding.Response execute(UserOnboarding.Request onboarding) {
@@ -30,15 +32,16 @@ class UserRegistrationService {
         var authProfileCreate = onboarding.toAuthUserCreate(user.id());
         var authProfile = authenticationService.register(authProfileCreate);
 
-        NixMailSender.newInstance()
-                .to(user.email())
-                .templateName("onboarding/user/user-onboarding-email")
-                .variables(Map.of(
-                        "user", user,
-                        "authProfile", authProfile
-                ))
-                .templateType(TemplateType.THYMELEAF)
-                .queueMail();
+        mailService.queueMail(
+                NixMailSender.newInstance()
+                        .to(user.email())
+                        .templateName("onboarding/user/user-onboarding-email")
+                        .variables(Map.of(
+                                "user", user,
+                                "authProfile", authProfile
+                        ))
+                        .templateType(TemplateType.THYMELEAF)
+        );
 
         return UserOnboarding.Response.OF(user, authProfile);
     }
