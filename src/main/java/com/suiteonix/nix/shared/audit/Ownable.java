@@ -13,5 +13,5 @@ public interface Ownable {
      * @return the owner's ID
      * @apiNote must not return null. Null value should be an empty id. {@link NixID#EMPTY()}
      */
-    @NonNull NixID getOwnerId();
+    @NonNull NixID getOrgID();
 }

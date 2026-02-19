@@ -1,5 +1,6 @@
 package com.suiteonix.nix.Auth.internal.domain;
 
+import com.suiteonix.nix.Auth.internal.domain.services.AuthModule;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserMapper;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.Auth.service.AuthenticationService;

@@ -1,14 +1,13 @@
 package com.suiteonix.nix.Auth;
 
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
+import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.AuthenticationService;
 import com.suiteonix.nix.TestApplicationConfiguration;
 import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
-import com.suiteonix.nix.shared.principal.Actor;
 import com.suiteonix.nix.shared.principal.Principal;
-import com.suiteonix.nix.Auth.service.AuthProfile;
-import com.suiteonix.nix.Auth.service.AuthenticationService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,8 +77,7 @@ class AuthenticationServiceIntegrationTest {
         assertThat(result.role()).isEqualTo(NixRole.CUSTOMER);
         assertThat(result.email()).isEqualTo("test@example.com");
         assertThat(result.phone()).isEqualTo("+1234567890");
-        assertNotNull(result.ownerId());
-        assertNotNull(result.audit());
+        assertNotNull(result.orgID());
     }
 
     @Test
@@ -99,36 +97,14 @@ class AuthenticationServiceIntegrationTest {
     @Test
     @Order(4)
     @Transactional
-    @DisplayName("register() should set ownerId equal to userId")
+    @DisplayName("register() should set orgID equal to userId")
     void register_ShouldSetOwnerId_EqualToUserId() {
         AuthProfile result = authenticationService.register(validRegisterDto);
 
-        assertNotNull(result.ownerId(), "OwnerId should not be null");
+        assertNotNull(result.orgID(), "OwnerId should not be null");
         assertNotNull(result.id(), "User ID should not be null");
-        assertThat(result.ownerId().id()).isNotNull();
-        assertThat(result.ownerId()).isEqualTo(Principal.ID());
-    }
-
-    @Test
-    @Order(4)
-    @Transactional
-    @DisplayName("register() should set ownerId equal to userId")
-    void register_ShouldSetCreatedById_EqualToPrincipalId() {
-        AuthProfile result = authenticationService.register(validRegisterDto);
-
-        assertNotNull(result.audit(), "Created by ID should not be null");
-        assertThat(result.audit()).isNotNull();
-        assertThat(result.audit().getCreatedBy()).isEqualTo(Actor.ID());
-    }
-
-    @Test
-    @Order(5)
-    @Transactional
-    @DisplayName("register() should create audit information")
-    void register_ShouldCreateAuditInformation() {
-        AuthProfile result = authenticationService.register(validRegisterDto);
-
-        assertNotNull(result.audit());
+        assertThat(result.orgID().id()).isNotNull();
+        assertThat(result.orgID()).isEqualTo(Principal.ID());
     }
 
     @Test
@@ -371,6 +347,6 @@ class AuthenticationServiceIntegrationTest {
         assertThat(user.getRole()).isEqualTo(result.role());
         assertThat(user.getEmail().value()).isEqualTo(result.email());
         assertThat(user.getPhone().value()).isEqualTo(result.phone());
-        assertThat(user.getOwnerId()).isEqualTo(result.ownerId());
+        assertThat(user.getOrgID()).isEqualTo(result.orgID());
     }
 }

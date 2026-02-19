@@ -90,6 +90,6 @@ class AuthProfileTest {
         assertThat(authProfile.role()).isEqualTo(NixRole.CUSTOMER);
         assertThat(authProfile.email()).isEqualTo(email);
         assertThat(authProfile.phone()).isEqualTo(phone);
-        assertThat(authProfile.ownerId()).isEqualTo(testId);
+        assertThat(authProfile.orgID()).isEqualTo(testId);
     }
 }

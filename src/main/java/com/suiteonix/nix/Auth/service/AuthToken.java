@@ -19,9 +19,9 @@ public record AuthToken(
 
     @Transient
     @JsonIgnore
-    public boolean isExpired() {
-        if (duration == null || createdAt == null) return false;
-        return Instant.now().isAfter(createdAt.plusMillis(duration.toMillis()));
+    public boolean isNotExpired() {
+        if (duration == null || createdAt == null) return true;
+        return !Instant.now().isAfter(createdAt.plusMillis(duration.toMillis()));
     }
 
     public static AuthToken EMPTY() {
@@ -30,5 +30,9 @@ public record AuthToken(
 
     public static AuthToken NEW(AuthTokenType authTokenType, String s) {
         return new AuthToken(authTokenType, s, null, null);
+    }
+
+    public static AuthToken NEW(AuthTokenType authTokenType, String value, Duration duration) {
+        return new AuthToken(authTokenType, value, Instant.now(), duration);
     }
 }

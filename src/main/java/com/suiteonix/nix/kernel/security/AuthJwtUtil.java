@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -21,6 +22,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthJwtUtil {
     private final JwtProperties jwtProperties;
+
+    public String generateEmailVerificationToken(NixID userId, long ttlMs) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + ttlMs);
+        return Jwts.builder()
+                .setSubject(userId.get())
+                .claim("type", "EMAIL_VERIFICATION")
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .setIssuer(jwtProperties.getIssuer())
+                .signWith(jwtProperties.getSigningKey())
+                .compact();
+    }
 
     public Actor getActorFromClaims(Claims claims) {
         String actorId = (String) claims.get(JwtProperties.ACTOR_ID);

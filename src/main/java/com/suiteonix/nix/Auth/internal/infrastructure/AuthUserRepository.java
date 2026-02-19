@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AuthUserRepository extends JpaRepository<AuthProfileModel, NixID> {
-    Optional<AuthProfileModel> findByEmailAndOwnerId(Email email, NixID ownerId);
+    Optional<AuthProfileModel> findByEmailAndOrgID(Email email, NixID orgID);
 
-    Optional<AuthProfileModel> findByPhoneAndOwnerId(Phone phone, NixID ownerId);
+    Optional<AuthProfileModel> findByPhoneAndOrgID(Phone phone, NixID orgID);
+
+    Optional<AuthProfileModel> findByEmail(Email email);
 }

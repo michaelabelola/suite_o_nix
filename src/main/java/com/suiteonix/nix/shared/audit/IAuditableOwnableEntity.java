@@ -18,15 +18,14 @@ public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "owner_id", updatable = false))
     @Setter(AccessLevel.PACKAGE)
-    NixID ownerId = NixID.EMPTY();
+    NixID orgID = NixID.EMPTY();
 
     @Embedded
     @Setter(AccessLevel.PACKAGE)
     JpaAuditSection audit = new JpaAuditSection();
 
-    @Override
-    public @NonNull NixID getOwnerId() {
-        if (ownerId == null) return NixID.EMPTY();
-        return ownerId;
+    public @NonNull NixID getOrgID() {
+        if (orgID == null) return NixID.EMPTY();
+        return orgID;
     }
 }

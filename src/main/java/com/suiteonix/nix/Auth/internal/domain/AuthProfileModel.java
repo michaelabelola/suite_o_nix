@@ -58,6 +58,9 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
     @Column(name = "tokens", columnDefinition = "jsonb")
     Set<AuthToken> tokens = new HashSet<>();
 
+    @Column(name = "email_verified")
+    boolean emailVerified = false;
+
     public static AuthProfileModel NEW(AuthProfile.Register register, Set<AuthToken> authTokens, PasswordEncoder encoder) {
         return new AuthProfileModel(
                 NixID.NEW(register.role()),
@@ -67,8 +70,8 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
                 Password.NewEncodedPassword(register.password(), encoder),
                 SignInOptions.NEW(register.signInOptions()),
                 ConfigFlags.NEW(register.configFlags()),
-                authTokens == null ? new HashSet<>() : authTokens
-
+                authTokens == null ? new HashSet<>() : authTokens,
+                false
         );
     }
 
@@ -90,7 +93,8 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
                 password,
                 SignInOptions.NEW(signInOptions),
                 ConfigFlags.NEW(newFlags),
-                new HashSet<>()
+                new HashSet<>(),
+                false
         );
     }
 

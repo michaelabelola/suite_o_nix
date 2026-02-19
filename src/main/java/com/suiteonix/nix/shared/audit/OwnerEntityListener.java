@@ -20,7 +20,7 @@ public class OwnerEntityListener {
         if (target == null) return;
         if (target instanceof Ownable ownable) {
             var pri = Principal.CURRENT();
-            if (!ownable.getOwnerId().isEmpty()) return;
+            if (!ownable.getOrgID().isEmpty()) return;
             Principal.ID().ifPresent(nixID -> setOwnerId(ownable, nixID));
         }
     }

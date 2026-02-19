@@ -1,5 +1,6 @@
-package com.suiteonix.nix.Auth.internal.domain;
+package com.suiteonix.nix.Auth.internal.domain.services;
 
+import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.shared.exceptions.EX;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthModule {
     private final AuthUserRepository repository;
     private final RegisterUseCase registerUseCase;
+    private final VerifyEmailUseCase verifyEmailUseCase;
+    private final ResendVerificationUseCase resendVerificationUseCase;
 
     @Transactional
     public AuthProfileModel register(AuthProfile.Register create) {
@@ -40,5 +43,20 @@ public class AuthModule {
                                 EX.notFound(
                                         "AUTH_USER_NOT_FOUND",
                                         "Auth user not found"));
+    }
+
+    @Transactional
+    public void verifyEmailByJwt(String token, String orgID) {
+        verifyEmailUseCase.verifyByJwt(token, orgID);
+    }
+
+    @Transactional
+    public void verifyEmailByOtp(String email, String otp, String orgID) {
+        verifyEmailUseCase.verifyByOtp(email, otp, orgID);
+    }
+
+    @Transactional
+    public void resendVerification(String email, String orgID) {
+        resendVerificationUseCase.resend(email, orgID);
     }
 }
