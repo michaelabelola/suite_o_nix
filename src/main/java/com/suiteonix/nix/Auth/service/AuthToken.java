@@ -6,7 +6,6 @@ import jakarta.persistence.Transient;
 import java.time.Duration;
 import java.time.Instant;
 
-//@Embeddable
 public record AuthToken(
         AuthTokenType type,
         String value,
