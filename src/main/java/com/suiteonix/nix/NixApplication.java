@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.modulith.Modulithic;
@@ -13,6 +14,7 @@ import org.springframework.modulith.Modulithic;
 @Modulithic
 @EnableCaching
 @EnableJpaAuditing
+@EnableAspectJAutoProxy
 @ConfigurationPropertiesScan
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
 @EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)

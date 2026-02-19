@@ -1,6 +1,7 @@
 package com.suiteonix.nix.Auth.internal;
 
 import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Permission.systemPermissions.annotations.Allow;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ class AuthController {
         return AuthUserMapper.INSTANCE.toDto(authModule.getAuthUserById(id));
     }
 
+//    @PermissionDefinition()
+    @Allow("/login")
     @PostMapping("/login")
     void login() {
         // TODO: Implement login logic
