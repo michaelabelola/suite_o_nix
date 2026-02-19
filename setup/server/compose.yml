@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  registry:
+    image: registry:3
+    container_name: registry
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    environment:
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+    volumes:
+      - ./auth:/auth
+  #  docker run --entrypoint htpasswd httpd:2 -Bbn shellrim 4mb0IE4xQdHqemv0SMDrq19EqDtTxo > auth/htpasswd
+  # PostgreSQL Database
+  postgres:
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
+    container_name: suiteonix-postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    env_file:
+      - /.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-suiteonix}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+  # MongoDB Database
+  mongodb:
+    image: mongo:8.0
+    container_name: suiteonix-mongodb
+    ports:
+      - "${MONGODB_PORT:-27017}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME:-mongo}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-mongo}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE:-suiteonix}
+    env_file:
+      - /.env
+    command: [
+      "mongod",
+      "--replSet", "myReplicaSet",
+      "--bind_ip_all",
+      "--auth",
+      "--keyFile", "/data/keyfile/mongodb-keyfile",
+      "--quiet",
+      "--logpath", "/dev/null"
+    ]
+    #    command: ["--quiet", "--logpath", "/dev/null"]
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb_key:/data/keyfile:ro
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+  mongo-setup:
+    image: mongo:8.0
+    depends_on:
+      - mongodb
+    env_file:
+      - /.env
+    environment:
+      MONGODB_USERNAME: ${MONGODB_USERNAME:-mongo}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:-mongo}
+    volumes:
+      - ./mongo_setup.sh:/scripts/mongo_setup.sh
+    restart: "no"
+    entrypoint: [ "bash", "/scripts/mongo_setup.sh" ]
+
+  # MinIO (S3-compatible object storage)
+  minio:
+    image: minio/minio:latest
+    container_name: suiteonix-minio
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    env_file:
+      - /.env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: unless-stopped
+
+  # Create default buckets in MinIO
+  minio-mc:
+    image: minio/mc:latest
+    container_name: suiteonix-minio-mc
+    depends_on:
+      - minio
+    env_file:
+      - /.env
+    entrypoint: >
+      /bin/sh -c "
+      echo '⏳ Waiting for MinIO to start...' &&
+      sleep 10 &&
+      echo '🚀 Configuring MinIO...' &&
+      /usr/bin/mc alias set myminio http://minio:9000 ${MINIO_ACCESS_KEY:-minioadmin} ${MINIO_SECRET_KEY:-minioadmin} &&
+      /usr/bin/mc mb --ignore-existing myminio/${MINIO_BUCKET:-suiteonix} &&
+      /usr/bin/mc mb --ignore-existing myminio/${MINIO_BUCKET:-suiteonixprivate} &&
+      /usr/bin/mc anonymous set download myminio/${MINIO_BUCKET:-suiteonix} &&
+      echo '✅ Public read policy applied on bucket: ${MINIO_BUCKET:-suiteonix}' &&
+      exit 0;
+      "
+
+  # MailHog (Email testing tool)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: suiteonix-mailhog
+    ports:
+      - "${MAILHOG_SMTP_PORT:-1025}:1025"
+      - "${MAILHOG_UI_PORT:-8025}:8025"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  minio_data:
+
+#  ssh -R 7070:localhost:8080 root@suiteonix.com
