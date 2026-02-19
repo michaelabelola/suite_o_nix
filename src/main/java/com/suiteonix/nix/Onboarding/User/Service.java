@@ -32,7 +32,7 @@ class UserRegistrationService {
 
         NixMailSender.newInstance()
                 .to(user.email())
-                .templateName("onboarding/user/user-onboarding-email")
+                .templateName(" onboarding/user/user-onboarding-email")
                 .variables(Map.of(
                         "user", user,
                         "authProfile", authProfile
