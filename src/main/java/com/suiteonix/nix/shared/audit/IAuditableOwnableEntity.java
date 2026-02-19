@@ -16,7 +16,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 public abstract class IAuditableOwnableEntity<T extends AbstractAggregateRoot<T>> extends AbstractAggregateRoot<T> implements IAuditable, Ownable {
 
     @Embedded
-    @AttributeOverride(name = "id", column = @Column(name = "owner_id", updatable = false))
+    @AttributeOverride(name = "id", column = @Column(name = "org_id", updatable = false))
     @Setter(AccessLevel.PACKAGE)
     NixID orgID = NixID.EMPTY();
 

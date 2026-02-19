@@ -27,7 +27,7 @@ public class OwnerEntityListener {
 
     private void setOwnerId(Ownable target, NixID id) {
         try {
-            Method setOwnerMethod = findMethodInHierarchy(target.getClass(), "setOwnerId", NixID.class);
+            Method setOwnerMethod = findMethodInHierarchy(target.getClass());
             setOwnerMethod.setAccessible(true);
             setOwnerMethod.invoke(target, id);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -35,15 +35,16 @@ public class OwnerEntityListener {
         }
     }
 
-    private Method findMethodInHierarchy(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
+    private Method findMethodInHierarchy(Class<?> clazz) throws NoSuchMethodException {
         Class<?> currentClass = clazz;
         while (currentClass != null) {
             try {
-                return currentClass.getDeclaredMethod(methodName, parameterTypes);
+                return currentClass.getDeclaredMethod("setOrgID", NixID.class);
             } catch (NoSuchMethodException e) {
                 currentClass = currentClass.getSuperclass();
             }
         }
-        throw new NoSuchMethodException("Method '" + methodName + "' not found in class hierarchy of " + clazz.getName());
+
+        throw new NoSuchMethodException("Method '" + "setOrgID" + "' not found in class hierarchy of " + clazz.getName());
     }
 }
