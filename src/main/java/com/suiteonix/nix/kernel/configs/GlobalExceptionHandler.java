@@ -1,6 +1,6 @@
 package com.suiteonix.nix.kernel.configs;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.exc.InvalidFormatException;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.exceptions.NixException;
 import jakarta.validation.ConstraintViolationException;
@@ -159,7 +159,8 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (problem.getProperties() == null)
             problem.setProperties(new HashMap<>());
         if (ex.getCause() instanceof InvalidFormatException ife) {
-            problem.getProperties().put("field", ife.getPath().getLast().getFieldName());
+            var ref = ife.getPath().isEmpty() ? null : ife.getPath().getLast();
+            if (ref != null) problem.getProperties().put("field", ref.toString());
             problem.getProperties().put("value", ife.getValue());
             problem.getProperties().put("type", ife.getTargetType().getSimpleName());
         }

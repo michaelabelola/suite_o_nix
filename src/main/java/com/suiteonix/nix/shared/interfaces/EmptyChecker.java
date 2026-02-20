@@ -7,3 +7,4 @@ public interface EmptyChecker {
     @JsonIgnore
     boolean isEmpty();
 }
+

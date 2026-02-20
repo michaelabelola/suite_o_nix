@@ -1,6 +1,5 @@
 package com.suiteonix.nix.kernel.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.suiteonix.nix.shared.exceptions.NixException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,12 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class CustomErrorController implements ErrorController {
-
-    private final ObjectMapper objectMapper;
-
-    public CustomErrorController(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     @RequestMapping("/error")
     public ResponseEntity<ProblemDetail> handleError(HttpServletRequest request) {
