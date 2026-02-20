@@ -33,9 +33,11 @@ class EmailVerificationService {
 
         authUser.getTokens().add(AuthToken.NEW(AuthTokenType.EMAIL_VERIFICATION_OTP, otpCode, ttl));
         authUser.getTokens().add(AuthToken.NEW(AuthTokenType.EMAIL_VERIFICATION_JWT, jwtToken, ttl));
-
-        String verificationLink = "http://" + appUrl + "/auth/verify-email?token=" + jwtToken
-                + "&orgID=" + authUser.getOrgID().get();
+        var orgIDParam =
+                !authUser.getOrgID().isEmpty()
+                        ? "&orgID=" + authUser.getOrgID().id()
+                        : "";
+        String verificationLink = "http://" + appUrl + "/auth/verify-email?token=" + jwtToken + orgIDParam;
 
         NixMailSender.newInstance()
                 .to(authUser.getEmail().get())

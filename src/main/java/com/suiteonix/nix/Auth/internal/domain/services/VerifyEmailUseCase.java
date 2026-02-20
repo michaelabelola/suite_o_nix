@@ -37,8 +37,6 @@ class VerifyEmailUseCase {
 
         // If a concrete orgID was supplied, verify it matches the stored owner
         NixID ownerOrgID = AuthUserLookupHelper.toNixId(orgID);
-        log.error(!AuthUserLookupHelper.isSystemOrAnonymous(ownerOrgID));
-        log.error(!authUser.getOrgID().equals(ownerOrgID));
         if (!AuthUserLookupHelper.isSystemOrAnonymous(ownerOrgID)
                 && !authUser.getOrgID().equals(ownerOrgID)) {
             throw EX.badRequest("INVALID_VERIFICATION_TOKEN", "The verification link is invalid");
