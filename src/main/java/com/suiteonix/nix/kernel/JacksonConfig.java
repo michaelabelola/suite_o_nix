@@ -3,6 +3,7 @@ package com.suiteonix.nix.kernel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import tools.jackson.databind.DeserializationFeature;
 import tools.jackson.databind.MapperFeature;
 import tools.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import java.util.TimeZone;
 public class JacksonConfig {
 
     @Bean
+    @Primary
     public ObjectMapper objectMapper() {
         return JsonMapper.builder()
                 .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"))

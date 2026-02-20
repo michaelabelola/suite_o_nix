@@ -16,7 +16,9 @@ import org.springframework.modulith.Modulithic;
 @EnableJpaAuditing
 @EnableAspectJAutoProxy
 @ConfigurationPropertiesScan
-@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+        UserDetailsServiceAutoConfiguration.class
+})
 @EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 public class NixApplication {
 

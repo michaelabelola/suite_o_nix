@@ -8,7 +8,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Objects;
 
 @Embeddable
-@Schema(example = "677890782656598016", type = "string")
+@Schema(example = "U-677890782656598016", type = "string")
 public record NixID(
         String id
 ) implements ID<NixID, String> {

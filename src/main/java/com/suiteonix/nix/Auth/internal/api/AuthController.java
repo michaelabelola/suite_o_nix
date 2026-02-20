@@ -17,8 +17,8 @@ class AuthController {
     private final AuthModule authModule;
 
     @GetMapping("{id}")
-    AuthProfile getAuthProfile(@PathVariable String id) {
-        return AuthUserMapper.INSTANCE.toDto(authModule.getAuthUserById(id));
+    AuthProfile.Detailed getAuthProfile(@PathVariable String id) {
+        return AuthUserMapper.INSTANCE.detailed(authModule.getAuthUserById(id));
     }
 
     @Operation(summary = "Verify email via JWT link", description = "Called when the user clicks the verification link in the email. Accepts the JWT token and optional orgID as query params.")
