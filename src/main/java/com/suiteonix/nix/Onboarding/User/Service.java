@@ -32,6 +32,8 @@ class UserRegistrationService {
         var authProfileCreate = onboarding.toAuthUserCreate(user.id());
         var authProfile = authenticationService.register(authProfileCreate);
 
+
+
         mailService.queueMail(
                 NixMailSender.newInstance()
                         .to(user.email())
