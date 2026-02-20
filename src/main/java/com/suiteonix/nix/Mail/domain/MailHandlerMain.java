@@ -17,13 +17,12 @@ import java.io.File;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class MailHandlerMain {
+public class MailHandlerMain {
     private final JavaMailSender mailSender;
     private final TemplateEngine thymeleafTemplateEngine;
     private final TemplateProcessor mustacheTemplateProcessor;
     @Value("${nix.mail.from}")
     String defaultFrom;
-
 
     public MimeMessage buildMessage(NixMailSender nixMailSender) {
         // Create a copy of attachments to avoid potential issues with the original array

@@ -181,7 +181,8 @@ class MailServiceImpl implements MailService {
 
     @Async
     public void sendInstantMailAsync(NixMailSender nixMailSender) {
-        CustomContextHolder.bean(JobScheduler.class).enqueue(() -> mailHandlerMain.sendMail(nixMailSender));
+        NixMailSender rendered = preRender(nixMailSender);
+        CustomContextHolder.bean(JobScheduler.class).enqueue(() -> mailHandlerMain.sendMail(rendered));
     }
 
     @Override
@@ -194,8 +195,21 @@ class MailServiceImpl implements MailService {
         return mailDomain;
     }
 
+    /**
+     * Pre-renders the template so JobRunr only serializes primitive/string fields.
+     * Avoids Jackson PolymorphicTypeValidator rejection of complex domain objects in {@code variables}.
+     */
+    private NixMailSender preRender(NixMailSender nixMailSender) {
+        if (nixMailSender.getTemplateType() != null) {
+            String html = ContentProcessor.processContent(nixMailSender, thymeleafTemplateEngine, mustacheTemplateProcessor);
+            nixMailSender.preRender(html);
+        }
+        return nixMailSender;
+    }
+
     private void queueMailInternal(NixMailSender nixMailSender) {
-        CustomContextHolder.bean(JobScheduler.class).enqueue(() -> mailHandlerMain.sendMail(nixMailSender));
+        NixMailSender rendered = preRender(nixMailSender);
+        CustomContextHolder.bean(JobScheduler.class).enqueue(() -> mailHandlerMain.sendMail(rendered));
         log.info("🟡🟡🟡Mail has been queued to be sent");
     }
 
@@ -212,7 +226,8 @@ class MailServiceImpl implements MailService {
     }
 
     private void scheduleMailInternal(NixMailSender nixMailSender, Temporal sendAt) {
-        CustomContextHolder.bean(JobScheduler.class).schedule(sendAt, () -> mailHandlerMain.sendMail(nixMailSender));
+        NixMailSender rendered = preRender(nixMailSender);
+        CustomContextHolder.bean(JobScheduler.class).schedule(sendAt, () -> mailHandlerMain.sendMail(rendered));
         log.info("🟡🕐🟡Mail has been scheduled to be sent at {}", sendAt);
     }
 

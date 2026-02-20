@@ -72,6 +72,7 @@ class RegisterUseCase {
                 .templateName("auth/user-mail-verification")
                 .variable("authUser", AuthUserMapper.INSTANCE.toDto(authUser))
                 .variable("verificationToken", otpCode)
+                .html()
                 .variable("verificationLink", verificationLink)
                 .templateType(TemplateType.THYMELEAF).queueMail();
     }

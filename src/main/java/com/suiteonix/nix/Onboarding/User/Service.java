@@ -37,6 +37,7 @@ class UserRegistrationService {
         mailService.queueMail(
                 NixMailSender.newInstance()
                         .to(user.email())
+                        .html()
                         .templateName("onboarding/user/user-onboarding-email")
                         .variables(Map.of(
                                 "user", user,

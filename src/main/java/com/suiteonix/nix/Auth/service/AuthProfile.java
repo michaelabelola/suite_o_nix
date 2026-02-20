@@ -14,6 +14,7 @@ public record AuthProfile(
         NixRole role,
         String email,
         String phone,
+        @JsonUnwrapped(prefix = "org_")
         NixID orgID,
         SignInOptions signInOptions,
         ConfigFlags configFlags
@@ -33,6 +34,7 @@ public record AuthProfile(
     ) {
 
     }
+
     @Builder
     @Schema(name = "AuthProfile.Register")
     public record Register(

@@ -59,13 +59,14 @@ class ResendVerificationUseCase {
 
         mailService.queueMail(
 
-        NixMailSender.newInstance()
-                .to(authUser.getEmail().get())
-                .templateName("auth/user-mail-verification")
-                .variable("authUser", authUser)
-                .variable("verificationToken", otpCode)
-                .variable("verificationLink", verificationLink)
-                .templateType(TemplateType.THYMELEAF)
+                NixMailSender.newInstance()
+                        .to(authUser.getEmail().get())
+                        .html()
+                        .templateName("auth/user-mail-verification")
+                        .variable("authUser", authUser)
+                        .variable("verificationToken", otpCode)
+                        .variable("verificationLink", verificationLink)
+                        .templateType(TemplateType.THYMELEAF)
         );
     }
 }

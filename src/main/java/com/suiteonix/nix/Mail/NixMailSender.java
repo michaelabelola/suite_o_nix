@@ -44,9 +44,8 @@ public class NixMailSender {
         return this;
     }
 
-
-    public NixMailSender html(boolean isHtml) {
-        this.isHtml = isHtml;
+    public NixMailSender html() {
+        this.isHtml = true;
         return this;
     }
 
@@ -65,6 +64,19 @@ public class NixMailSender {
     public NixMailSender content(String content) {
         this.content = content;
         this.templateName = null;
+        return this;
+    }
+
+    /**
+     * Pre-renders template content so no complex domain objects need to be serialized by JobRunr.
+     * Sets {@code content} to the rendered HTML and clears {@code templateName}, {@code templateType},
+     * and {@code variables}.
+     */
+    public NixMailSender preRender(String html) {
+        this.content = html;
+        this.templateName = null;
+        this.templateType = null;
+        this.variables.clear();
         return this;
     }
 

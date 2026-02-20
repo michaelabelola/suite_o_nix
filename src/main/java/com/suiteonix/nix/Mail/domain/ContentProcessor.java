@@ -39,6 +39,10 @@ class ContentProcessor {
     }
 
     static String processContent(NixMailSender nixMailSender, TemplateEngine thymeleafTemplateEngine, TemplateProcessor mustacheTemplateProcessor) {
+        // Pre-rendered — templateType cleared, return content as-is
+        if (nixMailSender.getTemplateType() == null) {
+            return nixMailSender.getContent() != null ? nixMailSender.getContent() : "";
+        }
 
         return (nixMailSender.getTemplateName() != null) ?
                 switch (nixMailSender.getTemplateType()) {
