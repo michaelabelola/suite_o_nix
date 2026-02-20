@@ -40,8 +40,7 @@ class ResendVerificationUseCase {
         // Remove old verification tokens
         authUser.getTokens().removeIf(t ->
                 t.type() == AuthTokenType.EMAIL_VERIFICATION_OTP
-                        || t.type() == AuthTokenType.EMAIL_VERIFICATION_JWT
-                        || t.type() == AuthTokenType.EMAIL_VERIFICATION);
+                        || t.type() == AuthTokenType.EMAIL_VERIFICATION_JWT);
 
         long ttlMs = jwtProperties.getEmailVerificationTTL();
         Duration ttl = Duration.ofMillis(ttlMs);
@@ -58,7 +57,6 @@ class ResendVerificationUseCase {
         repository.save(authUser);
 
         mailService.queueMail(
-
                 NixMailSender.newInstance()
                         .to(authUser.getEmail().get())
                         .html()

@@ -9,12 +9,15 @@ import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
 class VerifyEmailUseCase {
 
+    private static final Log log = LogFactory.getLog(VerifyEmailUseCase.class);
     private final AuthUserRepository repository;
     private final AuthJwtUtil authJwtUtil;
     private final AuthUserLookupHelper lookupHelper;
@@ -34,6 +37,8 @@ class VerifyEmailUseCase {
 
         // If a concrete orgID was supplied, verify it matches the stored owner
         NixID ownerOrgID = AuthUserLookupHelper.toNixId(orgID);
+        log.error(!AuthUserLookupHelper.isSystemOrAnonymous(ownerOrgID));
+        log.error(!authUser.getOrgID().equals(ownerOrgID));
         if (!AuthUserLookupHelper.isSystemOrAnonymous(ownerOrgID)
                 && !authUser.getOrgID().equals(ownerOrgID)) {
             throw EX.badRequest("INVALID_VERIFICATION_TOKEN", "The verification link is invalid");
@@ -79,7 +84,6 @@ class VerifyEmailUseCase {
     private void clearVerificationTokens(AuthProfileModel authUser) {
         authUser.getTokens().removeIf(t ->
                 t.type() == AuthTokenType.EMAIL_VERIFICATION_OTP
-                        || t.type() == AuthTokenType.EMAIL_VERIFICATION_JWT
-                        || t.type() == AuthTokenType.EMAIL_VERIFICATION);
+                        || t.type() == AuthTokenType.EMAIL_VERIFICATION_JWT);
     }
 }

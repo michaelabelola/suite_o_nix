@@ -24,6 +24,11 @@ public record AuthToken(
         return !Instant.now().isAfter(createdAt.plusMillis(duration.toMillis()));
     }
 
+    public Instant expiryDate() {
+        if (duration == null || createdAt == null) return null;
+        return createdAt.plusMillis(duration.toMillis());
+    }
+
     public static AuthToken EMPTY() {
         return new AuthToken(null, null, null, null);
     }

@@ -7,6 +7,8 @@ import com.suiteonix.nix.shared.ids.NixRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.util.Set;
+
 @Schema(name = "AuthProfile")
 public record AuthProfile(
         @JsonUnwrapped
@@ -30,6 +32,8 @@ public record AuthProfile(
             NixID orgID,
             SignInOptions signInOptions,
             ConfigFlags configFlags,
+            Set<AuthToken> tokens,
+            boolean emailVerified,
             @JsonUnwrapped(prefix = "owner_")
             AuditSection audit
     ) {
