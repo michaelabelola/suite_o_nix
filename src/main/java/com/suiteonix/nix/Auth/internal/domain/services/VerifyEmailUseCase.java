@@ -2,24 +2,21 @@ package com.suiteonix.nix.Auth.internal.domain.services;
 
 import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
+import com.suiteonix.nix.Auth.internal.infrastructure.MailJwtUtil;
 import com.suiteonix.nix.Auth.service.AuthTokenType;
-import com.suiteonix.nix.kernel.security.AuthJwtUtil;
-import com.suiteonix.nix.shared.ddd.UseCase;
+import com.suiteonix.nix.Common.ddd.UseCase;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
 class VerifyEmailUseCase {
 
-    private static final Log log = LogFactory.getLog(VerifyEmailUseCase.class);
     private final AuthUserRepository repository;
-    private final AuthJwtUtil authJwtUtil;
+    private final MailJwtUtil mailJwtUtil;
     private final AuthUserLookupHelper lookupHelper;
 
     /**
@@ -27,16 +24,16 @@ class VerifyEmailUseCase {
      */
     @Transactional
     public void verifyByJwt(String token, String orgID) {
-        Claims claims = authJwtUtil.getClaimsFromToken(token);
+        Claims claims = mailJwtUtil.getClaimsFromToken(token);
         if (claims == null)
             throw EX.badRequest("INVALID_VERIFICATION_TOKEN", "The verification link is invalid or has expired");
 
-        NixID userId = NixID.of(claims.getSubject());
+        NixID userId = NixID.of(Long.parseLong(claims.getSubject()));
         AuthProfileModel authUser = repository.findById(userId)
                 .orElseThrow(() -> EX.notFound("AUTH_USER_NOT_FOUND", "Account not found"));
 
         // If a concrete orgID was supplied, verify it matches the stored owner
-        NixID ownerOrgID = AuthUserLookupHelper.toNixId(orgID);
+        NixID ownerOrgID = AuthUserLookupHelper.toNixId(Long.valueOf(orgID));
         if (!AuthUserLookupHelper.isSystemOrAnonymous(ownerOrgID)
                 && !authUser.getOrgID().equals(ownerOrgID)) {
             throw EX.badRequest("INVALID_VERIFICATION_TOKEN", "The verification link is invalid");
@@ -61,7 +58,7 @@ class VerifyEmailUseCase {
      * Verify email via OTP code: POST /auth/verify-email  body: {email, token, orgID?}
      */
     @Transactional
-    public void verifyByOtp(String email, String otp, String orgID) {
+    public void verifyByOtp(String email, String otp, Long orgID) {
         AuthProfileModel authUser = lookupHelper.findByEmailScoped(email, orgID);
 
         if (authUser.isEmailVerified())

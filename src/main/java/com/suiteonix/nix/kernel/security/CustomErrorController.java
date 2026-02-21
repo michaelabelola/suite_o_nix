@@ -1,6 +1,7 @@
 package com.suiteonix.nix.kernel.security;
 
 import com.suiteonix.nix.shared.exceptions.NixException;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomErrorController implements ErrorController {
 
     @RequestMapping("/error")
+    @Operation(hidden = true)
     public ResponseEntity<ProblemDetail> handleError(HttpServletRequest request) {
 
         if (request.getAttribute("jakarta.servlet.error.exception") instanceof NixException ex) {

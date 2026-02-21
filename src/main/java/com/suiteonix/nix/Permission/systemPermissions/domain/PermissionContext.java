@@ -1,5 +1,7 @@
 package com.suiteonix.nix.Permission.systemPermissions.domain;
 
+import com.suiteonix.nix.shared.permissions.system.PermissionDefinitionRecord;
+
 import java.util.Optional;
 
 public final class PermissionContext {

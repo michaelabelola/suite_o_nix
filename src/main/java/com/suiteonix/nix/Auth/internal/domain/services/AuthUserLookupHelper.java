@@ -18,7 +18,7 @@ class AuthUserLookupHelper {
      * Finds an AuthProfileModel by email, scoped to orgID when it is a concrete (non-system, non-anonymous) ID.
      * SYSTEM = NixID.SYSTEM ("S-SYSTEM"), ANONYMOUS = NixID.EMPTY() (null id).
      */
-    AuthProfileModel findByEmailScoped(String email, String ownerId) {
+    AuthProfileModel findByEmailScoped(String email, Long ownerId) {
         Email emailVO = Email.NEW(email);
         NixID orgID = toNixId(ownerId);
         if (isSystemOrAnonymous(orgID)) {
@@ -31,12 +31,12 @@ class AuthUserLookupHelper {
 
     static boolean isSystemOrAnonymous(NixID id) {
         if (id == null) return true;
-        String raw = id.get();
-        return raw == null || raw.isBlank() || id.equals(NixID.SYSTEM);
+        Long raw = id.get();
+        return raw == null || raw == 0 || id.equals(NixID.SYSTEM);
     }
 
-    static NixID toNixId(String id) {
-        if (id == null || id.isBlank()) return NixID.EMPTY();
+    static NixID toNixId(Long id) {
+        if (id == null || id == 0) return NixID.EMPTY();
         return NixID.of(id);
     }
 }

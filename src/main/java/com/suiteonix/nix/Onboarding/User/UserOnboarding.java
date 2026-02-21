@@ -1,7 +1,8 @@
 package com.suiteonix.nix.Onboarding.User;
 
 import com.suiteonix.nix.Auth.service.AuthProfile;
-import com.suiteonix.nix.Auth.service.ConfigFlag;
+import com.suiteonix.nix.User.service.UserCreateDto;
+import com.suiteonix.nix.shared.ConfigFlag;
 import com.suiteonix.nix.User.service.User;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
@@ -33,8 +34,8 @@ class UserOnboarding {
             if (email != null) email = email.toLowerCase();
         }
 
-        public User.Create toUserCreate() {
-            return User.Create.builder()
+        public UserCreateDto toUserCreate() {
+            return UserCreateDto.builder()
                     .firstname(firstname())
                     .lastname(lastname()).email(email()).phone(phone())
                     .dateOfBirth(dateOfBirth()).bio(bio()).address(address()).build();

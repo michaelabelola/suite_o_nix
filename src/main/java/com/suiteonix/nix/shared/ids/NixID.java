@@ -8,13 +8,12 @@ import org.jspecify.annotations.NonNull;
 import java.util.Objects;
 
 @Embeddable
-@Schema(example = "U-677890782656598016", type = "string")
+@Schema(example = "677890782656598016", type = "number")
 public record NixID(
-        String id
-) implements ID<NixID, String> {
+        Long id
+) implements ID<NixID, Long> {
 
-
-    public static final NixID SYSTEM = NixRole.SYSTEM.generateID();
+    public static final NixID SYSTEM = NixID.of((long) NixRole.SYSTEM.idValue());
 
     public static NixID NEW(NixRole role) {
         return role.generateID();
@@ -25,22 +24,23 @@ public record NixID(
     }
 
     public NixRole role() {
-       return NixRole.of(this);
+        return NixRole.of(this);
     }
 
     @Transient
     @Override
-    public String get() {
+    public Long get() {
         return id;
     }
 
-    public static NixID of(String id) {
+    public static NixID of(Long id) {
+        if (id == null) return EMPTY();
         return new NixID(id);
     }
 
     @Transient
     public static NixID EMPTY() {
-        return NixID.of(null);
+        return NixID.of((long) NixRole.ANONYMOUS.idValue());
     }
 
     @Schema(hidden = true)
@@ -53,18 +53,18 @@ public record NixID(
 
     @Override
     public @NonNull String toString() {
-        return id();
+        return String.valueOf(id());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof NixID(String id1))
+        if (obj instanceof NixID(Long id1))
             return Objects.equals(id1, id);
         return false;
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return Objects.hash(id);
     }
 }

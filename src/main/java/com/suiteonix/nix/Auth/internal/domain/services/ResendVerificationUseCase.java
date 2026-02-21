@@ -3,7 +3,7 @@ package com.suiteonix.nix.Auth.internal.domain.services;
 import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.service.AuthTokenType;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
-import com.suiteonix.nix.shared.ddd.UseCase;
+import com.suiteonix.nix.Common.ddd.UseCase;
 import com.suiteonix.nix.shared.exceptions.EX;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ class ResendVerificationUseCase {
     private final EmailVerificationService emailVerificationService;
 
     @Transactional
-    public void resend(String email, String ownerId) {
+    public void resend(String email, Long ownerId) {
         AuthProfileModel authUser = lookupHelper.findByEmailScoped(email, ownerId);
 
         if (authUser.isEmailVerified())

@@ -1,7 +1,7 @@
 package com.suiteonix.nix.shared.ValueObjects;
 
 import com.suiteonix.nix.shared.interfaces.EmptyChecker;
-import com.suiteonix.nix.shared.ddd.ValueObject;
+import com.suiteonix.nix.Common.ddd.ValueObject;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.interfaces.ValidityChecker;
 import jakarta.persistence.Column;

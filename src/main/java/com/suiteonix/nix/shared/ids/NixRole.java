@@ -1,47 +1,43 @@
 package com.suiteonix.nix.shared.ids;
 
-import com.suiteonix.nix.shared.exceptions.EX;
 import org.jspecify.annotations.NonNull;
 
 public enum NixRole {
-    USER("U"),
-    CUSTOMER("C"),
-    PATIENT("P"),
-    ADMIN("A"),
-    SUPER_ADMIN("SA"),
-    ORGANIZATION("O"),
-    ANONYMOUS("AN"),
-    SYSTEM("S");
+    SYSTEM((byte) 0),
+    SUPER_ADMIN((byte) 1),
+    ADMIN((byte) 2),
+    ORGANIZATION((byte) 3),
+    USER((byte) 4),
+    CUSTOMER((byte) 5),
+    ANONYMOUS((byte) 6);
 
-    private final String idValue;
+    private final byte idValue;
 
     /**
      * System Role: For the service
      */
-    NixRole(String idValue) {
+    NixRole(byte idValue) {
         this.idValue = idValue;
     }
 
-    public static @NonNull NixRole of(@NonNull NixID id) {
-        return switch (id.get()) {
-            case "U" -> NixRole.USER;
-            case "C" -> NixRole.CUSTOMER;
-            case "P" -> NixRole.PATIENT;
-            case "A" -> NixRole.ADMIN;
-            case "SA" -> NixRole.SUPER_ADMIN;
-            case "O" -> NixRole.ORGANIZATION;
-            case "S" -> NixRole.SYSTEM;
-            case null, default -> NixRole.ANONYMOUS;
-        };
+    public byte idValue() {
+        return idValue;
     }
 
-
-    public @NonNull NixID generateID() {
-        return switch (this) {
-            case SYSTEM -> NixID.of(idValue + "-" + "SYSTEM");
-            case ANONYMOUS -> throw EX.badRequest("ANONYMOUS_ID_CANT_BE_GENERATED", "Anonymous ID cannot be generated");
-            case SUPER_ADMIN -> NixID.of(idValue + "-" + "SUPER_ADMIN");
-            default -> NixID.of(idValue + "-" + Snowflake.nextId().asString());
+    public static @NonNull NixRole of(@NonNull NixID id) {
+        if (id.isEmpty()) return NixRole.ANONYMOUS;
+        return switch ((int) (id.get() & 0xFF)) {
+            case 0 -> NixRole.SYSTEM;
+            case 1 -> NixRole.SUPER_ADMIN;
+            case 2 -> NixRole.ADMIN;
+            case 3 -> NixRole.ORGANIZATION;
+            case 4 -> NixRole.USER;
+            case 5 -> NixRole.CUSTOMER;
+            default -> NixRole.ANONYMOUS;
         };
+    }
+    public @NonNull NixID generateID() {
+        var id = String.valueOf(Snowflake.nextId().id()) + idValue();
+        return NixID.of(Long.valueOf(id));
     }
 }

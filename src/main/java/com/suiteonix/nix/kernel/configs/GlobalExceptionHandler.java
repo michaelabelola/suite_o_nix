@@ -42,7 +42,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Handles constraint violation exceptions.
      *
      * @param e the constraint violation exception
-     * @return a problem detail with BAD_REQUEST status and the exception message
+     * @return a problem details with BAD_REQUEST status and the exception message
      */
     @ExceptionHandler(ConstraintViolationException.class)
     ProblemDetail handleConstraintViolationException(ConstraintViolationException e) {
@@ -53,7 +53,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Handles data integrity violation exceptions.
      *
      * @param e the data integrity violation exception
-     * @return a problem detail with CONFLICT status and a formatted error message
+     * @return a problem details with CONFLICT status and a formatted error message
      */
     @ExceptionHandler(DataIntegrityViolationException.class)
     ProblemDetail handleDataIntegrityViolationException(DataIntegrityViolationException e) {
@@ -64,7 +64,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Handles bad credentials exceptions.
      *
      * @param ignored the bad credentials exception
-     * @return a problem detail with UNAUTHORIZED status and an invalid credentials message
+     * @return a problem details with UNAUTHORIZED status and an invalid credentials message
      */
     @ExceptionHandler(BadCredentialsException.class)
     ProblemDetail handleBadCredentialsException(BadCredentialsException ignored) {
@@ -75,7 +75,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * Handles access denied exceptions.
      *
      * @param ignored the access denied exception
-     * @return a problem detail with FORBIDDEN status and access denied message
+     * @return a problem details with FORBIDDEN status and access denied message
      */
     @ExceptionHandler(AccessDeniedException.class)
     ProblemDetail handleAccessDeniedException(AccessDeniedException ignored) {
@@ -173,7 +173,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * This is a fallback handler that processes any exception not handled by more specific handlers.
      *
      * @param e the exception
-     * @return a problem detail with INTERNAL_SERVER_ERROR status and a generic error message
+     * @return a problem details with INTERNAL_SERVER_ERROR status and a generic error message
      */
     @ExceptionHandler(Exception.class)
     ProblemDetail handleAllUncaughtException(Exception e) {
@@ -186,7 +186,7 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * This method converts the custom NixException to a ProblemDetail response.
      *
      * @param e the NixException
-     * @return a problem detail based on the exception's properties
+     * @return a problem details based on the exception's properties
      */
     @ExceptionHandler(NixException.class)
     ProblemDetail handleNixException(NixException e) {

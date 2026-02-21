@@ -11,7 +11,9 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.modulith.Modulithic;
 
 
-@Modulithic
+@Modulithic(sharedModules = {
+        "shared", "spi"
+})
 @EnableCaching
 @EnableJpaAuditing
 @EnableAspectJAutoProxy

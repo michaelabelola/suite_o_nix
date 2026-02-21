@@ -2,12 +2,12 @@ package com.suiteonix.nix.Auth.internal.domain.services;
 
 import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserMapper;
+import com.suiteonix.nix.Auth.internal.infrastructure.MailJwtUtil;
 import com.suiteonix.nix.Auth.service.AuthToken;
 import com.suiteonix.nix.Auth.service.AuthTokenType;
 import com.suiteonix.nix.Mail.NixMailSender;
 import com.suiteonix.nix.Mail.TemplateType;
-import com.suiteonix.nix.kernel.security.AuthJwtUtil;
-import com.suiteonix.nix.kernel.security.jwt.JwtProperties;
+import com.suiteonix.nix.Common.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 class EmailVerificationService {
 
-    private final AuthJwtUtil authJwtUtil;
+    private final MailJwtUtil mailJwtUtil;
     private final JwtProperties jwtProperties;
     @Value("${app.url}")
     private String appUrl;
@@ -29,7 +29,7 @@ class EmailVerificationService {
         Duration ttl = Duration.ofMillis(ttlMs);
 
         String otpCode = String.format("%06d", new SecureRandom().nextInt(1_000_000));
-        String jwtToken = authJwtUtil.generateEmailVerificationToken(authUser.getId(), ttlMs);
+        String jwtToken = mailJwtUtil.generateEmailVerificationToken(authUser.getId(), ttlMs);
 
         authUser.getTokens().add(AuthToken.NEW(AuthTokenType.EMAIL_VERIFICATION_OTP, otpCode, ttl));
         authUser.getTokens().add(AuthToken.NEW(AuthTokenType.EMAIL_VERIFICATION_JWT, jwtToken, ttl));

@@ -18,14 +18,15 @@ class RegisterTest {
     @DisplayName("AuthUserRegisterDto should be created with valid data")
     void authUserRegisterDto_ShouldBeCreated_WithValidData() {
 
-        var userId = NixID.NEW();
-     var   validRegisterDto = new AuthProfile.Register(
+        var userId = NixID.NEW(NixRole.CUSTOMER);
+        var validRegisterDto = new AuthProfile.Register(
+                userId,
                 NixRole.CUSTOMER,
                 "test@example.com",
                 "+1234567890",
                 "SecurePass123!",
-             AuthProfile.SignInOptions.builder().build(),
-             AuthProfile.ConfigFlags.builder().build()
+                AuthProfile.SignInOptions.builder().build(),
+                AuthProfile.ConfigFlags.builder().build()
         );
         assertNotNull(validRegisterDto);
         assertThat(validRegisterDto.role()).isEqualTo(NixRole.CUSTOMER);
@@ -39,6 +40,7 @@ class RegisterTest {
     void authUserRegisterDto_ShouldHandleDifferentRoles() {
         NixID adminId = NixID.of(UUID.randomUUID().toString());
         AuthProfile.Register adminDto = new AuthProfile.Register(
+                adminId,
                 NixRole.ADMIN,
                 "admin@example.com",
                 "+1234567891",
@@ -55,8 +57,9 @@ class RegisterTest {
     @Test
     @DisplayName("AuthUserRegisterDto should handle BUSINESS role")
     void authUserRegisterDto_ShouldHandleBusinessRole() {
-        NixID businessId = NixID.of(UUID.randomUUID().toString());
+        NixID businessId = NixID.NEW(NixRole.ORGANIZATION);
         AuthProfile.Register businessDto = new AuthProfile.Register(
+                businessId,
                 NixRole.ORGANIZATION,
                 "business@example.com",
                 "+9876543210",

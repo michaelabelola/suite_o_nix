@@ -1,6 +1,6 @@
 package com.suiteonix.nix.kernel.security;
 
-import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
+import com.suiteonix.nix.Common.authentication.CustomAuthentication;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

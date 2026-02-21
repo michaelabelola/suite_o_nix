@@ -1,5 +1,6 @@
 package com.suiteonix.nix.kernel.security.jwt;
 
+import com.suiteonix.nix.Common.JwtProperties;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,14 @@
 package com.suiteonix.nix.User.internal;
 
+import com.suiteonix.nix.Organization.services.OrgID;
 import com.suiteonix.nix.Storage.NixImage;
-import com.suiteonix.nix.shared.audit.IAuditableOwnableEntity;
-import com.suiteonix.nix.shared.audit.JpaAuditSection;
-import com.suiteonix.nix.shared.ddd.AggregateRoot;
+import com.suiteonix.nix.Common.audit.IAuditableOwnableEntity;
+import com.suiteonix.nix.Common.audit.JpaAuditSection;
+import com.suiteonix.nix.Common.ddd.AggregateRoot;
+import com.suiteonix.nix.User.service.UserCreateDto;
+import com.suiteonix.nix.User.service.UserEvents;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
-import com.suiteonix.nix.User.service.User;
 import com.suiteonix.nix.spi.location.HomeAddressModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,7 +49,7 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
     @Setter
     JpaAuditSection audit;
 
-    public static UserModel NEW(User.Create create) {
+    public static UserModel NEW(UserCreateDto create) {
         UserModel user = new UserModel();
         user.id = NixID.NewForRole(NixRole.USER);
         user.firstname = create.firstname();
@@ -58,6 +60,22 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
         user.avatar = create.avatar();
         user.bio = create.bio();
         user.address = HomeAddressModel.NEW(create.address());
+        user.registerEvent(UserEvents.Created.of(user.id));
+        return user;
+    }
+
+    public UserModel CLONE(OrgID orgID) {
+        UserModel user = new UserModel();
+        user.id = NixID.NewForRole(NixRole.USER);
+        user.firstname = firstname;
+        user.lastname = getLastname();
+        user.email = email;
+        user.phone = phone;
+        user.dateOfBirth = dateOfBirth;
+        user.avatar = avatar;
+        user.bio = getBio();
+        user.address = getAddress();
+        user.setOrgID(orgID.convert(NixID::of));
         return user;
     }
 }

@@ -1,7 +1,7 @@
 package com.suiteonix.nix.shared.permissions;
 
 import com.suiteonix.nix.NixApplication;
-import com.suiteonix.nix.Permission.systemPermissions.service.PermissionDefinitionScanner;
+import com.suiteonix.nix.shared.permissions.system.scanner.PermissionDefinitionScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.annotation.Configuration;

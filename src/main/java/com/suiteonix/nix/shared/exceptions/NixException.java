@@ -86,7 +86,7 @@ public class NixException extends RuntimeException {
     /**
      * Detail nix exception.
      *
-     * @param detail the detail
+     * @param detail the details
      * @return the nix exception
      */
     public NixException detail(String detail) {

@@ -1,7 +1,7 @@
 package com.suiteonix.nix.spi;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.suiteonix.nix.shared.audit.AuditSection;
+import com.suiteonix.nix.Common.audit.AuditSection;
 import com.suiteonix.nix.shared.ids.NixID;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;

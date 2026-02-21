@@ -4,7 +4,7 @@ import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.Auth.service.AuthenticationService;
 import com.suiteonix.nix.TestApplicationConfiguration;
-import com.suiteonix.nix.kernel.security.authentication.CustomAuthentication;
+import com.suiteonix.nix.Common.authentication.CustomAuthentication;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
 import com.suiteonix.nix.shared.principal.Principal;

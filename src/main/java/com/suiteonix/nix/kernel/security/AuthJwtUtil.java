@@ -1,6 +1,6 @@
 package com.suiteonix.nix.kernel.security;
 
-import com.suiteonix.nix.kernel.security.jwt.JwtProperties;
+import com.suiteonix.nix.Common.JwtProperties;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -24,27 +23,14 @@ import java.util.Optional;
 public class AuthJwtUtil {
     private final JwtProperties jwtProperties;
 
-    public String generateEmailVerificationToken(NixID userId, long ttlMs) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + ttlMs);
-        return Jwts.builder()
-                .setSubject(userId.get())
-                .claim("type", "EMAIL_VERIFICATION")
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .setIssuer(jwtProperties.getIssuer())
-                .signWith(jwtProperties.getSigningKey())
-                .compact();
-    }
-
     public Actor getActorFromClaims(Claims claims) {
-        String actorId = (String) claims.get(JwtProperties.ACTOR_ID);
+        Long actorId =  Long.valueOf((String)claims.get(JwtProperties.ACTOR_ID));
         String actorRole = (String) claims.get(JwtProperties.ACTOR_ROLE);
         return Actor.from(NixID.of(actorId), NixRole.valueOf(actorRole));
     }
 
     public Principal getPrincipalFromClaims(Claims claims) {
-        String id = claims.getSubject();
+        Long id = Long.valueOf(claims.getSubject());
         String role = (String) claims.get(JwtProperties.ROLE);
         return Principal.from(NixID.of(id), NixRole.valueOf(role));
 //        if (businessId != null && !businessId.equals(id)) {

@@ -1,7 +1,8 @@
 package com.suiteonix.nix.Auth.service;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.suiteonix.nix.shared.audit.AuditSection;
+import com.suiteonix.nix.Common.audit.AuditSection;
+import com.suiteonix.nix.shared.ConfigFlag;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
 import io.swagger.v3.oas.annotations.media.Schema;

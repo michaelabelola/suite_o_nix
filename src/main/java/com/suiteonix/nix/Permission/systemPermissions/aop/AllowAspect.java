@@ -1,9 +1,9 @@
 package com.suiteonix.nix.Permission.systemPermissions.aop;
 
-import com.suiteonix.nix.Permission.systemPermissions.annotations.Allow;
+import com.suiteonix.nix.shared.permissions.system.annotations.Allow;
 import com.suiteonix.nix.Permission.systemPermissions.domain.PermissionContext;
-import com.suiteonix.nix.Permission.systemPermissions.domain.PermissionDefinitionRecord;
-import com.suiteonix.nix.Permission.systemPermissions.service.PermissionDefinitionService;
+import com.suiteonix.nix.shared.permissions.system.PermissionDefinitionRecord;
+import com.suiteonix.nix.shared.permissions.system.PermissionDefinitionService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,8 +23,8 @@ class AllowAspect {
 
     private final PermissionDefinitionService permissionDefinitionService;
 
-    @Pointcut("@annotation(com.suiteonix.nix.Permission.systemPermissions.annotations.Allow) " +
-              "|| @within(com.suiteonix.nix.Permission.systemPermissions.annotations.Allow)")
+    @Pointcut("@annotation(com.suiteonix.nix.shared.permissions.system.annotations.Allow) " +
+              "|| @within(com.suiteonix.nix.shared.permissions.system.annotations.Allow)")
     public void allowPointcut() {}
 
     @Around("allowPointcut()")

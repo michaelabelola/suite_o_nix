@@ -21,6 +21,7 @@ class AuthenticationServiceTest {
         userId = NixID.of(UUID.randomUUID().toString());
 
         validRegisterDto = new AuthProfile.Register(
+                userId,
                 NixRole.CUSTOMER,
                 "test@example.com",
                 "+1234567890",

@@ -1,6 +1,6 @@
 package com.suiteonix.nix.Auth.internal.domain;
 
-import com.suiteonix.nix.Auth.service.ConfigFlag;
+import com.suiteonix.nix.shared.ConfigFlag;
 import com.suiteonix.nix.shared.exceptions.EX;
 
 public class SignInOptionsProcessor {

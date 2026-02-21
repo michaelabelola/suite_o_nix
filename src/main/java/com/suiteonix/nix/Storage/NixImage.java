@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NixImage implements EmptyChecker {
+public class NixImage implements EmptyChecker, IFile {
 
     //    @JdbcTypeCode(SqlTypes.LONGVARCHAR)
 //    @JdbcType(TextJdbcType.class)

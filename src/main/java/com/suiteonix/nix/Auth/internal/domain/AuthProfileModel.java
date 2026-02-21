@@ -2,14 +2,16 @@ package com.suiteonix.nix.Auth.internal.domain;
 
 import com.suiteonix.nix.Auth.service.AuthProfile;
 import com.suiteonix.nix.Auth.service.AuthToken;
-import com.suiteonix.nix.Auth.service.ConfigFlag;
+import com.suiteonix.nix.Common.audit.IAuditableOwnableEntity;
+import com.suiteonix.nix.Common.ddd.AggregateRoot;
+import com.suiteonix.nix.shared.ConfigFlag;
 import com.suiteonix.nix.shared.ValueObjects.Email;
 import com.suiteonix.nix.shared.ValueObjects.Password;
 import com.suiteonix.nix.shared.ValueObjects.Phone;
-import com.suiteonix.nix.shared.audit.IAuditableOwnableEntity;
-import com.suiteonix.nix.shared.ddd.AggregateRoot;
+import com.suiteonix.nix.shared.ids.ID;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.ids.NixRole;
+import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +31,7 @@ import java.util.Set;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @AggregateRoot
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder()
 public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> {
 
     @EmbeddedId
@@ -46,20 +49,32 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
     @Embedded
     Password password;
 
+    @Builder.Default
     @Type(JsonType.class)
     @Column(name = "sign_in_options", columnDefinition = "jsonb")
-    SignInOptions signInOptions;
+    SignInOptions signInOptions = new SignInOptions();
 
+    @Builder.Default
     @Type(JsonType.class)
     @Column(name = "config_flags", columnDefinition = "jsonb")
-    ConfigFlags configFlags;
+    ConfigFlags configFlags = new ConfigFlags();
 
+    @Builder.Default
     @Type(JsonType.class)
     @Column(name = "tokens", columnDefinition = "jsonb")
     Set<AuthToken> tokens = new HashSet<>();
 
+    @Builder.Default
     @Column(name = "email_verified")
     boolean emailVerified = false;
+
+    public void enableProxySignIn(NixID id) {
+        if (signInOptions == null) signInOptions = SignInOptions.EMPTY();
+        signInOptions.setProxySignIn(ConfigFlag.ACTIVE);
+        signInOptions.proxyUserID = id;
+
+    }
+
 
     public static AuthProfileModel NEW(AuthProfile.Register register, Set<AuthToken> authTokens, PasswordEncoder encoder) {
         return new AuthProfileModel(
@@ -73,6 +88,17 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
                 authTokens == null ? new HashSet<>() : authTokens,
                 false
         );
+    }
+
+
+    public static AuthProfileModel NEW(NixRole role, SignInOptions signInOptions, ConfigFlags configFlags, ID<?,Long> orgID) {
+        var profile = new AuthProfileModel();
+        profile.id = NixID.NEW(role);
+        profile.role = role;
+        profile.signInOptions = signInOptions;
+        profile.configFlags = configFlags;
+        profile.setOrgID(orgID.convert(NixID::of));
+        return profile;
     }
 
     public static AuthProfileModel NEW(
@@ -97,8 +123,10 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
         );
     }
 
-
     @Data
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class SignInOptions {
         private ConfigFlag emailAndPassword;
         /**
@@ -114,6 +142,10 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
          */
         private ConfigFlag phoneAndPhoneToken;
 
+        private ConfigFlag proxySignIn;
+
+        private NixID proxyUserID;
+
         public static SignInOptions NEW(AuthProfile.SignInOptions options) {
             if (options == null) return null;
             SignInOptions flags = new SignInOptions();
@@ -123,10 +155,32 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
             flags.phoneAndPhoneToken = options.phoneAndPhoneToken();
             return flags;
         }
+
+        public static SignInOptions EMPTY() {
+            return new SignInOptions();
+        }
+
+        public static SignInOptions NEW_INACTIVE() {
+            SignInOptions flags = new SignInOptions();
+            flags.emailAndPassword = ConfigFlag.INACTIVE;
+            flags.emailAndEmailToken = ConfigFlag.INACTIVE;
+            flags.phoneAndPassword = ConfigFlag.INACTIVE;
+            flags.phoneAndPhoneToken = ConfigFlag.INACTIVE;
+            return flags;
+        }
+
+        public static SignInOptions NEW_DISABLED() {
+            SignInOptions flags = new SignInOptions();
+            flags.emailAndPassword = ConfigFlag.DISABLED;
+            flags.emailAndEmailToken = ConfigFlag.DISABLED;
+            flags.phoneAndPassword = ConfigFlag.DISABLED;
+            flags.phoneAndPhoneToken = ConfigFlag.DISABLED;
+            return flags;
+        }
     }
 
     @Data
-    public static class ConfigFlags {
+    public static class ConfigFlags implements EmptyChecker {
         /**
          * Enables JWT authentication.
          */
@@ -172,6 +226,17 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
 
         public static ConfigFlags EMPTY() {
             return new ConfigFlags();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return jwtAuthEnabled == null ||
+                    linkedAccountLogin == null ||
+                    generateRandomPassword == null ||
+                    forwardPasswordToMail == null ||
+                    requirePasswordChange == null ||
+                    sendMailVerification == null ||
+                    enableOwnerLogin == null;
         }
     }
 }

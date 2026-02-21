@@ -3,7 +3,9 @@ package com.suiteonix.nix.Auth.internal.api;
 import com.suiteonix.nix.Auth.internal.domain.services.AuthModule;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserMapper;
 import com.suiteonix.nix.Auth.service.AuthProfile;
-import com.suiteonix.nix.Permission.systemPermissions.annotations.Allow;
+import com.suiteonix.nix.shared.NixModule;
+import com.suiteonix.nix.shared.permissions.system.annotations.Allow;
+import com.suiteonix.nix.shared.permissions.system.annotations.PermissionDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ class AuthController {
     private final AuthModule authModule;
 
     @GetMapping("{id}")
-    AuthProfile.Detailed getAuthProfile(@PathVariable String id) {
+    AuthProfile.Detailed getAuthProfile(@PathVariable Long id) {
         return AuthUserMapper.INSTANCE.detailed(authModule.getAuthUserById(id));
     }
 
@@ -47,12 +49,18 @@ class AuthController {
         // TODO: Implement login logic
     }
 
+    @PermissionDefinition(
+            name = "LOGOUT",
+            id = "logout",
+            module = NixModule.AUTH,
+            action = "logout"
+    )
     @PostMapping("/logout")
     void logout() {
         // TODO: Implement logout logic
     }
 
-    record VerifyEmailRequest(String email, String token, String orgID) {}
+    record VerifyEmailRequest(String email, String token, Long orgID) {}
 
-    record ResendVerificationRequest(String email, String orgID) {}
+    record ResendVerificationRequest(String email, Long orgID) {}
 }

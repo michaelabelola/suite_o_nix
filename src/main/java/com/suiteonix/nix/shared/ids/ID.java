@@ -3,6 +3,7 @@ package com.suiteonix.nix.shared.ids;
 import jakarta.persistence.Transient;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Represents a generic identifier wrapper.
@@ -23,4 +24,11 @@ public interface ID<SELF extends ID<SELF, T>, T> extends IID<T> {
     default void ifPresent(Consumer<SELF> id) {
         if (!isEmpty()) id.accept((SELF) this);
     }
+
+    String toString();
+
+    default <N extends ID<N, T>> N convert(Function<T, N> factory) {
+        return factory.apply(get());
+    }
+
 }

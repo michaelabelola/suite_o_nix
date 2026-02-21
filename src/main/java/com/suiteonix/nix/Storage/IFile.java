@@ -1,6 +1,7 @@
 package com.suiteonix.nix.Storage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import jakarta.persistence.Lob;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +12,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public interface IFile {
+public interface IFile extends EmptyChecker {
 
     @Lob
     String getUrl();
@@ -32,6 +33,7 @@ public interface IFile {
 
     @Transient
     @JsonIgnore
+    @Override
     default boolean isEmpty() {
         return !hasFile();
     }

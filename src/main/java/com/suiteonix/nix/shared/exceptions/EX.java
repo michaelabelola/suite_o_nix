@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * <p>
  * This class contains static methods that create and configure NixException objects with
  * appropriate HTTP status codes, titles, and details. Each method has two overloads:
- * one that accepts both title and detail, and another that accepts only title.
+ * one that accepts both title and details, and another that accepts only title.
  * <p>
  * The methods are organized by HTTP status code categories (4xx, 5xx, 1xx, 2xx, 3xx).
  */
@@ -253,13 +253,13 @@ public class EX {
 //     * Creates a NixException with HTTP 102 Processing status.
 //     *
 //     * @param title  the title of the exception, defaults to "Processing" if null
-//     * @param detail the detailed description of the exception, defaults to a standard message if null
+//     * @param details the detailed description of the exception, defaults to a standard message if null
 //     * @return a configured NixException instance
 //     */
-//    public static NixException processing(String title, String detail) {
+//    public static NixException processing(String title, String details) {
 //        return new NixException(HttpStatus.PROCESSING)
 //                .title(title != null ? title : "Processing")
-//                .detail(detail != null ? detail : "The server is processing the request but no response is available yet");
+//                .details(details != null ? details : "The server is processing the request but no response is available yet");
 //    }
 //
 //    /**
@@ -272,10 +272,10 @@ public class EX {
 //        return processing(title, null);
 //    }
 
-//    public static NixException checkpoint (String title, String detail) {
+//    public static NixException checkpoint (String title, String details) {
 //        return new NixException(HttpStatus.CHECKPOINT)
 //                .title(title != null ? title : "Checkpoint")
-//                .detail(detail != null ? detail: "The request should be retried after performing the appropriate action");
+//                .details(details != null ? details: "The request should be retried after performing the appropriate action");
 //    }
 
     // 2xx Success
@@ -627,10 +627,10 @@ public class EX {
         return notModified(title, null);
     }
 
-//    public static NixException useProxy(String title, String detail) {
+//    public static NixException useProxy(String title, String details) {
 //        return new NixException(HttpStatus.USE_PROXY)
 //                .title(title != null ? title : "Use Proxy")
-//                .detail(detail != null ? detail: "The requested resource must be accessed through the proxy given by the Location field");
+//                .details(details != null ? details: "The requested resource must be accessed through the proxy given by the Location field");
 //    }
 
     /**
@@ -685,13 +685,13 @@ public class EX {
 //     * Creates a NixException with HTTP 413 Payload Too Large status.
 //     *
 //     * @param title  the title of the exception, defaults to "Payload Too Large" if null
-//     * @param detail the detailed description of the exception, defaults to a standard message if null
+//     * @param details the detailed description of the exception, defaults to a standard message if null
 //     * @return a configured NixException instance
 //     */
-//    public static NixException payloadTooLarge(String title, String detail) {
+//    public static NixException payloadTooLarge(String title, String details) {
 //        return new NixException(HttpStatus.PAYLOAD_TOO_LARGE)
 //                .title(title != null ? title : "Payload Too Large")
-//                .detail(detail != null ? detail : "The server is refusing to process a request because the request payload is too large");
+//                .details(details != null ? details : "The server is refusing to process a request because the request payload is too large");
 //    }
 //
 //    /**
@@ -800,13 +800,13 @@ public class EX {
 //     * Creates a NixException with HTTP 418 I'm a teapot status.
 //     *
 //     * @param title  the title of the exception, defaults to "I'm a teapot" if null
-//     * @param detail the detailed description of the exception, defaults to a standard message if null
+//     * @param details the detailed description of the exception, defaults to a standard message if null
 //     * @return a configured NixException instance
 //     */
-//    public static NixException iAmATeapot(String title, String detail) {
+//    public static NixException iAmATeapot(String title, String details) {
 //        return new NixException(HttpStatus.I_AM_A_TEAPOT)
 //                .title(title != null ? title : "I'm a teapot")
-//                .detail(detail != null ? detail : "The server refuses to brew coffee because it is a teapot");
+//                .details(details != null ? details : "The server refuses to brew coffee because it is a teapot");
 //    }
 //
 //    /**
@@ -823,13 +823,13 @@ public class EX {
 //     * Creates a NixException with HTTP 422 Unprocessable Entity status.
 //     *
 //     * @param title  the title of the exception, defaults to "Unprocessable Entity" if null
-//     * @param detail the detailed description of the exception, defaults to a standard message if null
+//     * @param details the detailed description of the exception, defaults to a standard message if null
 //     * @return a configured NixException instance
 //     */
-//    public static NixException unprocessableEntity(String title, String detail) {
+//    public static NixException unprocessableEntity(String title, String details) {
 //        return new NixException(HttpStatus.UNPROCESSABLE_ENTITY)
 //                .title(title != null ? title : "Unprocessable Entity")
-//                .detail(detail != null ? detail : "The server understands the content type of the request entity but was unable to process the contained instructions");
+//                .details(details != null ? details : "The server understands the content type of the request entity but was unable to process the contained instructions");
 //    }
 //
 //    /**
@@ -1193,13 +1193,13 @@ public class EX {
 //     * Creates a NixException with HTTP 509 Bandwidth Limit Exceeded status.
 //     *
 //     * @param title  the title of the exception, defaults to "Bandwidth Limit Exceeded" if null
-//     * @param detail the detailed description of the exception, defaults to a standard message if null
+//     * @param details the detailed description of the exception, defaults to a standard message if null
 //     * @return a configured NixException instance
 //     */
-//    public static NixException bandwidthLimitExceeded(String title, String detail) {
+//    public static NixException bandwidthLimitExceeded(String title, String details) {
 //        return new NixException(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED)
 //                .title(title != null ? title : "Bandwidth Limit Exceeded")
-//                .detail(detail != null ? detail : "The server has exceeded the bandwidth specified by the server administrator");
+//                .details(details != null ? details : "The server has exceeded the bandwidth specified by the server administrator");
 //    }
 //
 //    /**
@@ -1216,13 +1216,13 @@ public class EX {
 //     * Creates a NixException with HTTP 510 Not Extended status.
 //     *
 //     * @param title  the title of the exception, defaults to "Not Extended" if null
-//     * @param detail the detailed description of the exception, defaults to a standard message if null
+//     * @param details the detailed description of the exception, defaults to a standard message if null
 //     * @return a configured NixException instance
 //     */
-//    public static NixException notExtended(String title, String detail) {
+//    public static NixException notExtended(String title, String details) {
 //        return new NixException(HttpStatus.NOT_EXTENDED)
 //                .title(title != null ? title : "Not Extended")
-//                .detail(detail != null ? detail : "Further extensions to the request are required for the server to fulfill it");
+//                .details(details != null ? details : "Further extensions to the request are required for the server to fulfill it");
 //    }
 //
 //    /**

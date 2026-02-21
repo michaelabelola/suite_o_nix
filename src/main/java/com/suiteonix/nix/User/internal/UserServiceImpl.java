@@ -1,6 +1,7 @@
 package com.suiteonix.nix.User.internal;
 
 import com.suiteonix.nix.User.service.User;
+import com.suiteonix.nix.User.service.UserCreateDto;
 import com.suiteonix.nix.User.service.UserService;
 import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User.Detailed registerUser(User.@NonNull Create create) {
+    public User.Detailed registerUser(@NonNull UserCreateDto create) {
         return UserMapper.INSTANCE.detailed(userModule.registerUser(create));
     }
 }

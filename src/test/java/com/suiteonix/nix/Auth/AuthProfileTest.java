@@ -55,12 +55,11 @@ class AuthProfileTest {
         AuthProfile adminUser = new AuthProfile(
                 adminId,
                 NixRole.ADMIN,
-                email,
-                phone,
+                email.get(),
+                phone.get(),
+                null,
                 AuthProfile.SignInOptions.builder().build(),
-                AuthProfile.ConfigFlags.builder().build(),
-                adminId,
-                null
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         assertThat(adminUser.role()).isEqualTo(NixRole.ADMIN);
@@ -77,19 +76,18 @@ class AuthProfileTest {
         AuthProfile authProfile = new AuthProfile(
                 testId,
                 NixRole.CUSTOMER,
-                email,
-                phone,
+                email.get(),
+                phone.get(),
+                null,
                 AuthProfile.SignInOptions.builder().build(),
-                AuthProfile.ConfigFlags.builder().build(),
-                testId,
-                null
+                AuthProfile.ConfigFlags.builder().build()
         );
 
         assertNotNull(authProfile);
         assertThat(authProfile.id()).isEqualTo(testId);
         assertThat(authProfile.role()).isEqualTo(NixRole.CUSTOMER);
-        assertThat(authProfile.email()).isEqualTo(email);
-        assertThat(authProfile.phone()).isEqualTo(phone);
+        assertThat(authProfile.email()).isEqualTo(email.get());
+        assertThat(authProfile.phone()).isEqualTo(phone.get());
         assertThat(authProfile.orgID()).isEqualTo(testId);
     }
 }

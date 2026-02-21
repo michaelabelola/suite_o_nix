@@ -25,7 +25,7 @@ public class NixMailSender {
     HashSet<File> attachments;
     HashSet<String> attachmentLinks;
     TemplateType templateType;
-    final HashMap<String, Object> variables = new HashMap<>();
+    final HashMap<String, Object> variables = new LinkedHashMap<>();
 
     public static NixMailSender newInstance() {
         return new NixMailSender();
