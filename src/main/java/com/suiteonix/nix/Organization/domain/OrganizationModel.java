@@ -10,12 +10,14 @@ import com.suiteonix.nix.Storage.NixImage;
 import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.principal.Actor;
 import com.suiteonix.nix.spi.location.HomeAddressModel;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.annotations.Type;
 
 import java.time.LocalDate;
 
@@ -62,18 +64,13 @@ public class OrganizationModel extends IAuditableOwnableEntity<OrganizationModel
     @AttributeOverride(name = "id", column = @Column(name = "registered_by"))
     NixID registeredBy = NixID.EMPTY();
 
-    @Embedded
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
     LogosModel logos = new LogosModel();
 
     public static OrganizationModel NEW(OrganizationCreateDto query) {
-        OrganizationModel model;
-        try {
-        model = new OrganizationModel();
-
-
-
+        OrganizationModel model = new OrganizationModel();
         if (query == null) return model;
-
         model.setId(OrgID.NEW());
         model.setName(query.name());
         model.setShortName(query.shortName());
@@ -86,10 +83,6 @@ public class OrganizationModel extends IAuditableOwnableEntity<OrganizationModel
         model.setContact(ContactModel.NEW(query.contact()));
         model.registerEvent(OrgEvents.Created.of(model.id, Actor.ID()));
         return model;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return new OrganizationModel();
     }
 
     @Getter
@@ -146,7 +139,6 @@ public class OrganizationModel extends IAuditableOwnableEntity<OrganizationModel
 
     @Getter
     @Setter
-    @Embeddable
     @FieldDefaults(level = AccessLevel.PRIVATE)
     static class LogosModel {
         @Embedded

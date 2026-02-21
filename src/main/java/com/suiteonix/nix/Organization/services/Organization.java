@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Schema(name = "Organization")
 public record Organization(
         @JsonUnwrapped OrgID id, String name, String shortName, String industry,
-        Detail details,
         boolean isApproved,
         boolean isSuspended,
         @JsonUnwrapped(prefix = "logo_") NixImage logo,

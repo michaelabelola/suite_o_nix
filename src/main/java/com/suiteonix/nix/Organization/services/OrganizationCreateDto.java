@@ -1,5 +1,6 @@
 package com.suiteonix.nix.Organization.services;
 
+import com.suiteonix.nix.User.service.UserCreateDto;
 import com.suiteonix.nix.spi.location.HomeAddress;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -30,6 +31,8 @@ public record OrganizationCreateDto(
             @Valid
             @Schema(description = "Business registration data", implementation = OrganizationCreateDto.class)
             OrganizationCreateDto data,
+            @Schema(description = "Business registration data", implementation = UserCreateDto.class)
+            UserCreateDto user,
             @Schema(description = "Logo", type = "string", format = "binary")
             MultipartFile logo,
             @Schema(description = "Dark Logo", type = "string", format = "binary")

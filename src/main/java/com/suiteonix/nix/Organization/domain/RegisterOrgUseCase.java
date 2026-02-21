@@ -1,14 +1,12 @@
 package com.suiteonix.nix.Organization.domain;
 
 import com.suiteonix.nix.Common.ddd.UseCase;
-import com.suiteonix.nix.Mail.NixMailSender;
 import com.suiteonix.nix.Organization.services.OrgID;
 import com.suiteonix.nix.Organization.services.OrganizationCreateDto;
 import com.suiteonix.nix.Storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.Optional;
 
 @UseCase
@@ -23,7 +21,6 @@ class RegisterOrgUseCase {
         OrganizationModel model = OrganizationModel.NEW(createDto.data());
         var savedModel = organizationRepo.save(model);
         uploadImages(savedModel.getId(), savedModel.getLogos(), createDto);
-        sendOrgCreatedMail(savedModel);
         return savedModel;
     }
 
@@ -59,13 +56,5 @@ class RegisterOrgUseCase {
                                 id.filePath(),
                                 "cover-image-dark"));
 
-    }
-
-    private void sendOrgCreatedMail(OrganizationModel savedModel) {
-        NixMailSender.newInstance()
-                .variables(Map.of(
-                        "org", OrganizationMapper.INSTANCE.dto(savedModel)
-                ))
-                .queueMail();
     }
 }

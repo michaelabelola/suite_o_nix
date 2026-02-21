@@ -1,8 +1,10 @@
 package com.suiteonix.nix.User.internal;
 
+import com.suiteonix.nix.Organization.services.OrgID;
 import com.suiteonix.nix.User.service.User;
 import com.suiteonix.nix.User.service.UserCreateDto;
 import com.suiteonix.nix.User.service.UserService;
+import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -28,5 +30,15 @@ class UserServiceImpl implements UserService {
     @Transactional
     public User.Detailed registerUser(@NonNull UserCreateDto create) {
         return UserMapper.INSTANCE.detailed(userModule.registerUser(create));
+    }
+
+    @Transactional
+    public User registerDefaultOrgUser(OrgID orgId, NixID userId) {
+        return userRepository
+                .findById(userId)
+                .map(userModel -> userModel.CLONE(orgId))
+                .map(userRepository::save)
+                .map(UserMapper.INSTANCE::toUser)
+                .orElseThrow(() -> EX.badRequest("USER_NOT_FOUND", "User not found"));
     }
 }
