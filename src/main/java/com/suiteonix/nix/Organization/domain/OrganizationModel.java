@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.time.LocalDate;
 
@@ -29,6 +31,7 @@ import java.time.LocalDate;
 @Schema(description = "Organization Model")
 public class OrganizationModel extends IAuditableOwnableEntity<OrganizationModel> {
 
+    private static final Log log = LogFactory.getLog(OrganizationModel.class);
     @EmbeddedId
     @AttributeOverride(name = "value", column = @Column(name = "id"))
     OrgID id;
@@ -63,7 +66,11 @@ public class OrganizationModel extends IAuditableOwnableEntity<OrganizationModel
     LogosModel logos = new LogosModel();
 
     public static OrganizationModel NEW(OrganizationCreateDto query) {
-        OrganizationModel model = new OrganizationModel();
+        OrganizationModel model;
+        try {
+        model = new OrganizationModel();
+
+
 
         if (query == null) return model;
 
@@ -79,6 +86,10 @@ public class OrganizationModel extends IAuditableOwnableEntity<OrganizationModel
         model.setContact(ContactModel.NEW(query.contact()));
         model.registerEvent(OrgEvents.Created.of(model.id, Actor.ID()));
         return model;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new OrganizationModel();
     }
 
     @Getter

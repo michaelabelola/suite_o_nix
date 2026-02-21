@@ -27,14 +27,12 @@ class OrganizationController {
 
     private final OrganizationAggregate organizationAggregate;
 
-    @PreAuthorize("authenticated()")
-    @PostMapping(value = "/business", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("authentication.isAuthenticated()")
+    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Register business", description = "Register a new organization")
     OrgRegistrationResponse registerBusiness(@ModelAttribute @Valid OrganizationCreateDto.WithLogos create) {
         return OrgRegistrationResponse.of(organizationAggregate.registerOrganization(create));
     }
-
-
 }
 
 record OrgRegistrationResponse(
