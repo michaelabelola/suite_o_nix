@@ -40,7 +40,6 @@ class LoginUseCase {
         String accessToken = authModuleJwtUtil.generateAccessToken(principalId, principalRole, actorId, actorRole);
         String refreshToken = authModuleJwtUtil.generateRefreshToken(principalId, principalRole, actorId, actorRole);
         return new Login.Response(accessToken, refreshToken, "Bearer");
-
     }
 
     @Transactional(readOnly = true)
