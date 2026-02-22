@@ -71,18 +71,4 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
         return user;
     }
 
-    public UserModel CLONE(OrgID orgID) {
-        UserModel user = new UserModel();
-        user.id = UserID.NEW();
-        user.firstname = firstname;
-        user.lastname = getLastname();
-        user.email = email;
-        user.phone = phone;
-        user.dateOfBirth = dateOfBirth;
-        user.avatar = avatar;
-        user.bio = getBio();
-        user.address = getAddress();
-        user.setOrgID(orgID.to(NixID::NEW));
-        return user;
-    }
 }
