@@ -3,68 +3,58 @@ package com.suiteonix.nix.shared.ids;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
-import org.jspecify.annotations.NonNull;
 
-import java.util.Objects;
+import java.util.function.Function;
 
 @Embeddable
 @Schema(example = "677890782656598016", type = "number")
-public record NixID(
-        Long id
-) implements ID<NixID, Long> {
+public interface NixID extends ID<NixID, Long> {
+    Long value();
 
-    public static final NixID SYSTEM = NixID.of((long) NixRole.SYSTEM.idValue());
+    NixID SYSTEM = NixID.of((long) NixRole.SYSTEM.idValue());
 
-    public static NixID NEW(NixRole role) {
+    static NixIDImpl NEW(NixRole role) {
         return role.generateID();
     }
 
-    public static NixID NewForRole(NixRole role) {
+    static NixIDImpl NewForRole(NixRole role) {
         return role.generateID();
     }
 
-    public NixRole role() {
+    default NixRole role() {
         return NixRole.of(this);
     }
 
     @Transient
     @Override
-    public Long get() {
-        return id;
+    default Long get() {
+        return value();
     }
 
-    public static NixID of(Long id) {
+    static NixIDImpl of(Long id) {
         if (id == null) return EMPTY();
-        return new NixID(id);
+        return new NixIDImpl(id);
+    }
+
+    static NixIDImpl NEW(NixID id) {
+        if (id == null) return EMPTY();
+        return new NixIDImpl(id.get());
     }
 
     @Transient
-    public static NixID EMPTY() {
+    public static NixIDImpl EMPTY() {
         return NixID.of((long) NixRole.ANONYMOUS.idValue());
     }
 
     @Schema(hidden = true)
     @Transient
-    public boolean equalsTo(NixID id) {
+    default boolean equalsTo(NixID id) {
         if (id == null) return false;
-        return this.id.equals(id.id);
-
+        return this.value().equals(id.value());
     }
 
-    @Override
-    public @NonNull String toString() {
-        return String.valueOf(id());
-    }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof NixID(Long id1))
-            return Objects.equals(id1, id);
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    default <N extends NixID> N to(Function<NixID, N> factory) {
+        return factory.apply(this);
     }
 }

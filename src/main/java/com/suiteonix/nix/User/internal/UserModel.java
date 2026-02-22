@@ -1,14 +1,14 @@
 package com.suiteonix.nix.User.internal;
 
-import com.suiteonix.nix.Organization.services.OrgID;
-import com.suiteonix.nix.Storage.NixImage;
 import com.suiteonix.nix.Common.audit.IAuditableOwnableEntity;
 import com.suiteonix.nix.Common.audit.JpaAuditSection;
 import com.suiteonix.nix.Common.ddd.AggregateRoot;
+import com.suiteonix.nix.Organization.services.OrgID;
+import com.suiteonix.nix.Storage.NixImage;
 import com.suiteonix.nix.User.service.UserCreateDto;
 import com.suiteonix.nix.User.service.UserEvents;
+import com.suiteonix.nix.User.service.UserID;
 import com.suiteonix.nix.shared.ids.NixID;
-import com.suiteonix.nix.shared.ids.NixRole;
 import com.suiteonix.nix.spi.location.HomeAddressModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,7 +26,7 @@ import java.time.LocalDate;
 public class UserModel extends IAuditableOwnableEntity<UserModel> {
 
     @EmbeddedId
-    NixID id;
+    UserID id;
     String firstname;
     String lastname;
     String email;
@@ -51,7 +51,7 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
 
     public static UserModel NEW(UserCreateDto create) {
         UserModel user = new UserModel();
-        user.id = NixID.NewForRole(NixRole.USER);
+        user.id = UserID.NEW();
         user.firstname = create.firstname();
         user.lastname = create.lastname();
         user.email = create.email().toLowerCase();
@@ -64,9 +64,16 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
         return user;
     }
 
+    public static UserModel NEW(UserCreateDto userCreate, OrgID orgId, UserID registerer) {
+        UserModel user = NEW(userCreate);
+        user.setOrgID(orgId.to(NixID::NEW));
+        user.setAudit(new JpaAuditSection(registerer));
+        return user;
+    }
+
     public UserModel CLONE(OrgID orgID) {
         UserModel user = new UserModel();
-        user.id = NixID.NewForRole(NixRole.USER);
+        user.id = UserID.NEW();
         user.firstname = firstname;
         user.lastname = getLastname();
         user.email = email;
@@ -75,7 +82,7 @@ public class UserModel extends IAuditableOwnableEntity<UserModel> {
         user.avatar = avatar;
         user.bio = getBio();
         user.address = getAddress();
-        user.setOrgID(orgID.convert(NixID::of));
+        user.setOrgID(orgID.to(NixID::NEW));
         return user;
     }
 }

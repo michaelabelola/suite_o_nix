@@ -1,4 +1,4 @@
-package com.suiteonix.nix.Organization.services;
+package com.suiteonix.nix.User.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.suiteonix.nix.shared.exceptions.EX;
@@ -10,24 +10,24 @@ import jakarta.persistence.Transient;
 import org.jspecify.annotations.NonNull;
 
 @Embeddable
-public record OrgID(
+public record UserID(
         @Column(name = "id")
         Long value
 ) implements NixID {
 
-    public static OrgID NEW() {
-        return from(NixID.NEW(NixRole.ORGANIZATION));
+    public static UserID NEW() {
+        return FROM(NixID.NEW(NixRole.USER));
     }
 
-    public static OrgID from(NixID nixID) {
-        if (nixID == null) return OrgID.EMPTY();
-        if (nixID.role() != NixRole.ORGANIZATION)
-            throw EX.badRequest("INVALID_ORG_ID", "Provided id is not an Organization ID");
-        return new OrgID(nixID.value());
+    public static UserID FROM(NixID nixID) {
+        if (nixID == null) return UserID.EMPTY();
+        if (nixID.role() != NixRole.USER)
+            throw EX.badRequest("INVALID_USER_ID", "Provided id is not a valid User ID");
+        return new UserID(nixID.value());
     }
 
-    private static OrgID EMPTY() {
-        return new OrgID(NixRole.ORGANIZATION.generateID().get());
+    private static UserID EMPTY() {
+        return new UserID(NixRole.USER.generateID().get());
     }
 
 
@@ -40,11 +40,12 @@ public record OrgID(
     @Transient
     @JsonIgnore
     public String filePath() {
-        return "organization/%s/".formatted(value);
+        return "user/%s".formatted(value);
     }
 
     @Override
     public @NonNull String toString() {
         return String.valueOf(get());
     }
+
 }

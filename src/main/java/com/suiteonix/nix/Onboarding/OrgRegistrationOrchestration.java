@@ -7,7 +7,9 @@ import com.suiteonix.nix.Organization.services.Organization;
 import com.suiteonix.nix.Organization.services.OrganizationCreateDto;
 import com.suiteonix.nix.Organization.services.OrganizationService;
 import com.suiteonix.nix.User.service.User;
+import com.suiteonix.nix.User.service.UserID;
 import com.suiteonix.nix.User.service.UserService;
+import com.suiteonix.nix.shared.principal.Actor;
 import com.suiteonix.nix.shared.principal.Principal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +43,7 @@ class OrgRegistrationOrchestration {
     @Transactional
     public OrgRegistrationResponse execute(OrganizationCreateDto.WithLogos create) {
         var org = organizationService.registerOrganization(create);
-        var user = userService.registerDefaultOrgUser(org.id(), Principal.ID());
+        var user = userService.registerDefaultOrgUser(create.user(), create.avatar(), org.id(), Actor.ID().to(UserID::FROM));
         var auth = authenticationService.registerOrgUserProfile(Principal.ID(), org.id());
 //        var permission =
         sendOrgCreatedMail(org);

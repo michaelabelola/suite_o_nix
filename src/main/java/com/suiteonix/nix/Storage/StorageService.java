@@ -18,7 +18,7 @@ public interface StorageService {
     }
 
     default <T extends IFile> T upload(T iFile, MultipartFile file, String directory, String name) {
-        if (iFile == null) return null;
+        if (iFile == null || file == null || file.isEmpty()) return null;
         iFile.delete();
         iFile.setUrl(upload(file, directory, name));
         return iFile;

@@ -36,7 +36,7 @@ public enum NixRole {
             default -> NixRole.ANONYMOUS;
         };
     }
-    public @NonNull NixID generateID() {
+    public @NonNull NixIDImpl generateID() {
         var id = String.valueOf(Snowflake.nextId().id()) + idValue();
         return NixID.of(Long.valueOf(id));
     }

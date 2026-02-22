@@ -15,12 +15,17 @@ import com.suiteonix.nix.spi.location.HomeAddress;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -35,9 +40,8 @@ class UserOnboardingService {
 
     @Transactional
     public UserOnboardingDtos.Response execute(UserOnboardingDtos.Request onboarding) {
-        var user = userService.registerUser(onboarding.toUserCreate());
-        var authProfile = authenticationService.register(onboarding.toAuthUserCreate(user.id()));
-
+        var user = userService.registerUser(onboarding.user().toUserCreate(), onboarding.avatar());
+        var authProfile = authenticationService.register(onboarding.user().toAuthUserCreate(user.id()));
         mailService.queueMail(
                 NixMailSender.newInstance()
                         .to(user.email())
@@ -49,7 +53,6 @@ class UserOnboardingService {
                         ))
                         .templateType(TemplateType.THYMELEAF)
         );
-
         return UserOnboardingDtos.Response.OF(user, authProfile);
     }
 }
@@ -61,62 +64,68 @@ class UserOnboardingService {
 class UserOnboardingController {
     private final UserOnboardingService registrationService;
 
-    @PostMapping("/onboard/user")
+    @PostMapping(path = "/user/onboard", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description = "Onboard New User", summary = "Register new User")
-    public UserOnboardingDtos.Response register(@RequestBody UserOnboardingDtos.Request onboarding) {
+    public UserOnboardingDtos.Response register(@ModelAttribute @Valid UserOnboardingDtos.Request onboarding) {
         return registrationService.execute(onboarding);
     }
 }
 
 class UserOnboardingDtos {
-
-    @Schema(name = "UserOnboarding.Request", description = "UserOnboarding.Request")
-    record Request(
-            @Schema(example = "michaelabelola@gmail.com")
-            String email,
-            @Schema(example = "+1234567890")
-            String phone,
-            @Schema(example = "SecurePass123!")
-            String password,
-            @Schema(example = "Michael")
-            String firstname,
-            @Schema(example = "Abel")
-            String lastname,
-            LocalDate dateOfBirth,
-            @Schema(example = "This is a short bio about me")
-            String bio,
-            HomeAddress.Create address
+    @Schema(name = "UserOnboarding.Request", description = "UserOnboarding Request")
+    public record Request(
+            Details user,
+            MultipartFile avatar
     ) {
-        public Request {
-            if (email != null) email = email.toLowerCase();
-        }
 
-        public UserCreateDto toUserCreate() {
-            return UserCreateDto.builder()
-                    .firstname(firstname())
-                    .lastname(lastname()).email(email()).phone(phone())
-                    .dateOfBirth(dateOfBirth()).bio(bio()).address(address()).build();
-        }
+        @Schema(name = "UserOnboarding.Request.Details", description = "UserOnboarding Request Details")
+        record Details(
+                @Schema(example = "michaelabelola@gmail.com")
+                String email,
+                @Schema(example = "+1234567890")
+                String phone,
+                @Schema(example = "SecurePass123!")
+                String password,
+                @Schema(example = "Michael")
+                String firstname,
+                @Schema(example = "Abel")
+                String lastname,
+                LocalDate dateOfBirth,
+                @Schema(example = "This is a short bio about me")
+                String bio,
+                HomeAddress.Create address
+        ) {
+            public Details {
+                if (email != null) email = email.toLowerCase();
+            }
 
-        public AuthProfile.Register toAuthUserCreate(NixID id) {
-            return AuthProfile.Register.builder()
-                    .id(id)
-                    .role(NixRole.USER)
-                    .email(email())
-                    .phone(phone())
-                    .password(password())
-                    .signInOptions(AuthProfile.SignInOptions.builder()
-                            .emailAndPassword(ConfigFlag.ACTIVE)
-                            .emailAndEmailToken(ConfigFlag.INACTIVE)
-                            .phoneAndPassword(ConfigFlag.INACTIVE)
-                            .phoneAndPhoneToken(ConfigFlag.INACTIVE)
-                            .build())
-                    .configFlags(AuthProfile.ConfigFlags.builder()
-                            .jwtAuthEnabled(ConfigFlag.ACTIVE)
-                            .linkedAccountLogin(ConfigFlag.ACTIVE)
-                            .sendMailVerification(ConfigFlag.ACTIVE)
-                            .build())
-                    .build();
+            public UserCreateDto toUserCreate() {
+                return UserCreateDto.builder()
+                        .firstname(firstname())
+                        .lastname(lastname()).email(email()).phone(phone())
+                        .dateOfBirth(dateOfBirth()).bio(bio()).address(address()).build();
+            }
+
+            public AuthProfile.Register toAuthUserCreate(NixID id) {
+                return AuthProfile.Register.builder()
+                        .id(id)
+                        .role(NixRole.USER)
+                        .email(email())
+                        .phone(phone())
+                        .password(password())
+                        .signInOptions(AuthProfile.SignInOptions.builder()
+                                .emailAndPassword(ConfigFlag.ACTIVE)
+                                .emailAndEmailToken(ConfigFlag.INACTIVE)
+                                .phoneAndPassword(ConfigFlag.INACTIVE)
+                                .phoneAndPhoneToken(ConfigFlag.INACTIVE)
+                                .build())
+                        .configFlags(AuthProfile.ConfigFlags.builder()
+                                .jwtAuthEnabled(ConfigFlag.ACTIVE)
+                                .linkedAccountLogin(ConfigFlag.ACTIVE)
+                                .sendMailVerification(ConfigFlag.ACTIVE)
+                                .build())
+                        .build();
+            }
         }
     }
 
@@ -133,4 +142,21 @@ class UserOnboardingDtos {
         }
     }
 
+}
+
+@Slf4j
+@Component
+@RequiredArgsConstructor
+class StringToUserOnboardingCreateConverter implements Converter<String, UserOnboardingDtos.Request.Details> {
+
+    private final ObjectMapper objectMapper;
+
+    @Override
+    public UserOnboardingDtos.Request.Details convert(@NotNull String source) {
+        try {
+            return objectMapper.readValue(source, UserOnboardingDtos.Request.Details.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse JSON to Create", e);
+        }
+    }
 }

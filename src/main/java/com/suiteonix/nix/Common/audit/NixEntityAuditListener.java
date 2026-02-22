@@ -1,7 +1,8 @@
 package com.suiteonix.nix.Common.audit;
 
-import com.suiteonix.nix.shared.ids.NixID;
 import com.suiteonix.nix.shared.exceptions.EX;
+import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixIDImpl;
 import com.suiteonix.nix.shared.principal.Actor;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -17,9 +18,9 @@ public class NixEntityAuditListener {
     private final Method updatedByMethod;
 
     public NixEntityAuditListener() throws NoSuchMethodException {
-        createdByMethod = JpaAuditSection.class.getDeclaredMethod("setCreatedBy", NixID.class);
+        createdByMethod = JpaAuditSection.class.getDeclaredMethod("setCreatedBy", NixIDImpl.class);
         createdByMethod.setAccessible(true);
-        updatedByMethod = JpaAuditSection.class.getDeclaredMethod("setModifiedBy", NixID.class);
+        updatedByMethod = JpaAuditSection.class.getDeclaredMethod("setModifiedBy", NixIDImpl.class);
         updatedByMethod.setAccessible(true);
     }
 
@@ -32,10 +33,11 @@ public class NixEntityAuditListener {
     }
 
     private void setCreatedBy(IAuditable auditable) {
-        if (auditable.getAudit() != null && auditable.getAudit().getCreatedBy() != null && !auditable.getAudit().getCreatedBy().isEmpty()) return;
+        if (auditable.getAudit() != null && auditable.getAudit().getCreatedBy() != null && !auditable.getAudit().getCreatedBy().isEmpty())
+            return;
         Actor.CURRENT().ifPresent(actor -> {
             try {
-                createdByMethod.invoke(auditable.getAudit(), actor.id());
+                createdByMethod.invoke(auditable.getAudit(), actor.id().to(NixID::NEW));
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw EX.internalServerError("AUDIT_ERROR", "Failed to set the createdBy").serverError("message", e.getMessage());
             }
@@ -72,7 +74,7 @@ public class NixEntityAuditListener {
             setAuditSectionIfNonNull(auditable);
             Actor.CURRENT().ifPresent(actor -> {
                 try {
-                    updatedByMethod.invoke(auditable.getAudit(), Actor.ID());
+                    updatedByMethod.invoke(auditable.getAudit(), Actor.ID().to(NixID::NEW));
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     throw EX.internalServerError("AUDIT_ERROR", "Failed to set the modifiedBy").serverError("message", e.getMessage());
                 }

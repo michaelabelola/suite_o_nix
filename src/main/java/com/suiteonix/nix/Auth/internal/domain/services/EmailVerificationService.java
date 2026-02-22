@@ -35,7 +35,7 @@ class EmailVerificationService {
         authUser.getTokens().add(AuthToken.NEW(AuthTokenType.EMAIL_VERIFICATION_JWT, jwtToken, ttl));
         var orgIDParam =
                 !authUser.getOrgID().isEmpty()
-                        ? "&orgID=" + authUser.getOrgID().id()
+                        ? "&orgID=" + authUser.getOrgID().value()
                         : "";
         String verificationLink = "http://" + appUrl + "/auth/verify-email?token=" + jwtToken + orgIDParam;
 

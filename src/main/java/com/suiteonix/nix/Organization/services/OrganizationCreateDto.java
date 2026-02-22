@@ -33,6 +33,8 @@ public record OrganizationCreateDto(
             OrganizationCreateDto data,
             @Schema(description = "Business registration data", implementation = UserCreateDto.class)
             UserCreateDto user,
+            @Schema(description = "avatar", type = "string", format = "binary")
+            MultipartFile avatar,
             @Schema(description = "Logo", type = "string", format = "binary")
             MultipartFile logo,
             @Schema(description = "Dark Logo", type = "string", format = "binary")

@@ -29,7 +29,7 @@ public class OwnerEntityListener {
         try {
             Method setOwnerMethod = findMethodInHierarchy(target.getClass());
             setOwnerMethod.setAccessible(true);
-            setOwnerMethod.invoke(target, id);
+            setOwnerMethod.invoke(target, id.to(NixID::NEW));
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -44,7 +44,6 @@ public class OwnerEntityListener {
                 currentClass = currentClass.getSuperclass();
             }
         }
-
         throw new NoSuchMethodException("Method '" + "setOrgID" + "' not found in class hierarchy of " + clazz.getName());
     }
 }

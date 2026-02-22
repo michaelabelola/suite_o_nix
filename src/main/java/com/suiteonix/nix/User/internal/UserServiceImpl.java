@@ -3,14 +3,14 @@ package com.suiteonix.nix.User.internal;
 import com.suiteonix.nix.Organization.services.OrgID;
 import com.suiteonix.nix.User.service.User;
 import com.suiteonix.nix.User.service.UserCreateDto;
+import com.suiteonix.nix.User.service.UserID;
 import com.suiteonix.nix.User.service.UserService;
-import com.suiteonix.nix.shared.exceptions.EX;
-import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -22,23 +22,25 @@ class UserServiceImpl implements UserService {
 
     @Cacheable(value = "users", key = "#id.toString()")
     @Override
-    public Optional<User> findById(@NonNull NixID id) {
+    public Optional<User> findById(@NonNull UserID id) {
         return userRepository.findById(id).map(UserMapper.INSTANCE::toUser);
     }
 
-    @Override
     @Transactional
+    @Override
+    public User.Detailed registerUser(@NonNull UserCreateDto create, MultipartFile avatar) {
+        return UserMapper.INSTANCE.detailed(userModule.registerUser(create, avatar));
+    }
+
+    @Transactional
+    @Override
     public User.Detailed registerUser(@NonNull UserCreateDto create) {
         return UserMapper.INSTANCE.detailed(userModule.registerUser(create));
     }
 
-    @Transactional
-    public User registerDefaultOrgUser(OrgID orgId, NixID userId) {
-        return userRepository
-                .findById(userId)
-                .map(userModel -> userModel.CLONE(orgId))
-                .map(userRepository::save)
-                .map(UserMapper.INSTANCE::toUser)
-                .orElseThrow(() -> EX.badRequest("USER_NOT_FOUND", "User not found"));
+    @Override
+    public User registerDefaultOrgUser(UserCreateDto userCreate, MultipartFile avatar, OrgID orgId, UserID registerer) {
+        var user = userModule.registerUser(userCreate, avatar, orgId, registerer);
+        return UserMapper.INSTANCE.toUser(user);
     }
 }

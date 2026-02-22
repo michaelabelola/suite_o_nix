@@ -2,6 +2,7 @@ package com.suiteonix.nix.Common.audit;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixIDImpl;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,8 +27,8 @@ public class JpaAuditSection implements AuditSection, Serializable {
     @CreatedBy
     @Embedded
     @JsonUnwrapped(prefix = "createdBy_")
-    @AttributeOverride(name = "id", column = @Column(name = "created_by", updatable = false))
-    NixID createdBy = NixID.EMPTY();
+    @AttributeOverride(name = "value", column = @Column(name = "created_by", updatable = false))
+    NixIDImpl createdBy = NixID.EMPTY();
 
     @CreatedDate
     @CreationTimestamp
@@ -37,8 +38,8 @@ public class JpaAuditSection implements AuditSection, Serializable {
     @Embedded
     @LastModifiedBy
     @JsonUnwrapped(prefix = "modifiedBy_")
-    @AttributeOverride(name = "id", column = @Column(name = "modified_by"))
-    NixID modifiedBy = NixID.EMPTY();
+    @AttributeOverride(name = "value", column = @Column(name = "modified_by"))
+    NixIDImpl modifiedBy = NixID.EMPTY();
 
     @LastModifiedDate
     @Column(name = "modified_date")
@@ -46,6 +47,10 @@ public class JpaAuditSection implements AuditSection, Serializable {
     Instant modifiedDate;
 
     protected JpaAuditSection() {
+    }
+
+    public JpaAuditSection(NixID createdBy) {
+        this.createdBy = createdBy.to(NixID::NEW);
     }
 
 

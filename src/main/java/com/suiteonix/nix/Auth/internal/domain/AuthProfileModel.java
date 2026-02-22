@@ -8,8 +8,8 @@ import com.suiteonix.nix.shared.ConfigFlag;
 import com.suiteonix.nix.shared.ValueObjects.Email;
 import com.suiteonix.nix.shared.ValueObjects.Password;
 import com.suiteonix.nix.shared.ValueObjects.Phone;
-import com.suiteonix.nix.shared.ids.ID;
 import com.suiteonix.nix.shared.ids.NixID;
+import com.suiteonix.nix.shared.ids.NixIDImpl;
 import com.suiteonix.nix.shared.ids.NixRole;
 import com.suiteonix.nix.shared.interfaces.EmptyChecker;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
@@ -35,7 +35,7 @@ import java.util.Set;
 public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> {
 
     @EmbeddedId
-    NixID id;
+    NixIDImpl id;
 
     @Enumerated(EnumType.STRING)
     NixRole role;
@@ -71,10 +71,8 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
     public void enableProxySignIn(NixID id) {
         if (signInOptions == null) signInOptions = SignInOptions.EMPTY();
         signInOptions.setProxySignIn(ConfigFlag.ACTIVE);
-        signInOptions.proxyUserID = id;
-
+        signInOptions.proxyUserID = id.to(NixID::NEW);
     }
-
 
     public static AuthProfileModel NEW(AuthProfile.Register register, Set<AuthToken> authTokens, PasswordEncoder encoder) {
         return new AuthProfileModel(
@@ -91,13 +89,13 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
     }
 
 
-    public static AuthProfileModel NEW(NixRole role, SignInOptions signInOptions, ConfigFlags configFlags, ID<?,Long> orgID) {
+    public static AuthProfileModel NEW(NixRole role, SignInOptions signInOptions, ConfigFlags configFlags, NixID orgID) {
         var profile = new AuthProfileModel();
         profile.id = NixID.NEW(role);
         profile.role = role;
         profile.signInOptions = signInOptions;
         profile.configFlags = configFlags;
-        profile.setOrgID(orgID.convert(NixID::of));
+        profile.setOrgID(orgID.to(NixID::NEW));
         return profile;
     }
 
@@ -111,7 +109,7 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
             AuthProfile.ConfigFlags newFlags
     ) {
         return new AuthProfileModel(
-                id,
+                id.to(NixID::NEW),
                 role,
                 email,
                 phone,
@@ -144,7 +142,7 @@ public class AuthProfileModel extends IAuditableOwnableEntity<AuthProfileModel> 
 
         private ConfigFlag proxySignIn;
 
-        private NixID proxyUserID;
+        private NixIDImpl proxyUserID;
 
         public static SignInOptions NEW(AuthProfile.SignInOptions options) {
             if (options == null) return null;

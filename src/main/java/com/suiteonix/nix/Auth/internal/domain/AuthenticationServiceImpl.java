@@ -25,10 +25,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @Transactional
     public @NonNull AuthProfile register(AuthProfile.@NonNull Register registerDto) {
         var user = authModule.register(registerDto);
-
         return AuthUserMapper.INSTANCE.toDto(user);
     }
 
+    @Transactional
     public AuthProfile registerOrgUserProfile(NixID id, OrgID orgID) {
         var authProfile = AuthProfileModel.NEW(NixRole.USER,
                 AuthProfileModel.SignInOptions.NEW_DISABLED(),
@@ -41,7 +41,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
                 ), orgID);
 
         var mainUser = authUserRepository.findById(id).orElseThrow(() -> EX.notFound("AUTH_USER_NOT_FOUND", "Auth user not found"));
-        authProfile.enableProxySignIn(id);
+        authProfile.enableProxySignIn(mainUser.getId());
 
         authUserRepository.save(authProfile);
         return AuthUserMapper.INSTANCE.toDto(authProfile);

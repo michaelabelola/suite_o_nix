@@ -5,6 +5,8 @@ import com.suiteonix.nix.shared.ids.NixID;
 import org.jspecify.annotations.NonNull;
 
 public interface AuthenticationService {
+
     @NonNull AuthProfile register(AuthProfile.@NonNull Register registerDto);
+
     AuthProfile registerOrgUserProfile(NixID id, OrgID orgID);
 }
