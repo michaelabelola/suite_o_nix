@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.Map;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ class OrgRegistrationOrchestration {
         var org = organizationService.registerOrganization(create);
         var user = userService.registerDefaultOrgUser(org.id(), Principal.ID());
         var auth = authenticationService.registerOrgUserProfile(Principal.ID(), org.id());
+//        var permission =
         sendOrgCreatedMail(org);
 
         return OrgRegistrationResponse.of(org, user, auth);
@@ -55,10 +57,10 @@ class OrgRegistrationOrchestration {
     }
 }
 
-@RestController
+@RestController("OrganizationOnboardingController")
 @RequestMapping("organizations")
 @RequiredArgsConstructor
-class OrganizationController {
+class Controller {
 
     private final OrgRegistrationOrchestration registrationOrchestration;
 
@@ -66,6 +68,7 @@ class OrganizationController {
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Register business", description = "Register a new organization")
     OrgRegistrationResponse registerBusiness(@ModelAttribute @Valid OrganizationCreateDto.WithLogos create) {
+        Function<String, String> fn = orgID -> "";
         return registrationOrchestration.execute(create);
     }
 }

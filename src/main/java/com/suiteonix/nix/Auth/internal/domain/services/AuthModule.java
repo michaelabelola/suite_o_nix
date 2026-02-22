@@ -3,6 +3,7 @@ package com.suiteonix.nix.Auth.internal.domain.services;
 import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.Login;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class AuthModule {
     private final RegisterUseCase registerUseCase;
     private final VerifyEmailUseCase verifyEmailUseCase;
     private final ResendVerificationUseCase resendVerificationUseCase;
+    private final LoginUseCase loginUseCase;
 
     @Transactional
     public AuthProfileModel register(AuthProfile.Register create) {
@@ -58,5 +60,10 @@ public class AuthModule {
     @Transactional
     public void resendVerification(String email, Long orgID) {
         resendVerificationUseCase.resend(email, orgID);
+    }
+
+    @Transactional(readOnly = true)
+    public Login.Response login(Login.Request request) {
+        return loginUseCase.execute(request);
     }
 }

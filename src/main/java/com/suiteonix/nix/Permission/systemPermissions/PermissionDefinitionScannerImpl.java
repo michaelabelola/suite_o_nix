@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class PermissionDefinitionScannerImpl implements PermissionDefinitionScanner {
+class PermissionDefinitionScannerImpl implements PermissionDefinitionScanner {
 
     @Override
     public void scanAndRegisterPermissionDefinitions(String packageName) {

@@ -3,6 +3,7 @@ package com.suiteonix.nix.Auth.internal.api;
 import com.suiteonix.nix.Auth.internal.domain.services.AuthModule;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserMapper;
 import com.suiteonix.nix.Auth.service.AuthProfile;
+import com.suiteonix.nix.Auth.service.Login;
 import com.suiteonix.nix.shared.NixModule;
 import com.suiteonix.nix.shared.permissions.system.annotations.Allow;
 import com.suiteonix.nix.shared.permissions.system.annotations.PermissionDefinition;
@@ -45,8 +46,8 @@ class AuthController {
     //    @PermissionDefinition()
     @Allow("/login")
     @PostMapping("/login")
-    void login() {
-        // TODO: Implement login logic
+    Login.Response login(@RequestBody LoginRequest request) {
+        return authModule.login(new Login.Request(request.email(), request.phone(), request.password(), request.orgID()));
     }
 
     @PermissionDefinition(
@@ -63,4 +64,6 @@ class AuthController {
     record VerifyEmailRequest(String email, String token, Long orgID) {}
 
     record ResendVerificationRequest(String email, Long orgID) {}
+
+    record LoginRequest(String email, String phone, String password, Long orgID) {}
 }

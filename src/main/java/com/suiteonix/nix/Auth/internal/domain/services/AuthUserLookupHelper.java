@@ -3,6 +3,7 @@ package com.suiteonix.nix.Auth.internal.domain.services;
 import com.suiteonix.nix.Auth.internal.domain.AuthProfileModel;
 import com.suiteonix.nix.Auth.internal.infrastructure.AuthUserRepository;
 import com.suiteonix.nix.shared.ValueObjects.Email;
+import com.suiteonix.nix.shared.ValueObjects.Phone;
 import com.suiteonix.nix.shared.exceptions.EX;
 import com.suiteonix.nix.shared.ids.NixID;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,17 @@ class AuthUserLookupHelper {
         }
         return repository.findByEmailAndOrgID(emailVO, orgID)
                 .orElseThrow(() -> EX.notFound("AUTH_USER_NOT_FOUND", "No account found for the provided email"));
+    }
+
+    AuthProfileModel findByPhoneScoped(String phone, Long ownerId) {
+        Phone phoneVO = Phone.NEW(phone);
+        NixID orgID = toNixId(ownerId);
+        if (isSystemOrAnonymous(orgID)) {
+            return repository.findByPhone(phoneVO)
+                    .orElseThrow(() -> EX.notFound("AUTH_USER_NOT_FOUND", "No account found for the provided phone number"));
+        }
+        return repository.findByPhoneAndOrgID(phoneVO, orgID)
+                .orElseThrow(() -> EX.notFound("AUTH_USER_NOT_FOUND", "No account found for the provided phone number"));
     }
 
     static boolean isSystemOrAnonymous(NixID id) {

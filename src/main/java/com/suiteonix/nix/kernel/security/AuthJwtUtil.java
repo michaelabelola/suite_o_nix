@@ -24,7 +24,7 @@ public class AuthJwtUtil {
     private final JwtProperties jwtProperties;
 
     public Actor getActorFromClaims(Claims claims) {
-        Long actorId =  Long.valueOf((String)claims.get(JwtProperties.ACTOR_ID));
+        Long actorId = Long.valueOf((String) claims.get(JwtProperties.ACTOR_ID));
         String actorRole = (String) claims.get(JwtProperties.ACTOR_ROLE);
         return Actor.from(NixID.of(actorId), NixRole.valueOf(actorRole));
     }

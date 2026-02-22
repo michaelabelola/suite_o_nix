@@ -1,4 +1,4 @@
-package com.suiteonix.nix.Permission;
+package com.suiteonix.nix.Permission.services;
 
 import com.suiteonix.nix.shared.ids.ID;
 import com.suiteonix.nix.shared.ids.Snowflake;

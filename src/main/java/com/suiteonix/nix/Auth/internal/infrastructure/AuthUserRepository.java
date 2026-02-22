@@ -14,4 +14,6 @@ public interface AuthUserRepository extends JpaRepository<AuthProfileModel, NixI
     Optional<AuthProfileModel> findByPhoneAndOrgID(Phone phone, NixID orgID);
 
     Optional<AuthProfileModel> findByEmail(Email email);
+
+    Optional<AuthProfileModel> findByPhone(Phone phone);
 }

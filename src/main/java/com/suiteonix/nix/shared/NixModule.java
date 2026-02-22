@@ -9,5 +9,6 @@ public enum NixModule {
     ONBOARDING,
     KERNEL,
     SHARED,
-    PERMISSION
+    PERMISSION,
+    ALL;
 }
