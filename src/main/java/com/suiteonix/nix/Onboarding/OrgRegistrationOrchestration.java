@@ -10,6 +10,7 @@ import com.suiteonix.nix.User.service.User;
 import com.suiteonix.nix.User.service.UserService;
 import com.suiteonix.nix.shared.principal.Principal;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,10 +58,11 @@ class OrgRegistrationOrchestration {
     }
 }
 
-@RestController("OrganizationOnboardingController")
+@RestController("OrgRegistrationController")
 @RequestMapping("organizations")
 @RequiredArgsConstructor
-class Controller {
+@Tag(name = "Onboarding")
+class OrgRegistrationController {
 
     private final OrgRegistrationOrchestration registrationOrchestration;
 
